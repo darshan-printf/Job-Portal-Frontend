@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from "react-redux";
 
-export default function Sidebar({M1,M2}) {
+export default function Sidebar({M1,RName,RName2,RName3,RName4,RName5, RLink,M2}) {
   const data = useSelector((state) => state.data.data);
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -18,10 +18,10 @@ export default function Sidebar({M1,M2}) {
 
             {/* Dashboard */}
             <li className={`nav-item has-treeview`}>
-              <Link to={'/dashboard'} className={`nav-link ${M1 || ""}`}>
+              <Link to={RLink} className={`nav-link ${M1 || ""}`}>
                 <i className="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Dashboard
+                {RName}
                 </p>
               </Link>
             </li>
@@ -29,7 +29,7 @@ export default function Sidebar({M1,M2}) {
               <Link to={'/dashboard'} className={`nav-link ${M2 || ""}`}>
                 <i className="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Country
+                  {RName2}
                 </p>
               </Link>
             </li>
@@ -37,7 +37,7 @@ export default function Sidebar({M1,M2}) {
               <Link to={'/dashboard'} className={`nav-link ${M2 || ""}`}>
                 <i className="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Country
+                  {RName3}
                 </p>
               </Link>
             </li>
@@ -45,7 +45,7 @@ export default function Sidebar({M1,M2}) {
               <Link to={'/dashboard'} className={`nav-link ${M2 || ""}`}>
                 <i className="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Country
+                  {RName4}
                 </p>
               </Link>
             </li>
@@ -53,7 +53,7 @@ export default function Sidebar({M1,M2}) {
               <Link to={'/dashboard'} className={`nav-link ${M2 || ""}`}>
                 <i className="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Country
+                  {RName5}
                 </p>
               </Link>
             </li>
