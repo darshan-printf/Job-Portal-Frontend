@@ -1,0 +1,152 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+export default function Login() {
+    const apiUrl = process.env.REACT_APP_API_URL; // Get the API URL from the .env file
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+    const navigate = useNavigate();
+    const [loaded, setLoaded] = useState(false); // Button loading effect state
+
+    // Function to handle form submission
+    const handleSubmit = (e) => {
+        setLoaded(true);
+        e.preventDefault();  // Prevent default form submission
+
+        // Prepare data for login request
+        const data = JSON.stringify({
+            username: email,  // Assuming 'userName' is the same as email
+            password: password
+        });
+
+        // Axios configuration for login request
+        const config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}auth/login`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+
+        // Make the API request
+        axios.request(config)
+            .then((response) => {
+                setLoaded(false);
+                if (response?.data) {
+                    console.log(response.data  , "resposn")
+                    // Save tokens and user info to localStorage
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('role',response.data.role)
+                    localStorage.setItem('isLogin', true);
+                    const duration = 1500000;
+                    setTimeout(() => {
+                        localStorage.setItem('isLogin', false);
+                    }, duration);
+                    navigate('/dashboard');
+                } else {
+                    setLoaded(false);
+                    toast.error("Invalid email or password");
+                }
+            })
+            .catch((error) => {
+                setLoaded(false);
+                if (error.response) {
+                    toast.error(error.response?.data?.message);
+                } else if (error.request) {
+                    toast.error("Server is temporarily unavailable. Please try again later.");
+                } else {
+                    toast.error("An error occurred. Please try again.");
+                }
+            });
+    };
+
+    return (
+        <>
+
+
+            <div className="star-field">
+                <div className="layer"></div>
+                <div className="layer"></div>
+                <div className="layer"></div>
+            
+
+            <div className="login-page bg" id='page-bg'>
+                <div className="login-box">
+                    <div className="card card-outline card-primary">
+                        <div className="card-header text-center">
+                            <Link className="h1"><b>Admin</b></Link>
+                        </div>
+                        <div className="card-body ">
+                            <p className="login-box-msg">Sign in to start your session</p>
+                            <form onSubmit={handleSubmit}>
+                                <div className="input-group mb-3">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Username"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}  // Update email state
+                                        required
+                                    />
+                                    <div className="input-group-append">
+                                        <div className="input-group-text">
+                                            <span className="fas fa-user"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <input
+                                        type={showPassword ? "text" : "password"} // Toggle input type
+                                        className="form-control"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}  // Update password state
+                                        required
+                                    />
+                                    <div className="input-group-append">
+
+                                        <button
+                                            type="button"
+                                            className="input-group-text"
+                                            onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <span className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="row justify-content-center">
+                                    <div className="col-12">
+                                        <button
+                                            className="btn btn-primary btn-block"
+                                            disabled={loaded}
+                                        >
+                                            {loaded ? (
+                                                <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Please wait...</>
+                                            ) : (
+                                                <>
+                                                    Login
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="text-center mt-3">
+                            <p className="text-center">Designed by <Link to={"https://printftech.com/"} target='blank' >PRiNTF</Link></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <ToastContainer />
+        </>
+    );
+}
