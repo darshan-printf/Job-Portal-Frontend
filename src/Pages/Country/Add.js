@@ -8,17 +8,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddMember() {
   const navigate = useNavigate();
+  const location = useLocation();
   const apiUrl = process.env.REACT_APP_API_URL;
   const [name, setName] = useState('');
-  const [about, setAbout] = useState('');
   const [designation, setDesignation] = useState('');
-  const [joiningDate, setJoiningDate] = useState('');
-  const [isVisible] = useState(true); // Default to true
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); // State for image preview
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
-  const [toDate, setToDate] = useState('');
-  const location = useLocation();
   const currentPath = location?.pathname || "";
 
   // this is for page security checking
@@ -28,22 +22,9 @@ export default function AddMember() {
     navigate("/");
   }
 }, [navigate]);
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
+ 
 
-    // Generate image preview
-    if (file) {
-      setImagePreview(URL.createObjectURL(file)); // Set the preview URL
-      // Update label to show the selected file name
-      const fileName = file.name;
-      e.target.nextElementSibling.innerText = fileName; // Update the label to show the file name
-    } else {
-      setImagePreview(null); // Clear the preview if no image selected
-      e.target.nextElementSibling.innerText = 'Choose file'; // Reset label text
-    }
-  };
-
+ 
   const handleSubmit = (e) => {
     setLoaded(true);
     e.preventDefault();
@@ -70,16 +51,16 @@ export default function AddMember() {
         setLoaded(false);
         setName('');
         setDesignation('');
-        
-        
-  
         toast.success("Cuntry added successfully");
-  
-        if (window.location.pathname === "/addMember") {
+
+        if (currentPath === "/countryadd") {
           setTimeout(() => {
-            navigate('/listMember');
+            if (window.location.pathname === "/countryadd") {
+              navigate('/countrylist');
+            }
           }, 3000);
         }
+       
       })
       .catch((error) => {
         toast.error(error.response?.data?.message || "Something went wrong!");
@@ -89,25 +70,23 @@ export default function AddMember() {
   
 
   return (
-    <Layout menu4="menu-open" ac4="active">
+    <Layout ac2="active">
       <section className="content-header pb-0">
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-6">
-              <h5>Add New Members</h5>
+              <h5>Add New Country</h5>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
                   <Link to={'/dashboard'}>Dashboard</Link>
                 </li>
+                
                 <li className="breadcrumb-item">
-                  <Link to={'/panchayatdashboard'}>Panchayat</Link>
+                  <Link to={'/countrylist'}>Country List</Link>
                 </li>
-                <li className="breadcrumb-item">
-                  <Link to={'/listMember'}>Members List</Link>
-                </li>
-                <li className="breadcrumb-item">Add Member</li>
+                <li className="breadcrumb-item">Add Country</li>
               </ol>
             </div>
           </div>

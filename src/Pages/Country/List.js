@@ -100,7 +100,7 @@ export default function ListMember() {
       center: 'true',
       cell: (row) => (
         <div>
-          <button type="button" className="btn btn-primary btn-sm mr-1" onClick={() => navigate('/updatedMember', { state: { id: row.id } })}>
+          <button type="button" className="btn btn-primary btn-sm mr-1" onClick={() => navigate('/countryedit', { state: { id: row._id } })}>
             <i className="fas fa-pen"></i>
           </button>
 
@@ -125,17 +125,14 @@ export default function ListMember() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h5>Members List </h5>
+              <h5>Country List </h5>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
                   <Link to={'/dashboard'}>Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item">
-                  <Link to={'/panchayatdashboard'}>Panchayat</Link>
-                </li>
-                <li className="breadcrumb-item">Members List</li>
+                <li className="breadcrumb-item">Country List</li>
               </ol>
             </div>
           </div>
