@@ -30,7 +30,7 @@ export default function ListMember() {
     setLoaded(true);
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`${apiUrl}country/get`, {
+      const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
           'Authorization': `${token}`,
         },
@@ -115,19 +115,19 @@ export default function ListMember() {
   );
 
   return (
-    <Layout  ac2="active">
+    <Layout  ac3="active">
       <section className="content-header pb-0">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h5>Country List </h5>
+              <h5>State List </h5>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
                   <Link to={'/dashboard'}>Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item">Country List</li>
+                <li className="breadcrumb-item">State List</li>
               </ol>
             </div>
           </div>

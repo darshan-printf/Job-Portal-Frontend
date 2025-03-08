@@ -11,6 +11,10 @@ import Dashboard from '../Pages/Dashboard';
 import CountryAdd from '../Pages/Country/Add';
 import CountryEdit from '../Pages/Country/Edit';
 import CountryList from '../Pages/Country/List'
+// States Routes
+import StatesAdd from '../Pages/States/Add';
+import StatesEdit from '../Pages/States/Edit';
+import StatesList from '../Pages/States/List'
  
 
 export default function Page() {
@@ -23,6 +27,10 @@ export default function Page() {
       <Route path="/countryadd" element={< CountryAdd/>} />
       <Route path="/countryedit" element={< CountryEdit/>} />
       <Route path="/countrylist" element={< CountryList/>} />
+      {/* States Routes */}
+      <Route path="/statesadd" element={< StatesAdd/>} />
+      <Route path="/statesedit" element={< StatesEdit/>} />
+      <Route path="/stateslist" element={< StatesList/>} />
      
     </Routes>
   )
