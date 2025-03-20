@@ -10,7 +10,7 @@ export default function App() {
     <div className="wrapper">
       <Page />
     </div>
-    </Provider>s
+    </Provider>
   </>
   )
 }

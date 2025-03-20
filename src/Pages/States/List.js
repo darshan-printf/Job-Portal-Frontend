@@ -59,7 +59,7 @@ export default function ListMember() {
     }
   
     try {
-      await axios.delete(`${apiUrl}country/delete/${id}`, {
+      await axios.delete(`${apiUrl}state/delete/${id}`, {
         headers: {
           'Authorization': ` ${token}`,
         },
@@ -95,7 +95,7 @@ export default function ListMember() {
       center: 'true',
       cell: (row) => (
         <div>
-          <button type="button" className="btn btn-primary btn-sm mr-1" onClick={() => navigate('/countryedit', { state: { id: row._id } })}>
+          <button type="button" className="btn btn-primary btn-sm mr-1" onClick={() => navigate('/', { state: { id: row._id } })}>
             <i className="fas fa-pen"></i>
           </button>
 
@@ -153,7 +153,7 @@ export default function ListMember() {
                     <div className="bd-highlight"></div>
                     <div className="bd-highlight">
                       <button
-                        onClick={() => navigate('/countryadd')}
+                        onClick={() => navigate('/statesadd')}
                         type="button"
                         className="btn btn-block btn-primary"
                       >
