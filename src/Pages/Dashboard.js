@@ -1,8 +1,16 @@
 import React, { useEffect } from 'react'
 import Layout from "../components/Layout"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
+
+import { TbWorldCog } from "react-icons/tb";
+import { FaCity } from "react-icons/fa6";
+
+import { TbBuildingEstate } from "react-icons/tb";
+import { FaUsersGear } from "react-icons/fa6";
 
 
 export default function Dashboard() {
@@ -33,59 +41,61 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <section className="content">
+      <section className="content mb-4">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-info">
-                <div className="inner">
-                  <h3>150</h3>
-                  <p>Country</p>
+            <div className="col-12 col-sm-6 col-md-3">
+              <Link to={"/countrylist"} className="text-dark">
+                <div className="info-box mb-3">
+                  <span className="info-box-icon bg-primary elevation-1"><TbWorldCog /></span>
+                  <div className="info-box-content">
+                    <span className="info-box-text pb-1">Manage Country</span>
+                  </div>
                 </div>
-                <div className="icon">
-                  <i className="ion ion-bag"></i>
-                </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
-              </div>
+              </Link>
             </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-success">
-                <div className="inner">
-                  <h3>53<sup style={{ fontSize: "20px" }}>%</sup></h3>
-                  <p>States</p>
+            <div className="col-12 col-sm-6 col-md-3">
+              <Link to={"/stateslist"} className="text-dark">
+                <div className="info-box mb-3">
+                  <span className="info-box-icon bg-secondary elevation-1"><TbBuildingEstate /></span>
+                  <div className="info-box-content">
+                    <span className="info-box-text pb-1">Manage States</span>
+                  </div>
                 </div>
-                <div className="icon">
-                  <i className="ion ion-stats-bars"></i>
-                </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
-              </div>
+              </Link>
             </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-warning">
-                <div className="inner">
-                  <h3>44</h3>
-                  <p>City</p>
+            <div className="col-12 col-sm-6 col-md-3">
+              <Link to={"/panchayatdashboard"} className="text-dark">
+                <div className="info-box mb-3">
+                  <span className="info-box-icon bg-success elevation-1"><FaCity /></span>
+                  <div className="info-box-content">
+                    <span className="info-box-text pb-1">Manage City</span>
+                  </div>
                 </div>
-                <div className="icon">
-                  <i className="ion ion-person-add"></i>
-                </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
-              </div>
+              </Link>
             </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-danger">
-                <div className="inner">
-                  <h3>65</h3>
-                  <p>User</p>
+            <div className="col-12 col-sm-6 col-md-3">
+              <Link to={"/listorganization"} className="text-dark">
+                <div className="info-box mb-3">
+                  <span className="info-box-icon bg-danger elevation-1"><FaUsersGear /></span>
+                  <div className="info-box-content">
+                    <span className="info-box-text pb-1">Manage Users</span>
+                  </div>
                 </div>
-                <div className="icon">
-                  <i className="ion ion-pie-graph"></i>
+              </Link>
+            </div>
+
+            <div className="col-12 col-sm-6 col-md-3">
+              <Link to={"/listcommittee"} className="text-dark">
+                <div className="info-box mb-3">
+                  <span className="info-box-icon bg-warning elevation-1"><i className="fas fa-users"></i></span>
+                  <div className="info-box-content">
+                    <span className="info-box-text pb-1">Committee</span>
+                  </div>
                 </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
-              </div>
+              </Link>
             </div>
           </div>
-         
         </div>
       </section>
       <ToastContainer />

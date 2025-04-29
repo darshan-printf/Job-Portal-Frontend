@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from "react-redux";
 
-export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName5, RLink,RLink2, RLink3, RLink4, RLink5}) {
+export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName5, RLink,RLink2, RLink3, RLink4, RLink5 , icon1, icon2, icon3, icon4, icon5}) {
   const data = useSelector((state) => state.data.data);
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -19,7 +19,7 @@ export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName
             {/* Dashboard */}
             <li className={`nav-item has-treeview`}>
               <Link to={RLink} className={`nav-link ${M1 || ""}`}>
-                <i className="nav-icon fas fa-tachometer-alt"></i>
+                <i className={`nav-icon ${icon1}`}></i>
                 <p>
                 {RName}
                 </p>
@@ -27,7 +27,7 @@ export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName
             </li>
             <li className={`nav-item has-treeview`}>
               <Link to={RLink2} className={`nav-link ${M2 || ""}`}>
-                <i className="nav-icon fas fa-tachometer-alt"></i>
+              <i className={`nav-icon ${icon2}`}></i>
                 <p>
                   {RName2}
                 </p>
@@ -35,7 +35,7 @@ export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName
             </li>
             <li className={`nav-item has-treeview`}>
               <Link to={RLink3} className={`nav-link ${M3 || ""}`}>
-                <i className="nav-icon fas fa-tachometer-alt"></i>
+              <i className={`nav-icon ${icon3}`}></i>
                 <p>
                   {RName3}
                 </p>
@@ -43,7 +43,7 @@ export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName
             </li>
             <li className={`nav-item has-treeview`}>
               <Link to={'/dashboard'} className={`nav-link ${M4 || ""}`}>
-                <i className="nav-icon fas fa-tachometer-alt"></i>
+              <i className={`nav-icon ${icon4}`}></i>
                 <p>
                   {RName4}
                 </p>
@@ -51,7 +51,7 @@ export default function Sidebar({M1,M2,M3,M4,M5,RName,RName2,RName3,RName4,RName
             </li>
             <li className={`nav-item has-treeview`}>
               <Link to={'/dashboard'} className={`nav-link ${M5 || ""}`}>
-                <i className="nav-icon fas fa-tachometer-alt"></i>
+              <i className={`nav-icon ${icon5}`}></i>
                 <p>
                   {RName5}
                 </p>
