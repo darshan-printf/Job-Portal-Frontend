@@ -5,6 +5,8 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
+
 
 export default function ListMember() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -53,10 +55,17 @@ export default function ListMember() {
     const token = localStorage.getItem('token');
   
     // Show confirmation dialog
-    const confirmed = window.confirm("Are you sure you want to delete this record?");
-    if (!confirmed) {
-      return; // Exit if the user cancels
-    }
+    const result = await Swal.fire({
+      title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
+      showCancelButton: true,
+      confirmButtonColor: '#28a745', // Bootstrap success green
+      cancelButtonColor: '#dc3545',  // Bootstrap danger red
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
+    });
+    
+    
+    if (!result.isConfirmed) return;
   
     try {
       await axios.delete(`${apiUrl}country/delete/${id}`, {
@@ -88,6 +97,7 @@ export default function ListMember() {
       name: 'Code',
       selector: (row) => row.code,
       sortable: true,
+      width: '150px',
     },
     {
       name: 'Actions',
