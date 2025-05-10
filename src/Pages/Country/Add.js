@@ -94,7 +94,7 @@ export default function AddMember() {
       </section>
       <section className="content">
         <div className="container-fluid">
-          <div className="card card-default">
+          <div className="card  card-primary card-outline">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">

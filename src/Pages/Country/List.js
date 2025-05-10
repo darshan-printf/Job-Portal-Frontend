@@ -6,6 +6,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
+import ContentHeader from '../../components/ContentHeader';
+
 
 
 export default function ListMember() {
@@ -15,8 +17,8 @@ export default function ListMember() {
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
 
- // this is for page security checking
- useEffect(() => {
+  // this is for page security checking
+  useEffect(() => {
     const role = localStorage.getItem('role');
     if (role !== 'admin') {  // Simplified condition
       navigate("/");
@@ -40,20 +42,20 @@ export default function ListMember() {
 
       setLoaded(false);
       const data = response.data || [];
-      console.log(data ,"data")
-      
+      console.log(data, "data")
+
       setRecords(data);
     } catch (error) {
       setLoaded(false);
-      toast.error(error.response.data. message);
-      
+      toast.error(error.response.data.message);
+
     }
   };
 
   // Function to handle deletion of a record
   const handleDelete = async (id) => {
     const token = localStorage.getItem('token');
-  
+
     // Show confirmation dialog
     const result = await Swal.fire({
       title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
@@ -63,10 +65,10 @@ export default function ListMember() {
       confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel'
     });
-    
-    
+
+
     if (!result.isConfirmed) return;
-  
+
     try {
       await axios.delete(`${apiUrl}country/delete/${id}`, {
         headers: {
@@ -79,7 +81,7 @@ export default function ListMember() {
       toast.error(error.response.data.message);
     }
   };
-  
+
   const columns = [
     {
       name: 'No',
@@ -87,7 +89,7 @@ export default function ListMember() {
       width: '50px',
       center: 'true',
     },
-    
+
     {
       name: 'Name',
       selector: (row) => row.name,
@@ -105,53 +107,37 @@ export default function ListMember() {
       center: 'true',
       cell: (row) => (
         <div>
-          <button type="button" className="btn btn-primary btn-sm mr-1" onClick={() => navigate('/countryedit', { state: { id: row._id } })}>
+          <button type="button" className="btn btn-primary btn-xs mr-2" onClick={() => navigate('/countryedit', { state: { id: row._id } })}>
             <i className="fas fa-pen"></i>
           </button>
 
-          <button type="button" className="btn btn-danger btn-sm" onClick={() => handleDelete(row._id)}>
+          <button type="button" className="btn btn-danger btn-xs" onClick={() => handleDelete(row._id)}>
             <i className="fas fa-trash"></i>
           </button>
         </div>
       ),
     },
   ];
-  
-   // Filter records based on the search query for name and designation
-   const filteredRecords = records.filter(
+
+  // Filter records based on the search query for name and designation
+  const filteredRecords = records.filter(
     (record) =>
-      record.name.toLowerCase().includes(searchQuery.toLowerCase())||
+      record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       record.code.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <Layout  ac2="active">
-      <section className="content-header pb-0">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h5>Country List </h5>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to={'/dashboard'}>Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item">Country List</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+    <Layout ac2="active">
+     <ContentHeader title="Country List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard'},{label: 'Country List'}]} />
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
-              <div className="card">
+              <div className="card card-primary card-outline">
                 <div className="card-header">
                   <div className="d-flex justify-content-between">
                     <div className="bd-highlight">
-                    <input
+                      <input
                         className="form-control"
                         type="search"
                         value={searchQuery}
@@ -172,19 +158,24 @@ export default function ListMember() {
                     </div>
                   </div>
                 </div>
-                <div className="card-body text-center" disabled={loaded}>
-                {loaded ? (
+                <div className="card-body  text-center" disabled={loaded}>
+                  {loaded ? (
                     <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></>
                   ) : (
                     <>
-                  <DataTable
-                    columns={columns}
-                    data={filteredRecords}
-                    pagination
-                    className="custom-table"
-                    noDataComponent="No data available"
-                  />
-                  </>
+                      <DataTable
+                        columns={columns}
+                        data={filteredRecords}
+                        pagination
+                        className="custom-table"
+                        noDataComponent="No data available"
+                        highlightOnHover
+                        striped
+                        customStyles={{ headCells: { style: { justifyContent: 'center', }, }, }}
+                        pointerOnHover
+                        responsive
+                      />
+                    </>
                   )}
                 </div>
               </div>
@@ -192,7 +183,7 @@ export default function ListMember() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }}/>
+      <ToastContainer position="top-center" style={{ width: "auto" }} />
     </Layout>
   );
 }

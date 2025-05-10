@@ -1,20 +1,25 @@
-import React, { useEffect } from 'react'
-import Layout from "../components/Layout"
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import Layout from "../components/Layout";
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MdWorkHistory } from "react-icons/md";
+import { TbWorldCog, TbBuildingEstate } from "react-icons/tb";
+import { FaCity, FaUsersGear } from "react-icons/fa6";
+import ContentHeader from '../components/ContentHeader';
 
-
-
-import { TbWorldCog } from "react-icons/tb";
-import { FaCity } from "react-icons/fa6";
-
-import { TbBuildingEstate } from "react-icons/tb";
-import { FaUsersGear } from "react-icons/fa6";
-
+const links = [
+  { to: "/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: 1 },
+  { to: "/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: 1 },
+  { to: "/panchayatdashboard", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: 1 },
+  { to: "/listorganization", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: 1 },
+  { to: "/listcommittee", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: 1 },
+  { to: "/listcommittee", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1 },
+];
 
 export default function Dashboard() {
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!localStorage.getItem('alertShown')) {
       toast.success("Login successfully");
@@ -22,83 +27,34 @@ export default function Dashboard() {
     }
   }, []);
 
-  // this is for page security checking
   useEffect(() => {
     const role = localStorage.getItem('role');
-    if (role !== 'admin') {  // Simplified condition
-      navigate("/");
-    }
+    if (role !== 'admin') navigate("/");
   }, [navigate]);
 
   return (
     <Layout ac1="active">
-      <div className="content-header">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h4 className="m-0 text-dark">Dashboard</h4>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
       <section className="content mb-4">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12 col-sm-6 col-md-3">
-              <Link to={"/countrylist"} className="text-dark">
-                <div className="info-box mb-3">
-                  <span className="info-box-icon bg-primary elevation-1"><TbWorldCog /></span>
-                  <div className="info-box-content">
-                    <span className="info-box-text pb-1">Manage Country</span>
+            {links.map(({ to, text, icon, bg, count }, idx) => (
+              <div key={idx} className="col-12 col-sm-6 col-md-3">
+                <Link to={to} className="text-dark">
+                  <div className="info-box mb-3">
+                    <span className={`info-box-icon ${bg} elevation-1`}>{icon}</span>
+                    <div className="info-box-content">
+                      <span className="info-box-text pb-1">{text}</span>
+                      <span className="info-box-number">Total: {count}</span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </div>
-            <div className="col-12 col-sm-6 col-md-3">
-              <Link to={"/stateslist"} className="text-dark">
-                <div className="info-box mb-3">
-                  <span className="info-box-icon bg-secondary elevation-1"><TbBuildingEstate /></span>
-                  <div className="info-box-content">
-                    <span className="info-box-text pb-1">Manage States</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="col-12 col-sm-6 col-md-3">
-              <Link to={"/panchayatdashboard"} className="text-dark">
-                <div className="info-box mb-3">
-                  <span className="info-box-icon bg-success elevation-1"><FaCity /></span>
-                  <div className="info-box-content">
-                    <span className="info-box-text pb-1">Manage City</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="col-12 col-sm-6 col-md-3">
-              <Link to={"/listorganization"} className="text-dark">
-                <div className="info-box mb-3">
-                  <span className="info-box-icon bg-danger elevation-1"><FaUsersGear /></span>
-                  <div className="info-box-content">
-                    <span className="info-box-text pb-1">Manage Users</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <div className="col-12 col-sm-6 col-md-3">
-              <Link to={"/listcommittee"} className="text-dark">
-                <div className="info-box mb-3">
-                  <span className="info-box-icon bg-warning elevation-1"><i className="fas fa-users"></i></span>
-                  <div className="info-box-content">
-                    <span className="info-box-text pb-1">Committee</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
       <ToastContainer />
     </Layout>
-  )
+  );
 }

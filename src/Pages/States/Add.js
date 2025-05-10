@@ -75,12 +75,12 @@ export default function AddMember() {
         setLoaded(false);
         setName('');
         setDesignation('');
-        toast.success("Cuntry added successfully");
+        toast.success("State added successfully");
 
-        if (currentPath === "/countryadd") {
+        if (currentPath === "/statesadd") {
           setTimeout(() => {
-            if (window.location.pathname === "/countryadd") {
-              navigate('/countrylist');
+            if (window.location.pathname === "/statesadd") {
+              navigate('/stateslist');
             }
           }, 3000);
         }
@@ -99,7 +99,7 @@ export default function AddMember() {
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-6">
-              <h5>Add New Country</h5>
+              <h5>Add New State</h5>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
@@ -118,15 +118,11 @@ export default function AddMember() {
       </section>
       <section className="content">
         <div className="container-fluid">
-          <div className="card card-default">
+          <div className="card card-primary card-outline">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6">
-                    
-
-
-
                     <div className="form-group">
                       <label htmlFor="memberName">Name</label> <span className="text-danger">*</span>
                       <input
