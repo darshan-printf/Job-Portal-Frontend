@@ -12,11 +12,12 @@ export default function Layout({ children, ac1, ac2, ac3, ac4, ac5 , ac6, ac7, a
           M3={ac3} RName3="Manage States" RLink3="/stateslist" icon3="fas fa-building"
           M4={ac4} RName4="Manage City" RLink4="" icon4="fas fa-city"
           M5={ac5} RName5="Manage User" RLink5="" icon5="fas fa-users"
-          M6={ac6} RName6="Manage Job" RLink6="" icon6=""
-          M7={ac7} RName7="Manage Resume" RLink7="" icon7=""
-          M8={ac8} RName8="User" RLink8="" icon8=""
-          M9="" RName9="" RLink9="" icon9=""
-          M10="" RName10="" RLink10="" icon10=""
+          M6={ac6} RName6="Manage Job" RLink6="" icon6="fas fa-briefcase"
+          M7={ac7} RName7="Manage Resume" RLink7="" icon7="fas fa-file-alt" 
+          M8={ac8} RName8="" RLink8="" icon8=""
+          M9={ac9} RName9="" RLink9="" icon9=""
+          M10={ac10} RName10="Log Out" RLink10="" icon10=""
+          
         />
         <div className="content-wrapper" >
           {children}
