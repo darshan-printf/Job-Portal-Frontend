@@ -20,7 +20,7 @@ const links = [
 ];
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!localStorage.getItem('alertShown')) {
@@ -28,11 +28,6 @@ export default function Dashboard() {
       localStorage.setItem('alertShown', 'true');
     }
   }, []);
-
-  // useEffect(() => {
-  //   const role = localStorage.getItem('role');
-  //   if (role !== 'admin') navigate("/");
-  // }, [navigate]);
 
   return (
     <Layout ac1="active">
