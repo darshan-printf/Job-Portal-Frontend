@@ -29,10 +29,10 @@ export default function Dashboard() {
     }
   }, []);
 
-  useEffect(() => {
-    const role = localStorage.getItem('role');
-    if (role !== 'admin') navigate("/");
-  }, [navigate]);
+  // useEffect(() => {
+  //   const role = localStorage.getItem('role');
+  //   if (role !== 'admin') navigate("/");
+  // }, [navigate]);
 
   return (
     <Layout ac1="active">
