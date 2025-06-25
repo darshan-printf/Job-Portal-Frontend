@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ContentHeader from '../../components/ContentHeader';
 
 
 export default function AddMember() {
@@ -15,25 +16,16 @@ export default function AddMember() {
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
   const currentPath = location?.pathname || "";
 
-  // this is for page security checking
- useEffect(() => {
-  const role = localStorage.getItem('role');
-  if (role !== 'admin') {  // Simplified condition
-    navigate("/");
-  }
-}, [navigate]);
- 
 
- 
   const handleSubmit = (e) => {
     setLoaded(true);
     e.preventDefault();
-  
+
     let data = JSON.stringify({
       "name": name,
       "code": designation,
     });
-  
+
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -44,7 +36,7 @@ export default function AddMember() {
       },
       data: data,
     };
-  
+
     axios
       .request(config)
       .then((response) => {
@@ -60,38 +52,18 @@ export default function AddMember() {
             }
           }, 3000);
         }
-       
+
       })
       .catch((error) => {
         toast.error(error.response?.data?.message || "Something went wrong!");
         setLoaded(false);
       });
   };
-  
+
 
   return (
     <Layout ac2="active">
-      <section className="content-header pb-0">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-6">
-              <h5>Add New Country</h5>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to={'/dashboard'}>Dashboard</Link>
-                </li>
-                
-                <li className="breadcrumb-item">
-                  <Link to={'/countrylist'}>Country List</Link>
-                </li>
-                <li className="breadcrumb-item">Add Country</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContentHeader title="Add New Country" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Country List', to: '/countrylist' }, { label: 'Add Country' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card  card-primary card-outline">
@@ -117,7 +89,7 @@ export default function AddMember() {
                       <label htmlFor="designation">Code</label>
                       <input
                         type="text"
-                        className="form-control"  
+                        className="form-control"
                         id="designation"
                         placeholder="Enter Designation"
                         value={designation}

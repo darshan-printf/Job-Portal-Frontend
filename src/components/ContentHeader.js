@@ -6,8 +6,8 @@ const ContentHeader = ({ title, breadcrumbs = [] }) => {
         <div className="content-header">
             <div className="container-fluid">
                 <div className="row ">
-                    <div className="col-sm-6">
-                        <h5>{title}</h5>
+                    <div className="col-sm-6 ">
+                        <h5 className='mb-0'>{title}</h5>
                     </div>
                     <div className="col-sm-6">
                         <ol className="breadcrumb float-sm-right">

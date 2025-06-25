@@ -17,13 +17,7 @@ export default function ListMember() {
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
 
-  // this is for page security checking
-  useEffect(() => {
-    const role = localStorage.getItem('role');
-    if (role !== 'admin') {  // Simplified condition
-      navigate("/");
-    }
-  }, [navigate]);
+  
 
   useEffect(() => {
     fetchRecords();
@@ -42,7 +36,6 @@ export default function ListMember() {
 
       setLoaded(false);
       const data = response.data || [];
-      console.log(data, "data")
 
       setRecords(data);
     } catch (error) {

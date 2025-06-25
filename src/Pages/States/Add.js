@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ContentHeader from '../../components/ContentHeader';
 
 
 export default function AddMember() {
@@ -16,14 +17,6 @@ export default function AddMember() {
   const currentPath = location?.pathname || "";
   const [countries, setCountries] = useState([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
-
-  // this is for page security checking
-  useEffect(() => {
-    const role = localStorage.getItem('role');
-    if (role !== 'admin') {  // Simplified condition
-      navigate("/");
-    }
-  }, [navigate]);
 
 
   useEffect(() => {
@@ -95,27 +88,7 @@ export default function AddMember() {
 
   return (
     <Layout ac3="active">
-      <section className="content-header pb-0">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-6">
-              <h5>Add New State</h5>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item">
-                  <Link to={'/dashboard'}>Dashboard</Link>
-                </li>
-
-                <li className="breadcrumb-item">
-                  <Link to={'/countrylist'}>Country List</Link>
-                </li>
-                <li className="breadcrumb-item">Add Country</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContentHeader title="Add New State" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'State List', to: '/stateslist' }, { label: 'Add State' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">

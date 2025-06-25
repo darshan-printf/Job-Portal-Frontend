@@ -5,9 +5,9 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Swal from 'sweetalert2';
 import ContentHeader from '../../components/ContentHeader';
-
+import { data } from 'jquery';
+import { use } from 'react';
 
 
 export default function List() {
@@ -16,6 +16,7 @@ export default function List() {
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
+
 
     useEffect(() => {
         fetchRecords();
@@ -26,7 +27,7 @@ export default function List() {
         setLoaded(true);
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(`${apiUrl}city/get`, {
+            const response = await axios.get(`${apiUrl}user/get`, {
                 headers: {
                     'Authorization': `${token}`,
                 },
@@ -34,7 +35,6 @@ export default function List() {
 
             setLoaded(false);
             const data = response.data || [];
-
             setRecords(data);
         } catch (error) {
             setLoaded(false);
@@ -48,58 +48,67 @@ export default function List() {
         const token = localStorage.getItem('token');
 
         // Show confirmation dialog
-        const result = await Swal.fire({
-            title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
-            showCancelButton: true,
-            confirmButtonColor: '#28a745', // Bootstrap success green
-            cancelButtonColor: '#dc3545',  // Bootstrap danger red
-            confirmButtonText: 'Delete',
-            cancelButtonText: 'Cancel'
-        });
-
-
-        if (!result.isConfirmed) return;
+        const confirmed = window.confirm("Are you sure you want to delete this record?");
+        if (!confirmed) {
+            return; // Exit if the user cancels
+        }
 
         try {
-            await axios.delete(`${apiUrl}city/delete/${id}`, {
+            await axios.delete(`${apiUrl}user/delete/${id}`, {
                 headers: {
                     'Authorization': ` ${token}`,
                 },
             });
             fetchRecords(); // Refresh records after deletion
-            toast.success("City deleted successfully");
+            toast.success("User deleted successfully");
         } catch (error) {
             toast.error(error.response.data.message);
         }
     };
 
 
+
     const columns = [
         {
             name: 'No',
             selector: (row, index) => index + 1,
-            width: '50px',
-            center: 'true',
+            width: '60px',
+            center: true,
         },
-
+        {
+            name: 'Profile',
+            width: '100px',
+            center: true,
+            cell: (row) => (
+                <img
+                    src={row.profileImage}
+                    alt="Profile"
+                    style={{ width: 45, height: 45, marginBlock: "2px", objectFit: 'cover', borderRadius: '50%', border: '1px solid #ccc', }}
+                />
+            ),
+        },
         {
             name: 'Name',
-            selector: (row) => row.name,
+            selector: (row) => `${row.firstName} ${row.lastName}`,
             sortable: true,
         },
         {
-            name: 'Code',
-            selector: (row) => row.code,
+            name: 'Username',
+            selector: (row) => row.username,
             sortable: true,
-            width: '150px',
+        },
+        {
+            name: 'Institute',
+            selector: (row) => row.instituteName,
+            sortable: true,
         },
         {
             name: 'Actions',
             width: '110px',
-            center: 'true',
+            center: true,
             cell: (row) => (
                 <div>
-                    <button type="button" className="btn btn-primary btn-xs mr-2" onClick={() => navigate('/cityedit', { state: { id: row._id } })}>
+                    <button type="button" className={`btn ${row.isActive ? 'btn-primary':'btn-danger'} btn-primary btn-xs mr-2`} onClick={() => navigate('/useredit', { state: { id: row._id } })}>
                         <i className="fas fa-pen"></i>
                     </button>
 
@@ -111,17 +120,15 @@ export default function List() {
         },
     ];
 
-    // Filter records based on the search query for name and designation
-    const filteredRecords = records.filter(
-        (record) =>
-            record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            record.code.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredRecords = records.filter((record) =>
+        `${record.firstName} ${record.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        record.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (record.instituteName || '').toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-
     return (
-        <Layout ac4="active" >
-            <ContentHeader title="City List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'City List' }]} />
+        <Layout ac5="active">
+            <ContentHeader title="State List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'State List' }]} />
             <section className="content">
                 <div className="container-fluid">
                     <div className="row">
@@ -142,7 +149,7 @@ export default function List() {
                                         <div className="bd-highlight"></div>
                                         <div className="bd-highlight">
                                             <button
-                                                onClick={() => navigate('/cityadd')}
+                                                onClick={() => navigate('/useradd')}
                                                 type="button"
                                                 className="btn btn-block btn-primary"
                                             >
@@ -151,7 +158,7 @@ export default function List() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card-body  text-center" disabled={loaded}>
+                                <div className="card-body text-center" disabled={loaded}>
                                     {loaded ? (
                                         <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></>
                                     ) : (
@@ -178,5 +185,5 @@ export default function List() {
             </section>
             <ToastContainer position="top-center" style={{ width: "auto" }} />
         </Layout>
-    )
+    );
 }
