@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Login() {
     const apiUrl = process.env.REACT_APP_API_URL; // Get the API URL from the .env file
@@ -11,6 +12,15 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false); // Button loading effect state
+
+    useEffect(() => {
+        const isLogin = localStorage.getItem('isLogin');
+
+        if (isLogin === 'true') {
+            console.log('User is logged in, clearing localStorage...');
+            localStorage.clear();
+        }
+    }, []);
 
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -39,10 +49,10 @@ export default function Login() {
             .then((response) => {
                 setLoaded(false);
                 if (response?.data) {
-                    console.log(response.data  , "resposn")
+                    console.log(response.data, "resposn")
                     // Save tokens and user info to localStorage
                     localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('role',response.data.role)
+                    localStorage.setItem('role', response.data.role)
                     localStorage.setItem('isLogin', true);
                     const duration = 1500000;
                     setTimeout(() => {
@@ -74,77 +84,77 @@ export default function Login() {
                 <div className="layer"></div>
                 <div className="layer"></div>
                 <div className="layer"></div>
-            
 
-            <div className="login-page bg" id='page-bg'>
-                <div className="login-box">
-                    <div className="card card-outline card-primary">
-                        <div className="card-header text-center">
-                            <Link className="h1"><b>Admin</b></Link>
-                        </div>
-                        <div className="card-body ">
-                            <p className="login-box-msg">Sign in to start your session</p>
-                            <form onSubmit={handleSubmit}>
-                                <div className="input-group mb-3">
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Username"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}  // Update email state
-                                        required
-                                    />
-                                    <div className="input-group-append">
-                                        <div className="input-group-text">
-                                            <span className="fas fa-user"></span>
+
+                <div className="login-page bg" id='page-bg'>
+                    <div className="login-box">
+                        <div className="card card-outline card-primary">
+                            <div className="card-header text-center">
+                                <Link className="h1"><b>Admin</b></Link>
+                            </div>
+                            <div className="card-body ">
+                                <p className="login-box-msg">Sign in to start your session</p>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="input-group mb-3">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Username"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}  // Update email state
+                                            required
+                                        />
+                                        <div className="input-group-append">
+                                            <div className="input-group-text">
+                                                <span className="fas fa-user"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="input-group mb-3">
-                                    <input
-                                        type={showPassword ? "text" : "password"} // Toggle input type
-                                        className="form-control"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}  // Update password state
-                                        required
-                                    />
-                                    <div className="input-group-append">
+                                    <div className="input-group mb-3">
+                                        <input
+                                            type={showPassword ? "text" : "password"} // Toggle input type
+                                            className="form-control"
+                                            placeholder="Password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}  // Update password state
+                                            required
+                                        />
+                                        <div className="input-group-append">
 
-                                        <button
-                                            type="button"
-                                            className="input-group-text"
-                                            onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <span className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></span>
-                                        </button>
+                                            <button
+                                                type="button"
+                                                className="input-group-text"
+                                                onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                <span className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row justify-content-center">
-                                    <div className="col-12">
-                                        <button
-                                            className="btn btn-primary btn-block"
-                                            disabled={loaded}
-                                        >
-                                            {loaded ? (
-                                                <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Please wait...</>
-                                            ) : (
-                                                <>
-                                                    Login
-                                                </>
-                                            )}
-                                        </button>
+                                    <div className="row justify-content-center">
+                                        <div className="col-12">
+                                            <button
+                                                className="btn btn-primary btn-block"
+                                                disabled={loaded}
+                                            >
+                                                {loaded ? (
+                                                    <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Please wait...</>
+                                                ) : (
+                                                    <>
+                                                        Login
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="text-center mt-3">
-                            <p className="text-center">Designed by <Link to={"https://printftech.com/"} target='blank' >PRiNTF</Link></p>
+                                </form>
+                            </div>
+                            <div className="text-center mt-3">
+                                <p className="text-center">Designed by <Link to={"https://printftech.com/"} target='blank' >PRiNTF</Link></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
             <ToastContainer />
         </>

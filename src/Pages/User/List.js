@@ -73,12 +73,12 @@ export default function List() {
             name: 'No',
             selector: (row, index) => index + 1,
             width: '60px',
-            center: true,
+            center: "true",
         },
         {
             name: 'Profile',
             width: '100px',
-            center: true,
+            center: "true",
             cell: (row) => (
                 <img
                     src={row.profileImage}
@@ -105,7 +105,7 @@ export default function List() {
         {
             name: 'Actions',
             width: '110px',
-            center: true,
+            center: "true",
             cell: (row) => (
                 <div>
                     <button type="button" className={`btn ${row.isActive ? 'btn-primary':'btn-danger'} btn-primary btn-xs mr-2`} onClick={() => navigate('/useredit', { state: { id: row._id } })}>

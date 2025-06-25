@@ -45,7 +45,7 @@ export default function Add() {
         formData.append("logo", form.logo);
 
         try {
-            await axios.post(`${apiUrl}auth/useRegister`, formData, {
+            await axios.post(`${apiUrl}user/add`, formData, {
                 headers: {
                     "Authorization": localStorage.getItem("token"),
                     "Content-Type": "multipart/form-data",
