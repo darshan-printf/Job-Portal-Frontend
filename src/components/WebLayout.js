@@ -6,11 +6,11 @@ export default function Layout({ children }) {
     return (
         <div>
             <WebHeader />
-          
-                <div className="content-wrapper m-0" >
-                    {children}
-                </div>
-           
+
+            <div className="content-wrapper m-0" >
+                {children}
+            </div>
+
             <WebFooter />
         </div>
     );
