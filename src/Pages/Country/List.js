@@ -16,8 +16,8 @@ export default function ListMember() {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
+  const token = localStorage.getItem('token');
 
-  
 
   useEffect(() => {
     fetchRecords();
@@ -26,17 +26,14 @@ export default function ListMember() {
 
   const fetchRecords = async () => {
     setLoaded(true);
-    const token = localStorage.getItem('token');
     try {
       const response = await axios.get(`${apiUrl}country/get`, {
         headers: {
           'Authorization': `${token}`,
         },
       });
-
       setLoaded(false);
       const data = response.data || [];
-
       setRecords(data);
     } catch (error) {
       setLoaded(false);
@@ -47,8 +44,6 @@ export default function ListMember() {
 
   // Function to handle deletion of a record
   const handleDelete = async (id) => {
-    const token = localStorage.getItem('token');
-
     // Show confirmation dialog
     const result = await Swal.fire({
       title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
@@ -58,17 +53,14 @@ export default function ListMember() {
       confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel'
     });
-
-
     if (!result.isConfirmed) return;
-
     try {
       await axios.delete(`${apiUrl}country/delete/${id}`, {
         headers: {
           'Authorization': ` ${token}`,
         },
       });
-      fetchRecords(); // Refresh records after deletion
+      fetchRecords();
       toast.success("Country deleted successfully");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -121,7 +113,7 @@ export default function ListMember() {
 
   return (
     <Layout ac2="active">
-     <ContentHeader title="Country List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard'},{label: 'Country List'}]} />
+      <ContentHeader title="Country List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Country List' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="row">

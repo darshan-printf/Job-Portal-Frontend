@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContentHeader from '../../components/ContentHeader';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 export default function Add() {
     const navigate = useNavigate();
     const apiUrl = process.env.REACT_APP_API_URL;
+    const location = useLocation();
+    const currentPath = location?.pathname || "";
+
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
@@ -19,9 +23,12 @@ export default function Add() {
         instituteName: '',
         profileImage: '',
         logo: '',
-    })
-    const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
+    });
 
+    const [loaded, setLoaded] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [previewProfile, setPreviewProfile] = useState(null);
+    const [previewLogo, setPreviewLogo] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,8 +41,8 @@ export default function Add() {
         formData.append("email", form.email);
         formData.append("password", form.password);
         formData.append("instituteName", form.instituteName);
-        formData.append("profileImage", form.profileImage); // file upload
-        formData.append("logo", form.logo); // file upload
+        formData.append("profileImage", form.profileImage);
+        formData.append("logo", form.logo);
 
         try {
             await axios.post(`${apiUrl}auth/useRegister`, formData, {
@@ -46,14 +53,20 @@ export default function Add() {
             });
 
             toast.success("User registered successfully");
-            navigate('/userlist');
+            if (currentPath === "/useradd") {
+                setTimeout(() => {
+                    if (window.location.pathname === "/useradd") {
+                        navigate('/userlist');
+                    }
+                }, 3000);
+            }
+
         } catch (error) {
-            toast.error(error.response?.data?.message || "Something went wrong!");
+            toast.error(error.response?.data?.message);
         } finally {
             setLoaded(false);
         }
     };
-
 
     return (
         <Layout ac5="active">
@@ -66,7 +79,7 @@ export default function Add() {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="firstName">First Name</label> <span className="text-danger">*</span>
+                                            <label htmlFor="firstName">First Name <span className="text-danger">*</span></label>
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -81,7 +94,7 @@ export default function Add() {
 
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="lastName">Last Name</label> <span className="text-danger">*</span>
+                                            <label htmlFor="lastName">Last Name <span className="text-danger">*</span></label>
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -96,7 +109,7 @@ export default function Add() {
 
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="userName">User Name</label> <span className="text-danger">*</span>
+                                            <label htmlFor="userName">User Name <span className="text-danger">*</span></label>
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -111,7 +124,7 @@ export default function Add() {
 
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="email">Email</label> <span className="text-danger">*</span>
+                                            <label htmlFor="email">Email <span className="text-danger">*</span></label>
                                             <input
                                                 type="email"
                                                 className="form-control"
@@ -125,10 +138,10 @@ export default function Add() {
                                     </div>
 
                                     <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="password">Password</label> <span className="text-danger">*</span>
+                                        <div className="form-group position-relative">
+                                            <label htmlFor="password">Password <span className="text-danger">*</span></label>
                                             <input
-                                                type="password"
+                                                type={showPassword ? "text" : "password"}
                                                 className="form-control"
                                                 id="password"
                                                 placeholder="Enter Password"
@@ -136,12 +149,25 @@ export default function Add() {
                                                 onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))}
                                                 required
                                             />
+                                            <span
+                                                className="position-absolute"
+                                                onClick={() => setShowPassword(prev => !prev)}
+                                                style={{
+                                                    top: '38px',
+                                                    right: '10px',
+                                                    cursor: 'pointer',
+                                                    color: '#555',
+                                                    zIndex: 10
+                                                }}
+                                            >
+                                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="instituteName">Institute Name</label> <span className="text-danger">*</span>
+                                            <label htmlFor="instituteName">Institute Name <span className="text-danger">*</span></label>
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -154,6 +180,7 @@ export default function Add() {
                                         </div>
                                     </div>
 
+                                    {/* Profile Image Upload */}
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="profileImage">Profile Image</label>
@@ -161,14 +188,24 @@ export default function Add() {
                                                 type="file"
                                                 className="form-control"
                                                 id="profileImage"
+                                                accept="image/*"
                                                 onChange={(e) => {
                                                     const file = e.target.files[0];
-                                                    setForm(prev => ({ ...prev, profileImage: file }));
+                                                    if (file) {
+                                                        setPreviewProfile(URL.createObjectURL(file));
+                                                        setForm(prev => ({ ...prev, profileImage: file }));
+                                                    }
                                                 }}
                                             />
+                                            {previewProfile && (
+                                                <div className="mt-2">
+                                                    <img src={previewProfile} alt="Profile Preview" height="100" />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
+                                    {/* Logo Upload */}
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="logo">Logo</label>
@@ -176,11 +213,20 @@ export default function Add() {
                                                 type="file"
                                                 className="form-control"
                                                 id="logo"
+                                                accept="image/*"
                                                 onChange={(e) => {
                                                     const file = e.target.files[0];
-                                                    setForm(prev => ({ ...prev, logo: file }));
+                                                    if (file) {
+                                                        setPreviewLogo(URL.createObjectURL(file));
+                                                        setForm(prev => ({ ...prev, logo: file }));
+                                                    }
                                                 }}
                                             />
+                                            {previewLogo && (
+                                                <div className="mt-2">
+                                                    <img src={previewLogo} alt="Logo Preview" height="100" />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -198,9 +244,7 @@ export default function Add() {
                                             {loaded ? (
                                                 <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...</>
                                             ) : (
-                                                <>
-                                                    Submit
-                                                </>
+                                                <> Submit </>
                                             )}
                                         </button>
                                     </div>

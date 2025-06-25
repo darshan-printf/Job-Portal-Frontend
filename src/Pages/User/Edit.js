@@ -9,8 +9,8 @@ import ContentHeader from '../../components/ContentHeader';
 export default function Add() {
   const navigate = useNavigate();
   const location = useLocation();
+  const currentPath = location?.pathname || "";
   const apiUrl = process.env.REACT_APP_API_URL;
-
   const userId = location.state?.id;
 
   const [form, setForm] = useState({
@@ -87,9 +87,16 @@ export default function Add() {
       });
 
       toast.success("User updated successfully!");
-      navigate('/userlist');
+      if (currentPath === "/useredit") {
+        setTimeout(() => {
+          if (window.location.pathname === "/useredit") {
+            navigate('/userlist');
+          }
+        }, 3000);
+      }
+
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong!");
+      toast.error(error.response?.data?.message);
     } finally {
       setLoaded(false);
     }
