@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from "../components/Layout";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdWorkHistory } from "react-icons/md";
@@ -8,18 +8,28 @@ import { TbWorldCog, TbBuildingEstate } from "react-icons/tb";
 import { FaCity, FaUsersGear } from "react-icons/fa6";
 import ContentHeader from '../components/ContentHeader';
 import CountUp from 'react-countup';
+import axios from 'axios';
 
-
-const links = [
-  { to: "/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: 100 },
-  { to: "/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: 1100 },
-  { to: "/panchayatdashboard", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: 580 },
-  { to: "/listorganization", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: 7000 },
-  { to: "/listcommittee", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: 700 },
-  { to: "/listcommittee", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 158900 },
-];
 
 export default function Dashboard() {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const token = localStorage.getItem('token');
+  const [count, setCount] = useState({
+    country: 0,
+    states: 0,
+    city: 0,
+    users: 0,
+    job: 0,
+    resume: 0
+  });
+  const links = [
+    { to: "/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: `${count.country}` },
+    { to: "/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: `${count.states}` },
+    { to: "/panchayatdashboard", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: `${count.city}` },
+    { to: "/listorganization", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: `${count.users}` },
+    { to: "/listcommittee", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: `${count.job}` },
+    { to: "/listcommittee", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1400 },
+  ];
 
 
   useEffect(() => {
@@ -29,6 +39,28 @@ export default function Dashboard() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}reports/getCount`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        const data = response.data;
+        setCount({
+          country: data.totalCountries || 0,
+          states: data.totalStates || 0,
+          city: data.totalCities || 0,
+          users: data.totalUsers || 0,
+          job: data.totalJobs || 0
+        });
+      } catch (error) {
+        console.error('Error fetching report count:', error);
+      }
+    };
+    fetchCount();
+  }, []);
   return (
     <Layout ac1="active">
       <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
