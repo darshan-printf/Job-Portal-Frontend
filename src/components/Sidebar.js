@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { useSelector } from "react-redux";
 
 export default function Sidebar({
-  M1, M2, M3, M4, M5,M6,M7,M8,
+  M1, M2, M3, M4, M5, M6, M7, M8,
   RName, RName2, RName3, RName4, RName5, RName6, RName7, RName8,
   RLink, RLink2, RLink3, RLink4, RLink5, RLink6, RLink7, RLink8,
-  icon1, icon2, icon3, icon4, icon5 , icon6, icon7, icon8
+  icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8
 }) {
   const data = useSelector((state) => state.data.data);
   return (
@@ -14,7 +14,7 @@ export default function Sidebar({
       <Link
         to={'/dashboard'} // Assign the ref to the link
         className="brand-link">
-        <img src={"dist/img/logo.png"} alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: .8 }} />
+        <img src={"dist/img/logo-round.png"} alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: .8 }} />
         <span className="brand-text font-weight-light">Admin</span>
       </Link>
       <div className="sidebar">
