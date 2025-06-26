@@ -5,7 +5,7 @@ import ProtectedRoute from '../utils/ProtectedRoute';
 //  for public pages
 import Login from "../components/Login"
 import Error from '../components/Error';
-import Register from '../components/UserRegister';
+
 
 // dashboard
 import Dashboard from '../Pages/Dashboard';
@@ -33,7 +33,7 @@ export default function Page() {
     <Routes>
       <Route path="/" element={<Login />} />
       
-      <Route path="/register" element={<Register />} />
+      
 
       <Route path="/*" element={<Error />} />
       {/* element={<ProtectedRoute element={} allowedRoles={['admin']} />} */}
