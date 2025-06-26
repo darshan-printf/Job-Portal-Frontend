@@ -6,10 +6,9 @@ import ProtectedRoute from '../utils/ProtectedRoute';
 import Login from "../components/Login"
 import Error from '../components/Error';
 
-
+// Admin Routes
 // dashboard
 import Dashboard from '../Pages/Dashboard';
-
 // Country Routes
 import CountryAdd from '../Pages/Country/Add';
 import CountryEdit from '../Pages/Country/Edit';
@@ -24,19 +23,22 @@ import CityEdit from '../Pages/City/Edit';
 import CityList from '../Pages/City/List';
 // User Routes
 import UserAdd from '../Pages/User/Add';
-import UserEdit from '../Pages/User/Edit';      
+import UserEdit from '../Pages/User/Edit';
 import UserList from '../Pages/User/List';
+
+//Client Routes
+
+import DashboardClient from '../Pages/Client/Dashboard';
 
 
 export default function Page() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      
-      
-
       <Route path="/*" element={<Error />} />
-      {/* element={<ProtectedRoute element={} allowedRoles={['admin']} />} */}
+
+
+      {/* Admin */}
       <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />} />
       {/* Country Routes */}
       <Route path="/countryadd" element={<ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />} />
@@ -54,6 +56,9 @@ export default function Page() {
       <Route path="/useradd" element={<ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} />} />
       <Route path="/useredit" element={<ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} />} />
       <Route path="/userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} />} />
+
+      {/* Client */}
+      <Route path="/client/dashboard" element={<ProtectedRoute element={<DashboardClient />} allowedRoles={['user']} />} />
 
     </Routes>
   )

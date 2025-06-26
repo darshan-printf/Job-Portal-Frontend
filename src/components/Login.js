@@ -55,10 +55,19 @@ export default function Login() {
                     localStorage.setItem('role', response.data.role)
                     localStorage.setItem('isLogin', true);
                     const duration = 1500000;
+
                     setTimeout(() => {
                         localStorage.setItem('isLogin', false);
                     }, duration);
-                    navigate('/dashboard');
+
+                    if (response.data.role == 'admin') {
+                        navigate('/dashboard');
+                    } else if (response.data.role == 'user') {
+                        navigate('/client/dashboard');
+                    } else {
+                        navigate('/');
+                    }
+
                 } else {
                     setLoaded(false);
                     toast.error("Invalid email or password");
