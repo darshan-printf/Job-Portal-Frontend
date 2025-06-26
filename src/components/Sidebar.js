@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from "react-redux";
+import Logo from '../Assets/Img/logo-round.png'
 
 export default function Sidebar({
   M1, M2, M3, M4, M5, M6, M7, M8,
@@ -14,7 +15,7 @@ export default function Sidebar({
       <Link
         to={'/dashboard'} // Assign the ref to the link
         className="brand-link">
-        <img src={"dist/img/logo-round.png"} alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: .8 }} />
+        <img src={Logo} alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: .8 }} />
         <span className="brand-text font-weight-light">Admin</span>
       </Link>
       <div className="sidebar">
