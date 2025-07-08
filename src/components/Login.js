@@ -96,7 +96,7 @@ export default function Login() {
                     <div className="login-box">
                         <div className="card card-outline card-primary pb-4">
                             <div class="text-center mt-2">
-                                <img class="profile-user-img img-fluid border border-0" src='dist/img/logo.png' alt="User profile picture" />
+                                <img class="profile-user-img img-fluid border border-0" src='/admin/img/logo.png' alt="User profile picture" />
                             </div>
                             <div className="card-body ">
                                 <p className="login-box-msg">Sign in to start your session</p>

@@ -42,87 +42,24 @@ export default function App() {
           {/* Public routes */}
 
           {/* Admin layout and routes */}
-          <Route path="/" element={<AdminLayout />}>
-          <Route path="/" element={<Login />} />
-          <Route path="*" element={<Error />} />
-            <Route
-              path="dashboard"
-              element={
-                <ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="countryadd"
-              element={
-                <ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="countryedit"
-              element={
-                <ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="countrylist"
-              element={
-                <ProtectedRoute element={<CountryList />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="statesadd"
-              element={
-                <ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="statesedit"
-              element={
-                <ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="stateslist"
-              element={
-                <ProtectedRoute element={<StatesList />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="cityadd"
-              element={
-                <ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="cityedit"
-              element={
-                <ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="citylist"
-              element={
-                <ProtectedRoute element={<CityList />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="useradd"
-              element={
-                <ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="useredit"
-              element={
-                <ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} />
-              }
-            />
-            <Route
-              path="userlist"
-              element={
-                <ProtectedRoute element={<UserList />} allowedRoles={['admin']} />
-              }
-            />
+          <Route path="/admin" element={<AdminLayout />}>
+          
+            <Route path="login" element={<Login />} />
+            <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />} />
+            <Route path="countryadd" element={ <ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} /> } />
+            <Route path="countryedit" element={ <ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />} />
+            <Route path="countrylist" element={ <ProtectedRoute element={<CountryList />} allowedRoles={['admin']} /> }  />
+            <Route path="statesadd" element={ <ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />  } />
+            <Route path="statesedit" element={  <ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} /> } />
+            <Route path="stateslist" element={<ProtectedRoute element={<StatesList />} allowedRoles={['admin']} /> }  />
+            <Route path="cityadd" element={<ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} /> }/>
+            <Route path="cityedit" element={<ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} /> }/>
+            <Route path="citylist"  element={<ProtectedRoute element={<CityList />} allowedRoles={['admin']} /> }/>
+            <Route path="useradd" element={<ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} /> }/>
+            <Route path="useredit" element={<ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} /> }/>
+            <Route path="userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} /> }/>
+
+            <Route path="*" element={<Error />} />
           </Route>
 
           {/* Client layout and routes */}
