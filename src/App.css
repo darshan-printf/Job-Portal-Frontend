@@ -631,3 +631,14 @@
   animation: sf-fly-by-3 5s linear infinite;
 }
 
+.login-page-bg, .register-page-bg {
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100vh;
+    -ms-flex-pack: center;
+    justify-content: center;
+}

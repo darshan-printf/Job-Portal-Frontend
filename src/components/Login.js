@@ -87,15 +87,12 @@ export default function Login() {
 
     return (
         <>
-
-
             <div className="star-field">
                 <div className="layer"></div>
                 <div className="layer"></div>
                 <div className="layer"></div>
 
-
-                <div className="login-page bg" id='page-bg'>
+                <div className="login-page-bg bg" id='page-bg'>
                     <div className="login-box">
                         <div className="card card-outline card-primary pb-4">
                             <div class="text-center mt-2">

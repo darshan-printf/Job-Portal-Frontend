@@ -1,89 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import ClientLayout from "../../components/ClientLayout";
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { MdWorkHistory } from "react-icons/md";
-import { TbWorldCog, TbBuildingEstate } from "react-icons/tb";
-import { FaCity, FaUsersGear } from "react-icons/fa6";
-import ContentHeader from '../../components/ContentHeader';
-import CountUp from 'react-countup';
-import axios from 'axios';
-
+import React from 'react'
 
 export default function Dashboard() {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const token = localStorage.getItem('token');
-  const [count, setCount] = useState({
-    country: 0,
-    states: 0,
-    city: 0,
-    users: 0,
-    job: 0,
-    resume: 0
-  });
-  const links = [
-    { to: "/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: `${count.country}` },
-    { to: "/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: `${count.states}` },
-    { to: "/panchayatdashboard", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: `${count.city}` },
-    { to: "/listorganization", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: `${count.users}` },
-    { to: "/listcommittee", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: `${count.job}` },
-    { to: "/listcommittee", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1400 },
-  ];
-
-
-  useEffect(() => {
-    if (!localStorage.getItem('alertShown')) {
-      toast.success("Login successfully");
-      localStorage.setItem('alertShown', 'true');
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}reports/getCount`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        const data = response.data;
-        setCount({
-          country: data.totalCountries || 0,
-          states: data.totalStates || 0,
-          city: data.totalCities || 0,
-          users: data.totalUsers || 0,
-          job: data.totalJobs || 0
-        });
-      } catch (error) {
-        console.error('Error fetching report count:', error);
-      }
-    };
-    fetchCount();
-  }, []);
   return (
-    <ClientLayout ac1="active">
-      <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
-      <section className="content mb-4">
-        <div className="container-fluid">
-          <div className="row">
-            {links.map(({ to, text, icon, bg, count }, idx) => (
-              <div key={idx} className="col-12 col-sm-6 col-md-3">
-                <Link to={to} className="text-dark">
-                  <div className="info-box mb-3">
-                    <span className={`info-box-icon ${bg} elevation-1`}>{icon}</span>
-                    <div className="info-box-content">
-                      <span className="info-box-text pb-1">{text}</span>
-                      <span className="info-box-number">Total:  <CountUp end={count} /></span>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <ToastContainer />
-    </ClientLayout>
-  );
+    <div>
+      <header id="header" className="header d-flex align-items-center fixed-top">
+  <div className="container position-relative d-flex align-items-center justify-content-between">
+    <a href="index.html" className="logo d-flex align-items-center me-auto me-xl-0">
+      {/* Uncomment the line below if you also wish to use an image logo */}
+      {/* <img src="assets/img/logo.webp" alt=""> */}
+      <h1 className="sitename">Invent</h1><span>.</span>
+    </a>
+    <nav id="navmenu" className="navmenu">
+      <ul>
+        <li><a href="#hero" className="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#team">Team</a></li>
+        <li className="dropdown"><a href="#"><span>Dropdown</span> <i className="bi bi-chevron-down toggle-dropdown" /></a>
+          <ul>
+            <li><a href="#">Dropdown 1</a></li>
+            <li className="dropdown"><a href="#"><span>Deep Dropdown</span> <i className="bi bi-chevron-down toggle-dropdown" /></a>
+              <ul>
+                <li><a href="#">Deep Dropdown 1</a></li>
+                <li><a href="#">Deep Dropdown 2</a></li>
+                <li><a href="#">Deep Dropdown 3</a></li>
+                <li><a href="#">Deep Dropdown 4</a></li>
+                <li><a href="#">Deep Dropdown 5</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Dropdown 2</a></li>
+            <li><a href="#">Dropdown 3</a></li>
+            <li><a href="#">Dropdown 4</a></li>
+          </ul>
+        </li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <i className="mobile-nav-toggle d-xl-none bi bi-list" />
+    </nav>
+    <a className="btn-getstarted" href="#about">Get Started</a>
+  </div>
+</header>
+    </div>
+  )
 }

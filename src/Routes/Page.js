@@ -1,65 +1,136 @@
-import React from 'react'
-import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from '../utils/ProtectedRoute';
+// App.js
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "../redux/store";
+import "../App.css";
 
-//  for public pages
-import Login from "../components/Login"
-import Error from '../components/Error';
+// Layouts
+import AdminLayout from "../components/AdminRouteLayout";
+import WebLayout from "../components/WebsiteRouteLayout";
 
-// Admin Routes
-// dashboard
-import Dashboard from '../Pages/Dashboard';
-// Country Routes
-import CountryAdd from '../Pages/Country/Add';
-import CountryEdit from '../Pages/Country/Edit';
-import CountryList from '../Pages/Country/List'
-// States Routes
-import StatesAdd from '../Pages/States/Add';
-import StatesEdit from '../Pages/States/Edit';
-import StatesList from '../Pages/States/List'
-// city Routes
-import CityAdd from '../Pages/City/Add';
-import CityEdit from '../Pages/City/Edit';
-import CityList from '../Pages/City/List';
-// User Routes
-import UserAdd from '../Pages/User/Add';
-import UserEdit from '../Pages/User/Edit';
-import UserList from '../Pages/User/List';
+// Public pages
+import Login from "../components/Login";
+import Error from "../components/Error";
 
-//Client Routes
+// Admin Pages
+import Dashboard from "../Pages/Dashboard";
+import CountryAdd from "../Pages/Country/Add";
+import CountryEdit from "../Pages/Country/Edit";
+import CountryList from "../Pages/Country/List";
+import StatesAdd from "../Pages/States/Add";
+import StatesEdit from "../Pages/States/Edit";
+import StatesList from "../Pages/States/List";
+import CityAdd from "../Pages/City/Add";
+import CityEdit from "../Pages/City/Edit";
+import CityList from "../Pages/City/List";
+import UserAdd from "../Pages/User/Add";
+import UserEdit from "../Pages/User/Edit";
+import UserList from "../Pages/User/List";
 
-import DashboardClient from '../Pages/Client/Dashboard';
+// Client Pages
+import DashboardClient from "../Pages/Client/Dashboard";
 
+// Utility
+import ProtectedRoute from "../utils/ProtectedRoute";
 
-export default function Page() {
+export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/*" element={<Error />} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
 
+          {/* Admin layout and routes */}
+          <Route path="/" element={<AdminLayout />}>
+          <Route path="/" element={<Login />} />
+          <Route path="*" element={<Error />} />
+            <Route
+              path="dashboard"
+              element={
+                <ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="countryadd"
+              element={
+                <ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="countryedit"
+              element={
+                <ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="countrylist"
+              element={
+                <ProtectedRoute element={<CountryList />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="statesadd"
+              element={
+                <ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="statesedit"
+              element={
+                <ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="stateslist"
+              element={
+                <ProtectedRoute element={<StatesList />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="cityadd"
+              element={
+                <ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="cityedit"
+              element={
+                <ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="citylist"
+              element={
+                <ProtectedRoute element={<CityList />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="useradd"
+              element={
+                <ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="useredit"
+              element={
+                <ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} />
+              }
+            />
+            <Route
+              path="userlist"
+              element={
+                <ProtectedRoute element={<UserList />} allowedRoles={['admin']} />
+              }
+            />
+          </Route>
 
-      {/* Admin */}
-      <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />} />
-      {/* Country Routes */}
-      <Route path="/countryadd" element={<ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />} />
-      <Route path="/countryedit" element={<ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />} />
-      <Route path="/countrylist" element={<ProtectedRoute element={<CountryList />} allowedRoles={['admin']} />} />
-      {/* States Routes */}
-      <Route path="/statesadd" element={<ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />} />
-      <Route path="/statesedit" element={<ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} />} />
-      <Route path="/stateslist" element={<ProtectedRoute element={<StatesList />} allowedRoles={['admin']} />} />
-      {/* City Routes */}
-      <Route path="/cityadd" element={<ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} />} />
-      <Route path="/cityedit" element={<ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} />} />
-      <Route path="/citylist" element={<ProtectedRoute element={<CityList />} allowedRoles={['admin']} />} />
-      {/* User Routes */}
-      <Route path="/useradd" element={<ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} />} />
-      <Route path="/useredit" element={<ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} />} />
-      <Route path="/userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} />} />
-
-      {/* Client */}
-      <Route path="/client/dashboard" element={<ProtectedRoute element={<DashboardClient />} allowedRoles={['user']} />} />
-
-    </Routes>
-  )
+          {/* Client layout and routes */}
+          <Route path="/client" element={<WebLayout />}>
+            <Route path="dashboard" element={<DashboardClient />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  );
 }
