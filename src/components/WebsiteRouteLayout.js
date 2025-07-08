@@ -19,9 +19,11 @@ export default function WebLayout() {
       "/Web/vendor/php-email-form/validate.js",
       "/Web/vendor/aos/aos.js",
       "/Web/vendor/glightbox/js/glightbox.min.js",
+      "/Web/vendor/purecounter/purecounter_vanilla.js",
+      "/Web/vendor/swiper/swiper-bundle.min.js",
       "/Web/vendor/imagesloaded/imagesloaded.pkgd.min.js",
       "/Web/vendor/isotope-layout/isotope.pkgd.min.js",
-      "/Web/vendor/swiper/swiper-bundle.min.js",
+      "/Web/js/main.js",
     ];
 
     const loadedElements = [];

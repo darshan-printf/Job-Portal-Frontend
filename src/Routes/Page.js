@@ -33,6 +33,7 @@ import DashboardClient from "../Pages/Client/Dashboard";
 
 // Utility
 import ProtectedRoute from "../utils/ProtectedRoute";
+import Home from "../Pages/Web/Home";
 
 export default function App() {
   return (
@@ -63,8 +64,8 @@ export default function App() {
           </Route>
 
           {/* Client layout and routes */}
-          <Route path="/client" element={<WebLayout />}>
-            <Route path="dashboard" element={<DashboardClient />} />
+          <Route path="/" element={<WebLayout />}>
+            <Route path="/" element={<Home />} />
           </Route>
         </Routes>
       </BrowserRouter>
