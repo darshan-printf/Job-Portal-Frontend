@@ -27,7 +27,7 @@ export default function WebFooter() {
                     </div>
                     <div className="credits">
 
-                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        Designed by <a href="https://bootstrapmade.com/">Darshan Talaviya </a>
                     </div>
                 </div>
             </footer>
