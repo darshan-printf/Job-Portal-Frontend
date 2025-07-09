@@ -28,8 +28,7 @@ import UserAdd from "../Pages/User/Add";
 import UserEdit from "../Pages/User/Edit";
 import UserList from "../Pages/User/List";
 
-// Client Pages
-import DashboardClient from "../Pages/Client/Dashboard";
+
 
 // Utility
 import ProtectedRoute from "../utils/ProtectedRoute";

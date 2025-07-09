@@ -89,10 +89,10 @@ export default function Edit() {
       setLoaded(false);
       toast.success('State updated successfully');
 
-      if (currentPath === "/statesedit") {
+      if (currentPath === "/admin/statesedit") {
         setTimeout(() => {
-          if (window.location.pathname === "/statesedit") {
-            navigate('/stateslist');
+          if (window.location.pathname === "/admin/statesedit") {
+            navigate('/admin/stateslist');
           }
         }, 3000);
       }
@@ -107,7 +107,7 @@ export default function Edit() {
   return (
 
     <Layout ac3="active">
-      <ContentHeader title="Update State" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'State List', to: '/stateslist' }, { label: 'Update State' }]} />
+      <ContentHeader title="Update State" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'State List', to: '/admin/stateslist' }, { label: 'Update State' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">

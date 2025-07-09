@@ -92,7 +92,7 @@ export default function ListMember() {
       center: 'true',
       cell: (row) => (
         <div>
-          <button type="button" className="btn btn-primary btn-xs mr-2" onClick={() => navigate('/countryedit', { state: { id: row._id } })}>
+          <button type="button" className="btn btn-primary btn-xs mr-2" onClick={() => navigate('/admin/countryedit', { state: { id: row._id } })}>
             <i className="fas fa-pen"></i>
           </button>
 
@@ -113,7 +113,7 @@ export default function ListMember() {
 
   return (
     <Layout ac2="active">
-      <ContentHeader title="Country List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Country List' }]} />
+      <ContentHeader title="Country List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'Country List' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="row">
@@ -134,7 +134,7 @@ export default function ListMember() {
                     <div className="bd-highlight"></div>
                     <div className="bd-highlight">
                       <button
-                        onClick={() => navigate('/countryadd')}
+                        onClick={() => navigate('/admin/countryadd')}
                         type="button"
                         className="btn btn-block btn-primary"
                       >

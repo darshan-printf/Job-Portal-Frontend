@@ -642,3 +642,6 @@
     -ms-flex-pack: center;
     justify-content: center;
 }
+.kMgreK {
+  min-height: 40px !important;
+}

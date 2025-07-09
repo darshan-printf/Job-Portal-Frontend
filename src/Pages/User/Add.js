@@ -53,10 +53,10 @@ export default function Add() {
             });
 
             toast.success("User registered successfully");
-            if (currentPath === "/useradd") {
+            if (currentPath === "/admin/useradd") {
                 setTimeout(() => {
-                    if (window.location.pathname === "/useradd") {
-                        navigate('/userlist');
+                    if (window.location.pathname === "/admin/useradd") {
+                        navigate('/admin/userlist');
                     }
                 }, 3000);
             }
@@ -70,7 +70,7 @@ export default function Add() {
 
     return (
         <Layout ac5="active">
-            <ContentHeader title="Add New User" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'User List', to: '/userlist' }, { label: 'Add User' }]} />
+            <ContentHeader title="Add New User" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'User List', to: '/admin/userlist' }, { label: 'Add User' }]} />
             <section className="content">
                 <div className="container-fluid">
                     <div className="card card-primary card-outline">

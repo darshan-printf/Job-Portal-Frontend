@@ -87,10 +87,10 @@ export default function Add() {
       });
 
       toast.success("User updated successfully!");
-      if (currentPath === "/useredit") {
+      if (currentPath === "/admin/useredit") {
         setTimeout(() => {
-          if (window.location.pathname === "/useredit") {
-            navigate('/userlist');
+          if (window.location.pathname === "/admin/useredit") {
+            navigate('/admin/userlist');
           }
         }, 3000);
       }
@@ -105,11 +105,11 @@ export default function Add() {
   return (
     <Layout ac5="active">
       <ContentHeader
-        title="Add / Edit User"
+        title="Edit User"
         breadcrumbs={[
-          { label: 'Dashboard', to: '/dashboard' },
-          { label: 'User List', to: '/userlist' },
-          { label: 'Add / Edit User' },
+          { label: 'Dashboard', to: '/admin/dashboard' },
+          { label: 'User List', to: '/admin/userlist' },
+          { label: 'Edit User' },
         ]}
       />
       <section className="content">

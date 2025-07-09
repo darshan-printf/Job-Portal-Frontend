@@ -70,10 +70,10 @@ export default function AddMember() {
         setDesignation('');
         toast.success("State added successfully");
 
-        if (currentPath === "/statesadd") {
+        if (currentPath === "/admin/statesadd") {
           setTimeout(() => {
-            if (window.location.pathname === "/statesadd") {
-              navigate('/stateslist');
+            if (window.location.pathname === "/admin/statesadd") {
+              navigate('/admin/stateslist');
             }
           }, 3000);
         }
@@ -88,7 +88,7 @@ export default function AddMember() {
 
   return (
     <Layout ac3="active">
-      <ContentHeader title="Add New State" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'State List', to: '/stateslist' }, { label: 'Add State' }]} />
+      <ContentHeader title="Add New State" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'State List', to: '/admin/stateslist' }, { label: 'Add State' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">

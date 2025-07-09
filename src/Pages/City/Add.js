@@ -71,10 +71,10 @@ export default function AddMember() {
         setDesignation('');
         toast.success("City added successfully");
 
-        if (currentPath === "/cityadd") {
+        if (currentPath === "/admin/cityadd") {
           setTimeout(() => {
-            if (window.location.pathname === "/cityadd") {
-              navigate('/citylist');
+            if (window.location.pathname === "/admin/cityadd") {
+              navigate('/admin/citylist');
             }
           }, 3000);
         }
@@ -89,7 +89,7 @@ export default function AddMember() {
 
   return (
     <Layout ac4="active">
-      <ContentHeader title="Add New City" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'City List', to: '/citylist' }, { label: 'Add City' }]} />
+      <ContentHeader title="Add New City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'City List', to: '/admin/citylist' }, { label: 'Add City' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">

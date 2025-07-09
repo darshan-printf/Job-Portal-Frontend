@@ -89,10 +89,10 @@ export default function Edit() {
       setLoaded(false);
       toast.success('city updated successfully');
 
-      if (currentPath === "/cityedit") {
+      if (currentPath === "/admin/cityedit") {
         setTimeout(() => {
-          if (window.location.pathname === "/cityedit") {
-            navigate('/citylist');
+          if (window.location.pathname === "/admin/cityedit") {
+            navigate('/admin/citylist');
           }
         }, 3000);
       }
@@ -107,7 +107,7 @@ export default function Edit() {
   return (
 
     <Layout ac4="active">
-      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'City List', to: '/citylist' }, { label: 'Update City' }]} />
+      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'City List', to: '/admin/citylist' }, { label: 'Update City' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">

@@ -59,10 +59,10 @@ export default function Edit() {
       setLoaded(false);
       toast.success('Country updated successfully');
 
-      if (currentPath === "/countryedit") {
+      if (currentPath === "/admin/countryedit") {
         setTimeout(() => {
-          if (window.location.pathname === "/countryedit") {
-            navigate('/countrylist');
+          if (window.location.pathname === "/admin/countryedit") {
+            navigate('/admin/countrylist');
           }
         }, 3000);
       }
@@ -76,7 +76,7 @@ export default function Edit() {
 
   return (
     <Layout ac2="active">
-      <ContentHeader title="Update Country" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Country List', to: '/countrylist' }, { label: 'Update Country' }]} />
+      <ContentHeader title="Update Country" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'Country List', to: '/admin/countrylist' }, { label: 'Update Country' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card  card-primary card-outline">

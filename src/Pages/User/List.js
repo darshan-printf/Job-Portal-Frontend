@@ -108,7 +108,7 @@ export default function List() {
             center: "true",
             cell: (row) => (
                 <div>
-                    <button type="button" className={`btn ${row.isActive ? 'btn-primary':'btn-danger'} btn-primary btn-xs mr-2`} onClick={() => navigate('/useredit', { state: { id: row._id } })}>
+                    <button type="button" className={`btn ${row.isActive ? 'btn-primary':'btn-danger'} btn-primary btn-xs mr-2`} onClick={() => navigate('/admin/useredit', { state: { id: row._id } })}>
                         <i className="fas fa-pen"></i>
                     </button>
 
@@ -128,7 +128,7 @@ export default function List() {
 
     return (
         <Layout ac5="active">
-            <ContentHeader title="State List" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'State List' }]} />
+            <ContentHeader title="State List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'State List' }]} />
             <section className="content">
                 <div className="container-fluid">
                     <div className="row">
@@ -149,7 +149,7 @@ export default function List() {
                                         <div className="bd-highlight"></div>
                                         <div className="bd-highlight">
                                             <button
-                                                onClick={() => navigate('/useradd')}
+                                                onClick={() => navigate('/admin/useradd')}
                                                 type="button"
                                                 className="btn btn-block btn-primary"
                                             >
