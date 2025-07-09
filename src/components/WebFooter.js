@@ -2,18 +2,35 @@ import React from 'react'
 
 export default function WebFooter() {
     return (
-        <>
-            {/* Main Footer */}
-            <footer className="main-footer m-0">
-                {/* To the right */}
-                <div className="float-right d-none d-sm-inline">Anything you want</div>
-                {/* Default to the left */}
-                <strong>
-                    Copyright © 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.
-                </strong>{" "}
-                All rights reserved.
+        <footer id="footer" className="footer">
+                <div className="container">
+                    <div className="copyright text-center ">
+                        <p>
+                            © <span>Copyright</span>{" "}
+                            <strong className="px-1 sitename">Vesperr</strong>{" "}
+                            <span>All Rights Reserved</span>
+                        </p>
+                    </div>
+                    <div className="social-links d-flex justify-content-center">
+                        <a href="">
+                            <i className="bi bi-twitter-x" />
+                        </a>
+                        <a href="">
+                            <i className="bi bi-facebook" />
+                        </a>
+                        <a href="">
+                            <i className="bi bi-instagram" />
+                        </a>
+                        <a href="">
+                            <i className="bi bi-linkedin" />
+                        </a>
+                    </div>
+                    <div className="credits">
+
+                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+                </div>
             </footer>
-        </>
 
     )
 }

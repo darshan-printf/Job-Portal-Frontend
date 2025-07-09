@@ -2,68 +2,47 @@ import React from 'react';
 
 export default function WebHeader() {
     return (
-        <>
-            {/* Navbar */}
-            <nav className="main-header navbar navbar-expand-md navbar-light navbar-white m-0">
-                <div className="container d-flex justify-content-between align-items-center">
-                    {/* Logo - aligned left */}
-                    <a href="../../index3.html" className="navbar-brand d-flex align-items-center">
-                        <img
-                            src="../dist/img/logo-removebg-preview.png"
-                            alt="HMS Logo"
-                            className="brand-image"
-                            style={{ width: '50px' }}
-                        />
-                        
+       <header id="header" className="header d-flex align-items-center sticky-top">
+                <div className="container-fluid container-xl position-relative d-flex align-items-center">
+
+                    <a href="index.html" className="logo d-flex align-items-center me-auto">
+                        {/* <!-- Uncomment the line below if you also wish to use an image logo --> */}
+                        {/* <!-- <img src="Web/img/logo.png" alt=""> --> */}
+                        <h1 className="sitename">Vesperr</h1>
                     </a>
 
-                    {/* Toggler for small screens */}
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarCollapse"
-                        aria-controls="navbarCollapse"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon" />
-                    </button>
-
-                    {/* Navbar links - aligned right */}
-                    <div className="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <a href="index3.html" className="nav-link">
-                                    Home
-                                </a>
+                    <nav id="navmenu" className="navmenu">
+                        <ul>
+                            <li><a href="#hero" className="active">Home<br /></a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#portfolio">Portfolio</a></li>
+                            <li><a href="#team">Team</a></li>
+                            <li className="dropdown"><a href="#"><span>Dropdown</span> <i className="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    <li><a href="#">Dropdown 1</a></li>
+                                    <li className="dropdown"><a href="#"><span>Deep Dropdown</span> <i className="bi bi-chevron-down toggle-dropdown"></i></a>
+                                        <ul>
+                                            <li><a href="#">Deep Dropdown 1</a></li>
+                                            <li><a href="#">Deep Dropdown 2</a></li>
+                                            <li><a href="#">Deep Dropdown 3</a></li>
+                                            <li><a href="#">Deep Dropdown 4</a></li>
+                                            <li><a href="#">Deep Dropdown 5</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Dropdown 2</a></li>
+                                    <li><a href="#">Dropdown 3</a></li>
+                                    <li><a href="#">Dropdown 4</a></li>
+                                </ul>
                             </li>
-                            <li className="nav-item">
-                                <a href="#" className="nav-link">
-                                    About
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="#" className="nav-link">
-                                    Job Bord
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="#" className="nav-link">
-                                    Feedback
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="#" className="nav-link">
-                                    Contect Us
-                                </a>
-                            </li>
+                            <li><a href="#contact">Contact</a></li>
                         </ul>
-                        <button className="btn btn-primary btn-sm mr-2">Login</button>
-                        <button className="btn btn-primary btn-sm">Login</button>
-                    </div>
+                        <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
+                    </nav>
+
+                    <a className="btn-getstarted" href="index.html#about">Get Started</a>
+
                 </div>
-            </nav>
-        </>
+            </header>
     );
 }

@@ -7,7 +7,7 @@ export default function Layout({ children }) {
         <div>
             <WebHeader />
 
-            <div className="content-wrapper m-0" >
+            <div className="main" >
                 {children}
             </div>
 
