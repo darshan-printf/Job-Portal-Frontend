@@ -33,6 +33,10 @@ import UserList from "../Pages/User/List";
 // Utility
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Home from "../Pages/Web/Home";
+import About from "../Pages/Web/About/About";
+import Services from "../Pages/Web/Services/Services";
+import Team from "../Pages/Web/Team/Team";
+import Contact from "../Pages/Web/Contact/Contact";
 
 export default function App() {
   return (
@@ -65,6 +69,11 @@ export default function App() {
           {/* Client layout and routes */}
           <Route path="/" element={<WebLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="services" element={<Services />} />
+            <Route path="team" element={<Team />} />
+            <Route path="contact" element={<Contact />} />
+            
           </Route>
         </Routes>
       </BrowserRouter>
