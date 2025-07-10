@@ -2,6 +2,7 @@ import React from "react";
 import WebLayout from "../../components/WebLayout";
 import { Link } from "react-router-dom";
 
+
 export default function Home() {
   const Env   = process.env;
   return (
@@ -18,10 +19,10 @@ export default function Home() {
                 <Link to="/contact" className=" btn-get-started">
                   Get Started
                 </Link>
-                <a
-                  href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
+                <Link
+                  to="https://www.youtube.com/watch?v=Y7f98aduVJ8"
                   className="glightbox btn-watch-video d-flex align-items-center"
-                ></a>
+                ></Link>
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img">
@@ -112,21 +113,21 @@ export default function Home() {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis
                 aute irure dolor in reprehenderit
               </p>
-              <a
-                href="#"
+              <Link
+              to={"/"}
                 className="about-btn align-self-center align-self-xl-start"
               >
                 <span>About us</span> <i className="bi bi-chevron-right" />
-              </a>
+              </Link>
             </div>
             <div className="col-xl-7" data-aos="fade-up" data-aos-delay={200}>
               <div className="row gy-4">
                 <div className="col-md-6 icon-box position-relative">
                   <i className="bi bi-briefcase" />
                   <h4>
-                    <a href="" className="stretched-link">
+                    <Link to="/"  className="stretched-link">
                       Corporis voluptates sit
-                    </a>
+                    </Link>
                   </h4>
                   <p>
                     Consequuntur sunt aut quasi enim aliquam quae harum pariatur
@@ -137,9 +138,9 @@ export default function Home() {
                 <div className="col-md-6 icon-box position-relative">
                   <i className="bi bi-gem" />
                   <h4>
-                    <a href="" className="stretched-link">
+                    <Link to='/' className="stretched-link">
                       Ullamco laboris nisi
-                    </a>
+                    </Link>
                   </h4>
                   <p>
                     Excepteur sint occaecat cupidatat non proident, sunt in
@@ -150,9 +151,9 @@ export default function Home() {
                 <div className="col-md-6 icon-box position-relative">
                   <i className="bi bi-broadcast" />
                   <h4>
-                    <a href="" className="stretched-link">
+                    <Link to="/"  className="stretched-link">
                       Labore consequatur
-                    </a>
+                    </Link>
                   </h4>
                   <p>
                     Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut
@@ -163,9 +164,9 @@ export default function Home() {
                 <div className="col-md-6 icon-box position-relative">
                   <i className="bi bi-easel" />
                   <h4>
-                    <a href="" className="stretched-link">
+                    <Link to="/" className="stretched-link">
                       Beatae veritatis
-                    </a>
+                    </Link>
                   </h4>
                   <p>
                     Expedita veritatis consequuntur nihil tempore laudantium
@@ -199,9 +200,9 @@ export default function Home() {
               <div className="service-item position-relative">
                 <i className="bi bi-activity" />
                 <h4>
-                  <a href="" className="stretched-link">
+                  <Link to='/' className="stretched-link">
                     Lorem Ipsum
-                  </a>
+                  </Link>
                 </h4>
                 <p>
                   Voluptatum deleniti atque corrupti quos dolores et quas
@@ -218,9 +219,9 @@ export default function Home() {
               <div className="service-item position-relative">
                 <i className="bi bi-bounding-box-circles" />
                 <h4>
-                  <a href="" className="stretched-link">
+                  <Link to='/' className="stretched-link">
                     Sed ut perspici
-                  </a>
+                  </Link>
                 </h4>
                 <p>
                   Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -237,9 +238,9 @@ export default function Home() {
               <div className="service-item position-relative">
                 <i className="bi bi-calendar4-week" />
                 <h4>
-                  <a href="" className="stretched-link">
+                  <Link to='/' className="stretched-link">
                     Magni Dolores
-                  </a>
+                  </Link>
                 </h4>
                 <p>
                   Excepteur sint occaecat cupidatat non proident, sunt in culpa
@@ -270,98 +271,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="alt-services" className="alt-services section">
-        <div className="container" data-aos="fade-up" data-aos-delay={100}>
-          <div className="row gy-4">
-            <div className="col-lg-6" data-aos="zoom-in" data-aos-delay={200}>
-              <div className="service-item position-relative">
-                <div className="img">
-                  <img
-                    src="Web/img/services-1.jpg"
-                    className="img-fluid"
-                    alt=""
-                  />
-                </div>
-                <div className="details">
-                  <a href="service-details.html" className="stretched-link">
-                    <h3>Nesciunt Mete</h3>
-                  </a>
-                  <p>
-                    Provident nihil minus qui consequatur non omnis maiores. Eos
-                    accusantium minus dolores iure perferendis.
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* End Service Item */}
-            <div className="col-lg-6" data-aos="zoom-in" data-aos-delay={300}>
-              <div className="service-item position-relative">
-                <div className="img">
-                  <img
-                    src="Web/img/services-2.jpg"
-                    className="img-fluid"
-                    alt=""
-                  />
-                </div>
-                <div className="details">
-                  <a href="service-details.html" className="stretched-link">
-                    <h3>Eosle Commodi</h3>
-                  </a>
-                  <p>
-                    Ut autem aut autem non a. Sint sint sit facilis nam iusto
-                    sint. Libero corrupti neque eum hic non ut nesciunt dolorem.
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* End Service Item */}
-            <div className="col-lg-6" data-aos="zoom-in" data-aos-delay={400}>
-              <div className="service-item position-relative">
-                <div className="img">
-                  <img
-                    src="Web/img/services-3.jpg"
-                    className="img-fluid"
-                    alt=""
-                  />
-                </div>
-                <div className="details">
-                  <a href="service-details.html" className="stretched-link">
-                    <h3>Ledo Markt</h3>
-                  </a>
-                  <p>
-                    Ut excepturi voluptatem nisi sed. Quidem fuga consequatur.
-                    Minus ea aut. Vel qui id voluptas adipisci eos earum
-                    corrupti.
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* End Service Item */}
-            <div className="col-lg-6" data-aos="zoom-in" data-aos-delay={500}>
-              <div className="service-item position-relative">
-                <div className="img">
-                  <img
-                    src="Web/img/services-4.jpg"
-                    className="img-fluid"
-                    alt=""
-                  />
-                </div>
-                <div className="details">
-                  <a href="service-details.html" className="stretched-link">
-                    <h3>Asperiores Commodit</h3>
-                  </a>
-                  <p>
-                    Non et temporibus minus omnis sed dolor esse consequatur.
-                    Cupiditate sed error ea fuga sit provident adipisci neque.
-                  </p>
-                  <a href="service-details.html" className="stretched-link" />
-                </div>
-              </div>
-            </div>
-            {/* End Service Item */}
-          </div>
-        </div>
-      </section>
+     
       {/* Features Section */}
       <section id="features" className="features section">
         {/* Section Title */}
