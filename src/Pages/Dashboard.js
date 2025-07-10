@@ -23,12 +23,12 @@ export default function Dashboard() {
     resume: 0
   });
   const links = [
-    { to: "/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: `${count.country}` },
-    { to: "/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: `${count.states}` },
-    { to: "/panchayatdashboard", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: `${count.city}` },
-    { to: "/listorganization", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: `${count.users}` },
-    { to: "/listcommittee", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: `${count.job}` },
-    { to: "/listcommittee", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1400 },
+    { to: "/admin/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: `${count.country}` },
+    { to: "/admin/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: `${count.states}` },
+    { to: "/admin/citylist", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: `${count.city}` },
+    { to: "/admin/userlist", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: `${count.users}` },
+    { to: "/admin/", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: `${count.job}` },
+    { to: "/admin/", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1400 },
   ];
 
 

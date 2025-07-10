@@ -8,17 +8,21 @@ import {
   MapPin,
   ArrowRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+
 
 export default function WebFooter() {
+  const Env = process.env;
   return (
     <footer className="bg-white border-top">
       {/* Main Footer */}
       <div className="container py-5">
         <div className="row gy-4">
           {/* Company Info */}
-          <div className="col-lg-3 col-md-6">
-            <h5 style={{ color: "#3498db" }} className="fw-bold mb-3">
-              Vesperr
+          <div className="col-lg-3 col-md-6 ">
+
+            <h5 style={{ color: "#3498db" }} className=" fw-bold mb-3">
+              {Env.REACT_APP_PROJECT_NAME}
             </h5>
             <p className="text-muted small">
               Empowering businesses with innovative solutions and cutting-edge
@@ -26,7 +30,7 @@ export default function WebFooter() {
             </p>
             <div className="d-flex gap-2">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, idx) => (
-                <a
+                <Link
                   key={idx}
                   href="#"
                   className="d-inline-flex align-items-center justify-content-center rounded-circle"
@@ -38,7 +42,7 @@ export default function WebFooter() {
                   }}
                 >
                   <Icon size={16} />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -76,13 +80,13 @@ export default function WebFooter() {
                 "Consulting",
               ].map((service) => (
                 <li key={service} className="mb-2">
-                  <a href="#" className="text-decoration-none d-flex align-items-center text-muted">
+                  <Link href="#" className="text-decoration-none d-flex align-items-center text-muted">
                     <ArrowRight
                       size={14}
                       className="me-2 opacity-0 hover-opacity"
                     />
                     {service}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -94,19 +98,19 @@ export default function WebFooter() {
             <div className="text-muted small">
               <p className="d-flex align-items-start mb-2">
                 <MapPin size={16} className="me-2 text-primary" />
-                123 Business Street, Suite 100<br />New York, NY 10001
+                {Env.REACT_APP_DEVLOPER_ADDRESS}
               </p>
               <p className="d-flex align-items-center mb-2">
                 <Phone size={16} className="me-2 text-primary" />
-                <a href="tel:+1234567890" className="text-muted text-decoration-none">
-                  +1 (234) 567-8900
-                </a>
+                <Link href={`tel:${Env.REACT_APP_DEVLOPER_PHONE}`} className="text-muted text-decoration-none">
+                  {Env.REACT_APP_DEVLOPER_PHONE}
+                </Link>
               </p>
               <p className="d-flex align-items-center mb-0">
                 <Mail size={16} className="me-2 text-primary" />
-                <a href="mailto:info@vesperr.com" className="text-muted text-decoration-none">
-                  info@vesperr.com
-                </a>
+                <Link e={Env.REACT_APP_DEVLOPER_EMAIL} className="text-muted text-decoration-none">
+                  {Env.REACT_APP_DEVLOPER_EMAIL}
+                </Link>
               </p>
             </div>
           </div>
@@ -149,24 +153,24 @@ export default function WebFooter() {
       >
         <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
           <p className="mb-0 text-muted small">
-            © 2024 <span style={{ color: "#3498db", fontWeight: "600" }}>Vesperr</span>. All Rights Reserved.
+            © 2024 <span style={{ color: "#3498db", fontWeight: "600" }}>{Env.REACT_APP_PROJECT_NAME}</span>. All Rights Reserved.
           </p>
           <div className="d-flex gap-3 small">
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (
-              <a
+              <Link
                 key={item}
-                href="#"
+               to={'/'}
                 className="text-muted text-decoration-none"
               >
                 {item}
-              </a>
+              </Link>
             ))}
           </div>
           <p className="mb-0 small text-muted">
-            Designed by{" "}
-            <a href="#" className="text-decoration-none" style={{ color: "#3498db" }}>
-              Darshan Talaviya
-            </a>
+            Designed by
+            <Link to={'/'} className="text-decoration-none" style={{ color: "#3498db" }}>
+              {Env.REACT_APP_DEVLOPER_NAME}
+            </Link>
           </p>
         </div>
       </div>

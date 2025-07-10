@@ -3,15 +3,16 @@ import WebLayout from "../../components/WebLayout";
 import { Link } from "react-router-dom";
 
 export default function Home() {
+  const Env   = process.env;
   return (
     <WebLayout>
       <section id="hero" className="hero section">
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
-              <h1>Grow your business with Vesperr</h1>
+              <h1>Welcome To <span className="text-primary">{Env.REACT_APP_PROJECT_NAME}</span>  Develop Anything.</h1>
               <p>
-                We are team of talented designers making websites with Bootstrap
+                Post a job in minutes and start receiving qualified resumes as soon as today
               </p>
               <div className="d-flex">
                 <Link to="/contact" className=" btn-get-started">

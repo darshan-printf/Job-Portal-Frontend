@@ -12,6 +12,7 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false); // Button loading effect state
+    const Env = process.env;
 
     useEffect(() => {
         const isLogin = localStorage.getItem('isLogin');
@@ -96,7 +97,7 @@ export default function Login() {
                     <div className="login-box">
                         <div className="card card-outline card-primary pb-4">
                             <div class="text-center mt-2">
-                                <img class="profile-user-img img-fluid border border-0" src='/Admin/img/logo.png' alt="User profile picture" />
+                                <img class="profile-user-img img-fluid border border-0" src={Env.REACT_APP_PROJECT_ICON} alt="User profile picture" />
                             </div>
                             <div className="card-body ">
                                 <p className="login-box-msg">Sign in to start your session</p>

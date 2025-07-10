@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
 
 export default function WebHeader() {
+  const Env   = process.env;
   return (
     <header id="header" className="header d-flex align-items-center sticky-top">
       <div className="container-fluid container-xl position-relative d-flex align-items-center">
         <NavLink to="/" className="logo d-flex align-items-center me-auto">
-          <h1 className="sitename">Vesperr</h1>
+        <img src={Env.REACT_APP_PROJECT_ICON} alt=""/> 
+          <h1 className="sitename">{Env.REACT_APP_PROJECT_NAME}</h1>
         </NavLink>
 
         <nav id="navmenu" className="navmenu">
@@ -27,7 +29,7 @@ export default function WebHeader() {
             </li>
             <li>
               <NavLink to="/team" className={({ isActive }) => (isActive ? "active" : "")}>
-                Team
+                Job Board
               </NavLink>
             </li>
             <li>

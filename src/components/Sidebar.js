@@ -10,13 +10,14 @@ export default function Sidebar({
   icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8
 }) {
   const data = useSelector((state) => state.data.data);
+  const Env = process.env;
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       <Link
         to={'/admin/dashboard'} // Assign the ref to the link
         className="brand-link">
-        <img src="/Admin/img/logo-round.png" alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: .8 }} />
-        <span className="brand-text font-weight-light">Admin</span>
+        <img src={Env.REACT_APP_PROJECT_ICON} alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: 1 }} />
+        <span className="brand-text font-weight-light">{Env.REACT_APP_PROJECT_NAME}</span>
       </Link>
       <div className="sidebar">
         <nav className="mt-2">
