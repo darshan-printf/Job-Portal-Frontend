@@ -16,7 +16,7 @@ export default function Sidebar({
       <Link
         to={'/admin/dashboard'} // Assign the ref to the link
         className="brand-link">
-        <img src={Env.REACT_APP_PROJECT_ICON} alt=" Logo" className="brand-image img-circle elevation-3" style={{ opacity: 1 }} />
+        <img src={Env.REACT_APP_PROJECT_ICON} alt=" Logo" className="brand-image  elevation-3" style={{ opacity: 1 }} />
         <span className="brand-text font-weight-light">{Env.REACT_APP_PROJECT_NAME}</span>
       </Link>
       <div className="sidebar">
