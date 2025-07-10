@@ -153,7 +153,7 @@ export default function WebFooter() {
       >
         <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
           <p className="mb-0 text-muted small">
-            © 2024 <span style={{ color: "#3498db", fontWeight: "600" }}>{Env.REACT_APP_PROJECT_NAME}</span>. All Rights Reserved.
+            © {Env.REACT_APP_PROJECT_LONCHE_YEAR} <span style={{ color: "#3498db", fontWeight: "600" }}>{Env.REACT_APP_PROJECT_NAME}</span>. All Rights Reserved, V.{Env.REACT_APP_PROJECT_VERSION}.
           </p>
           <div className="d-flex gap-3 small">
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (
