@@ -33,6 +33,11 @@ export default function WebHeader() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/team" className={({ isActive }) => (isActive ? "active" : "")}>
+                Feed Back
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
                 Contact
               </NavLink>
