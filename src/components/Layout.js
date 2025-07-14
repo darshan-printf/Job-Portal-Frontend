@@ -1,24 +1,30 @@
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-export default function Layout({ children, ac1, ac2, ac3, ac4, ac5, ac6, ac7, ac8, ac9, ac10 }) {
+
+export default function Layout({
+  children,
+  ac1, ac2, ac3, ac4, ac5, ac6, ac7, ac8, ac9, ac10
+}) {
+  const menuItems = [
+    { active: ac1, RName: "Dashboard", RLink: "/admin/dashboard", icon: "fas fa-tachometer-alt" },
+    { active: ac2, RName: "Manage Country", RLink: "/admin/countrylist", icon: "fas fa-globe" },
+    { active: ac3, RName: "Manage States", RLink: "/admin/stateslist", icon: "fas fa-building" },
+    { active: ac4, RName: "Manage City", RLink: "/admin/citylist", icon: "fas fa-city" },
+    { active: ac5, RName: "Manage User", RLink: "/admin/userlist", icon: "fas fa-users" },
+    { active: ac6, RName: "Manage Job", RLink: "/admin/joblist", icon: "fas fa-briefcase" },
+    { active: ac7, RName: "Manage Team", RLink: "/admin/teamlist", icon: "fas fa-users-cog" },
+    { active: ac8, RName: "", RLink: "", icon: "" },
+    { active: ac9, RName: "", RLink: "", icon: "" },
+    { active: ac10, RName: "Log Out", RLink: "", icon: "fas fa-sign-out-alt" }
+  ];
+
   return (
     <div>
       <Header />
-      <div >
-        <Sidebar
-          M1={ac1} RName="Dashboard" RLink="/admin/dashboard" icon1="fas fa-tachometer-alt"
-          M2={ac2} RName2="Manage Country" RLink2="/admin/countrylist" icon2="fas fa-globe"
-          M3={ac3} RName3="Manage States" RLink3="/admin/stateslist" icon3="fas fa-building"
-          M4={ac4} RName4="Manage City" RLink4="/admin/citylist" icon4="fas fa-city"
-          M5={ac5} RName5="Manage User" RLink5="/admin/userlist" icon5="fas fa-users"
-          M6={ac6} RName6="Manage Job" RLink6="/admin/joblist" icon6="fas fa-briefcase"
-          M7={ac7} RName7="Manage Team" RLink7="/admin/teamlist" icon7="fas fa-users-cog"
-          M8={ac8} RName8="" RLink8="" icon8=""
-          M9={ac9} RName9="" RLink9="" icon9=""
-          M10={ac10} RName10="Log Out" RLink10="" icon10=""
-        />
-        <div className="content-wrapper" >
+      <div>
+        <Sidebar menuItems={menuItems} />
+        <div className="content-wrapper">
           {children}
         </div>
       </div>

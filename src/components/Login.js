@@ -64,7 +64,7 @@ export default function Login() {
                     if (response.data.role == 'admin') {
                         navigate('/admin/dashboard');
                     } else if (response.data.role == 'user') {
-                        navigate('/client/dashboard');
+                        navigate('/admin/userdashboard');
                     } else {
                         navigate('/');
                     }
@@ -97,7 +97,7 @@ export default function Login() {
                     <div className="login-box">
                         <div className="card card-outline card-primary pb-4">
                             <div class="text-center mt-2">
-                                <img class="profile-user-img img-fluid border border-0" src={Env.REACT_APP_PROJECT_ICON} alt="User profile picture" />
+                                <img class="profile-user-img-com img-fluid border border-0" src={Env.REACT_APP_PROJECT_ICON} alt="User profile picture" />
                                
                                 <h3 className="mt-2">{Env.REACT_APP_PROJECT_NAME}</h3>
                             </div>
@@ -159,7 +159,8 @@ export default function Login() {
                                 </form>
                             </div>
                             <div className="text-center mt-3">
-                                <p className="text-center">Designed by <Link>{Env.REACT_APP_DEVLOPER_NAME}</Link></p>
+                                <p className="text-center mb-1">New Registration <Link>Click</Link></p>
+                                <p className="text-center mb-0">Designed by <Link>{Env.REACT_APP_DEVLOPER_NAME}</Link></p>
                             </div>
                         </div>
                     </div>

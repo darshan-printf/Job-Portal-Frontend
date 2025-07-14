@@ -13,7 +13,7 @@ import WebLayout from "../components/WebsiteRouteLayout";
 import Login from "../components/Login";
 import Error from "../components/Error";
 
-// Admin Pages
+//  Super Admin Pages
 import Dashboard from "../Pages/Dashboard";
 import CountryAdd from "../Pages/Country/Add";
 import CountryEdit from "../Pages/Country/Edit";
@@ -28,6 +28,8 @@ import UserAdd from "../Pages/User/Add";
 import UserEdit from "../Pages/User/Edit";
 import UserList from "../Pages/User/List";
 
+// Admin Pages
+import ClientDashboard from "../Pages/Client/Dashboard";
 
 
 // Utility
@@ -49,26 +51,30 @@ export default function App() {
 
           {/* Admin layout and routes */}
           <Route path="/admin" element={<AdminLayout />}>
-          
+
+            {/* Super Admin Routes */}
             <Route path="login" element={<Login />} />
             <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />} />
-            <Route path="countryadd" element={ <ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} /> } />
-            <Route path="countryedit" element={ <ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />} />
-            <Route path="countrylist" element={ <ProtectedRoute element={<CountryList />} allowedRoles={['admin']} /> }  />
-            <Route path="statesadd" element={ <ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />  } />
-            <Route path="statesedit" element={  <ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} /> } />
-            <Route path="stateslist" element={<ProtectedRoute element={<StatesList />} allowedRoles={['admin']} /> }  />
-            <Route path="cityadd" element={<ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} /> }/>
-            <Route path="cityedit" element={<ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} /> }/>
-            <Route path="citylist"  element={<ProtectedRoute element={<CityList />} allowedRoles={['admin']} /> }/>
-            <Route path="useradd" element={<ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} /> }/>
-            <Route path="useredit" element={<ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} /> }/>
-            <Route path="userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} /> }/>
-
+            <Route path="countryadd" element={<ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />} />
+            <Route path="countryedit" element={<ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />} />
+            <Route path="countrylist" element={<ProtectedRoute element={<CountryList />} allowedRoles={['admin']} />} />
+            <Route path="statesadd" element={<ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />} />
+            <Route path="statesedit" element={<ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} />} />
+            <Route path="stateslist" element={<ProtectedRoute element={<StatesList />} allowedRoles={['admin']} />} />
+            <Route path="cityadd" element={<ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} />} />
+            <Route path="cityedit" element={<ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} />} />
+            <Route path="citylist" element={<ProtectedRoute element={<CityList />} allowedRoles={['admin']} />} />
+            <Route path="useradd" element={<ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} />} />
+            <Route path="useredit" element={<ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} />} />
+            <Route path="userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} />} />
             <Route path="*" element={<Error />} />
+            <Route path="userdashboard" element={<ProtectedRoute element={<ClientDashboard />} allowedRoles={['user']} />} />
           </Route>
+          
 
-          {/* Client layout and routes */}
+
+
+          {/* Web layout and routes */}
           <Route path="/" element={<WebLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="about" element={<About />} />
@@ -78,7 +84,7 @@ export default function App() {
             <Route path="feedback" element={<FeedBack />} />
             <Route path="jobboard" element={<JobBoard />} />
 
-            
+
           </Route>
         </Routes>
       </BrowserRouter>
