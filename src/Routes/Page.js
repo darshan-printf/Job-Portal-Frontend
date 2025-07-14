@@ -47,8 +47,6 @@ export default function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
-
           {/* Admin layout and routes */}
           <Route path="/admin" element={<AdminLayout />}>
 
