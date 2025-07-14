@@ -98,8 +98,10 @@ export default function Login() {
                         <div className="card card-outline card-primary pb-4">
                             <div class="text-center mt-2">
                                 <img class="profile-user-img img-fluid border border-0" src={Env.REACT_APP_PROJECT_ICON} alt="User profile picture" />
+                               
+                                <h3 className="mt-2">{Env.REACT_APP_PROJECT_NAME}</h3>
                             </div>
-                            <div className="card-body ">
+                            <div className="card-body pt-0 ">
                                 <p className="login-box-msg">Sign in to start your session</p>
                                 <form onSubmit={handleSubmit}>
                                     <div className="input-group mb-3">
@@ -157,7 +159,7 @@ export default function Login() {
                                 </form>
                             </div>
                             <div className="text-center mt-3">
-                                <p className="text-center">Designed by <Link to={"https://printftech.com/"} target='blank' >PRiNTF</Link></p>
+                                <p className="text-center">Designed by <Link>{Env.REACT_APP_DEVLOPER_NAME}</Link></p>
                             </div>
                         </div>
                     </div>
