@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 
 
+
 export default function WebFooter() {
   const Env = process.env;
   return (
@@ -51,39 +52,71 @@ export default function WebFooter() {
           <div className="col-lg-3 col-md-6">
             <h6 className="text-dark fw-semibold mb-3">Quick Links</h6>
             <ul className="list-unstyled text-muted small">
-              {["Home", "About", "Services", "Team", "Contact"].map((link) => (
-                <li key={link} className="mb-2">
-                  <a
-                    href={`/${link.toLowerCase()}`}
-                    className="text-decoration-none d-flex align-items-center text-muted"
-                  >
-                    <ArrowRight
-                      size={14}
-                      className="me-2 opacity-0 hover-opacity"
-                    />
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li className="mb-2">
+                <Link
+                  to="/team"
+                  className="text-decoration-none d-flex align-items-center text-muted"
+                >
+                  <ArrowRight size={14}  />
+                  Team
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link
+                  to="/services"
+                  className="text-decoration-none d-flex align-items-center text-muted"
+                >
+                  <ArrowRight size={14} />
+                  Services
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link
+                  to="/jobboard"
+                  className="text-decoration-none d-flex align-items-center text-muted"
+                >
+                  <ArrowRight size={14}  />
+                  JobBoard
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link
+                  to="/feedback"
+                  className="text-decoration-none d-flex align-items-center text-muted"
+                >
+                  <ArrowRight size={14} />
+                  Feed Back
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link
+                  to="/contact"
+                  className="text-decoration-none d-flex align-items-center text-muted"
+                >
+                  <ArrowRight size={14}  />
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
+
 
           {/* Services */}
           <div className="col-lg-3 col-md-6">
             <h6 className="text-dark fw-semibold mb-3">Our Services</h6>
             <ul className="list-unstyled text-muted small">
               {[
-                "Web Development",
-                "Mobile Apps",
-                "Digital Marketing",
-                "Cloud Solutions",
-                "Consulting",
+                "Job Posting Management",
+                "Analytics Dashboard",
+                "Automated Email Notifications",
+                "Search & Filter Candidates",
+                "Candidate Status History",
               ].map((service) => (
                 <li key={service} className="mb-2">
                   <Link href="#" className="text-decoration-none d-flex align-items-center text-muted">
                     <ArrowRight
                       size={14}
-                      className="me-2 opacity-0 hover-opacity"
+                      
                     />
                     {service}
                   </Link>
@@ -159,7 +192,7 @@ export default function WebFooter() {
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (
               <Link
                 key={item}
-               to={'/'}
+                to={'/'}
                 className="text-muted text-decoration-none"
               >
                 {item}

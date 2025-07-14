@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 export default function WebHeader() {
-  const Env   = process.env;
+  const Env = process.env;
   return (
     <header id="header" className="header d-flex align-items-center sticky-top">
       <div className="container-fluid container-xl position-relative d-flex align-items-center">
@@ -23,17 +23,22 @@ export default function WebHeader() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/team" className={({ isActive }) => (isActive ? "active" : "")}>
+                Team
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/services" className={({ isActive }) => (isActive ? "active" : "")}>
                 Services
               </NavLink>
             </li>
             <li>
-              <NavLink to="/team" className={({ isActive }) => (isActive ? "active" : "")}>
+              <NavLink to="/jobboard" className={({ isActive }) => (isActive ? "active" : "")}>
                 Job Board
               </NavLink>
             </li>
             <li>
-              <NavLink to="/team" className={({ isActive }) => (isActive ? "active" : "")}>
+              <NavLink to="/feedback" className={({ isActive }) => (isActive ? "active" : "")}>
                 Feed Back
               </NavLink>
             </li>

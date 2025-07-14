@@ -37,6 +37,8 @@ import About from "../Pages/Web/About/About";
 import Services from "../Pages/Web/Services/Services";
 import Team from "../Pages/Web/Team/Team";
 import Contact from "../Pages/Web/Contact/Contact";
+import FeedBack from "../Pages/Web/FeedBack/FeedBack";
+import JobBoard from "../Pages/Web/JobBoard/JobBoard";
 
 export default function App() {
   return (
@@ -73,6 +75,9 @@ export default function App() {
             <Route path="services" element={<Services />} />
             <Route path="team" element={<Team />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="feedback" element={<FeedBack />} />
+            <Route path="jobboard" element={<JobBoard />} />
+
             
           </Route>
         </Routes>
