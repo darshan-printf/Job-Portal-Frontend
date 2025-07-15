@@ -11,6 +11,7 @@ import WebLayout from "../components/WebsiteRouteLayout";
 
 // Public pages
 import Login from "../components/Login";
+import Registration from "../components/Registration";
 import Error from "../components/Error";
 
 //  Super Admin Pages
@@ -54,6 +55,8 @@ export default function App() {
 
             {/* Super Admin Routes */}
             <Route path="login" element={<Login />} />
+            <Route path="registration" element={<Registration/>} />
+
             <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />} />
             <Route path="countryadd" element={<ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />} />
             <Route path="countryedit" element={<ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />} />

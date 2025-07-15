@@ -102,7 +102,7 @@ export default function Login() {
                                 <h3 className="mt-2">{Env.REACT_APP_PROJECT_NAME}</h3>
                             </div>
                             <div className="card-body pt-0 ">
-                                <p className="login-box-msg">Sign in to start your session</p>
+                                <p className="login-box-msg">{Env.REACT_APP_PROJECT_NAME} Sign In</p>
                                 <form onSubmit={handleSubmit}>
                                     <div className="input-group mb-3">
                                         <input
@@ -159,7 +159,7 @@ export default function Login() {
                                 </form>
                             </div>
                             <div className="text-center mt-3">
-                                <p className="text-center mb-1">New Registration <Link>Click</Link></p>
+                                <p className="text-center mb-1">New Registration <Link to={'/admin/registration'}>Click</Link></p>
                                 <p className="text-center mb-0">Designed by <Link>{Env.REACT_APP_DEVLOPER_NAME}</Link></p>
                             </div>
                         </div>
