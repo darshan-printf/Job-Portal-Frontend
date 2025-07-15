@@ -143,7 +143,6 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* /Team Section */}
       <section id="pricing" className="pricing section">
         {/* Section Title */}
