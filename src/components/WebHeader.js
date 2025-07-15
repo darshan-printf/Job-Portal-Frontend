@@ -6,7 +6,7 @@ export default function WebHeader() {
     <header id="header" className="header d-flex align-items-center sticky-top">
       <div className="container-fluid container-xl position-relative d-flex align-items-center">
         <NavLink to="/" className="logo d-flex align-items-center me-auto">
-        <img src={Env.REACT_APP_PROJECT_ICON} alt=""/> 
+          <img src={Env.REACT_APP_PROJECT_ICON} alt="" />
           <h1 className="sitename">{Env.REACT_APP_PROJECT_NAME}</h1>
         </NavLink>
 
@@ -51,7 +51,7 @@ export default function WebHeader() {
           <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
-        <NavLink to="/contact" className="btn-getstarted">
+        <NavLink to="/admin/login" className="btn-getstarted">
           Get Started
         </NavLink>
       </div>

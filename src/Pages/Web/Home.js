@@ -7,6 +7,7 @@ export default function Home() {
   const Env = process.env;
   return (
     <WebLayout>
+      {/* Hero Section */}
       <section id="hero" className="hero section">
         <div className="container">
           <div className="row gy-4">
@@ -16,11 +17,11 @@ export default function Home() {
                 Post a job in minutes and start receiving qualified resumes as soon as today
               </p>
               <div className="d-flex">
-                <Link to="/contact" className=" btn-get-started">
+                <Link to="/admin/login" className=" btn-get-started">
                   Get Started
                 </Link>
                 <Link
-                  to="https://www.youtube.com/watch?v=Y7f98aduVJ8"
+                  to="/admin/login"
                   className="glightbox btn-watch-video d-flex align-items-center"
                 ></Link>
               </div>
@@ -35,6 +36,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* clients section */}
       <section id="clients" className="clients section light-background">
         <div className="container" data-aos="fade-up">
           <div className="row gy-4">
@@ -142,7 +144,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* /Team Section */}
       <section id="pricing" className="pricing section">
         {/* Section Title */}
@@ -261,9 +262,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
-
     </WebLayout>
   );
 }

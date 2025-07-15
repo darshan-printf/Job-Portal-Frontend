@@ -8,7 +8,7 @@ export default function Layout({
 }) {
     const menuItems = [
         { active: ac1, RName: "Dashboard", RLink: "/admin/userdashboard", icon: "fas fa-tachometer-alt" },
-        { active: ac2, RName: "Job Posting", RLink: "/admin/", icon: "fas fa-briefcase" },
+        { active: ac2, RName: "Job Posting", RLink: "/admin/joblist", icon: "fas fa-briefcase" },
         { active: ac3, RName: "Candidate List", RLink: "/admin/", icon: "fas fa-user" },
         { active: ac4, RName: "Interview Schedule", RLink: "/admin/", icon: "fas fa-calendar-alt" },
         { active: ac5, RName: "Offer Letter", RLink: "/admin/", icon: "fas fa-file-signature" },

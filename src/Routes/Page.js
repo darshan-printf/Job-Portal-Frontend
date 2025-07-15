@@ -30,6 +30,8 @@ import UserList from "../Pages/User/List";
 
 // Admin Pages
 import ClientDashboard from "../Pages/Client/Dashboard";
+import Joblist  from "../Pages/Client/Job/List";
+
 
 
 // Utility
@@ -67,6 +69,8 @@ export default function App() {
             <Route path="userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} />} />
             <Route path="*" element={<Error />} />
             <Route path="userdashboard" element={<ProtectedRoute element={<ClientDashboard />} allowedRoles={['user']} />} />
+            <Route path="joblist" element={<ProtectedRoute element={<Joblist/>} allowedRoles={['user']} />} />
+
           </Route>
           
 
