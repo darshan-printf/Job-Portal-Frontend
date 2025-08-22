@@ -1,8 +1,6 @@
 // App.js
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "../redux/store";
+import {  Routes, Route } from "react-router-dom";
 import "../App.css";
 
 // Layouts
@@ -47,52 +45,47 @@ import JobBoard from "../Pages/Web/JobBoard/JobBoard";
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
+    
+      
         <Routes>
           {/* Admin layout and routes */}
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route     path="/admin"             element={<AdminLayout />}>
 
-            {/* Super Admin Routes */}
-            <Route path="login" element={<Login />} />
-            <Route path="registration" element={<Registration/>} />
-
-            <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={['admin']} />} />
-            <Route path="countryadd" element={<ProtectedRoute element={<CountryAdd />} allowedRoles={['admin']} />} />
-            <Route path="countryedit" element={<ProtectedRoute element={<CountryEdit />} allowedRoles={['admin']} />} />
-            <Route path="countrylist" element={<ProtectedRoute element={<CountryList />} allowedRoles={['admin']} />} />
-            <Route path="statesadd" element={<ProtectedRoute element={<StatesAdd />} allowedRoles={['admin']} />} />
-            <Route path="statesedit" element={<ProtectedRoute element={<StatesEdit />} allowedRoles={['admin']} />} />
-            <Route path="stateslist" element={<ProtectedRoute element={<StatesList />} allowedRoles={['admin']} />} />
-            <Route path="cityadd" element={<ProtectedRoute element={<CityAdd />} allowedRoles={['admin']} />} />
-            <Route path="cityedit" element={<ProtectedRoute element={<CityEdit />} allowedRoles={['admin']} />} />
-            <Route path="citylist" element={<ProtectedRoute element={<CityList />} allowedRoles={['admin']} />} />
-            <Route path="useradd" element={<ProtectedRoute element={<UserAdd />} allowedRoles={['admin']} />} />
-            <Route path="useredit" element={<ProtectedRoute element={<UserEdit />} allowedRoles={['admin']} />} />
-            <Route path="userlist" element={<ProtectedRoute element={<UserList />} allowedRoles={['admin']} />} />
-            <Route path="*" element={<Error />} />
-            <Route path="userdashboard" element={<ProtectedRoute element={<ClientDashboard />} allowedRoles={['user']} />} />
-            <Route path="joblist" element={<ProtectedRoute element={<Joblist/>} allowedRoles={['user']} />} />
+            <Route   path="login"              element={<Login />} />
+            <Route   path="registration"       element={<Registration/>} />
+            <Route   path="*"                  element={<Error />} />
+            <Route   path="dashboard"          element={<ProtectedRoute    element={<Dashboard />}         allowedRoles={['admin']}   />} />
+            <Route   path="countryadd"         element={<ProtectedRoute    element={<CountryAdd />}        allowedRoles={['admin']}   />} />
+            <Route   path="countryedit"        element={<ProtectedRoute    element={<CountryEdit />}       allowedRoles={['admin']}   />} />
+            <Route   path="countrylist"        element={<ProtectedRoute    element={<CountryList />}       allowedRoles={['admin']}   />} />
+            <Route   path="statesadd"          element={<ProtectedRoute    element={<StatesAdd />}         allowedRoles={['admin']}   />} />
+            <Route   path="statesedit"         element={<ProtectedRoute    element={<StatesEdit />}        allowedRoles={['admin']}   />} />
+            <Route   path="stateslist"         element={<ProtectedRoute    element={<StatesList />}        allowedRoles={['admin']}   />} />
+            <Route   path="cityadd"            element={<ProtectedRoute    element={<CityAdd />}           allowedRoles={['admin']}   />} />
+            <Route   path="cityedit"           element={<ProtectedRoute    element={<CityEdit />}          allowedRoles={['admin']}   />} />
+            <Route   path="citylist"           element={<ProtectedRoute    element={<CityList />}          allowedRoles={['admin']}   />} />
+            <Route   path="useradd"            element={<ProtectedRoute    element={<UserAdd />}           allowedRoles={['admin']}   />} />
+            <Route   path="useredit"           element={<ProtectedRoute    element={<UserEdit />}          allowedRoles={['admin']}   />} />
+            <Route   path="userlist"           element={<ProtectedRoute    element={<UserList />}          allowedRoles={['admin']}   />} />
+            <Route   path="userdashboard"      element={<ProtectedRoute    element={<ClientDashboard />}   allowedRoles={['user']}    />} />
+            <Route   path="joblist"            element={<ProtectedRoute    element={<Joblist />}           allowedRoles={['user']}    />} />
 
           </Route>
           
-
-
-
           {/* Web layout and routes */}
-          <Route path="/" element={<WebLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="services" element={<Services />} />
-            <Route path="team" element={<Team />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="feedback" element={<FeedBack />} />
-            <Route path="jobboard" element={<JobBoard />} />
+          <Route     path="/"          element={<WebLayout />}>
 
+            <Route   path="/"          element={<Home />} />
+            <Route   path="about"      element={<About />} />
+            <Route   path="services"   element={<Services />} />
+            <Route   path="team"       element={<Team />} />
+            <Route   path="contact"    element={<Contact />} />
+            <Route   path="feedback"   element={<FeedBack />} />
+            <Route   path="jobboard"   element={<JobBoard />} />
 
           </Route>
         </Routes>
-      </BrowserRouter>
-    </Provider>
+     
+   
   );
 }
