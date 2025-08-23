@@ -12,7 +12,7 @@ export default function Sidebar({ menuItems }) {
         <img
           src={Env.REACT_APP_PROJECT_ICON}
           alt="Logo"
-          className="brand-image elevation-3"
+          className="brand-image"
           style={{ opacity: 1 }}
         />
         <span className="brand-text font-weight-light">

@@ -23,9 +23,10 @@ export default function Dashboard() {
     resume: 0
   });
   const links = [
-    { to: "/admin/userlist", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: `${count.users}` },
-    { to: "/admin/", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: `${count.job}` },
-    { to: "/admin/", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1400 },
+    { to: "/admin/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: `${count.country}` },
+    { to: "/admin/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: `${count.states}` },
+    { to: "/admin/citylist", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: `${count.city}` },
+    
   ];
 
 
@@ -59,13 +60,13 @@ export default function Dashboard() {
     fetchCount();
   }, []);
   return (
-    <Layout ac1="active">
+    <Layout ac2="active">
       <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
       <section className="content mb-4">
         <div className="container-fluid">
           <div className="row">
             {links.map(({ to, text, icon, bg, count }, idx) => (
-              <div key={idx} className="col-12 col-sm-6 col-md-3">
+              <div key={idx} className="col-12 col-sm-6 col-md-4">
                 <Link to={to} className="text-dark">
                   <div className="info-box mb-3">
                     <span className={`info-box-icon ${bg} elevation-1`}>{icon}</span>

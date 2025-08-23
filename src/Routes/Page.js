@@ -26,6 +26,7 @@ import CityList from "../Pages/City/List";
 import UserAdd from "../Pages/User/Add";
 import UserEdit from "../Pages/User/Edit";
 import UserList from "../Pages/User/List";
+import Location from "../Pages/Location";
 
 // Admin Pages
 import ClientDashboard from "../Pages/Client/Dashboard";
@@ -55,6 +56,7 @@ export default function App() {
             <Route   path="registration"       element={<Registration/>} />
             <Route   path="*"                  element={<Error />} />
             <Route   path="dashboard"          element={<ProtectedRoute    element={<Dashboard />}         allowedRoles={['admin']}   />} />
+            <Route   path="location"          element={<ProtectedRoute    element={<Location />}         allowedRoles={['admin']}   />} />
             <Route   path="countryadd"         element={<ProtectedRoute    element={<CountryAdd />}        allowedRoles={['admin']}   />} />
             <Route   path="countryedit"        element={<ProtectedRoute    element={<CountryEdit />}       allowedRoles={['admin']}   />} />
             <Route   path="countrylist"        element={<ProtectedRoute    element={<CountryList />}       allowedRoles={['admin']}   />} />
