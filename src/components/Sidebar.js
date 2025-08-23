@@ -7,7 +7,7 @@ export default function Sidebar({ menuItems }) {
   const Env = process.env;
 
   return (
-    <aside className="main-sidebar sidebar-dark-primary elevation-4">
+    <aside className="main-sidebar sidebar-dark-primary ">
       <Link to="/admin/dashboard" className="brand-link">
         <img
           src={Env.REACT_APP_PROJECT_ICON}
