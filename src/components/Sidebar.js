@@ -1,13 +1,20 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Sidebar({ menuItems }) {
   const data = useSelector((state) => state.data.data);
   const Env = process.env;
 
+  useEffect(() => {
+    // Ensure AdminLTE only initializes once
+    if (window.$) {
+      window.$('[data-widget="treeview"]').Treeview('init');
+    }
+  }, []);
+
   return (
-    <aside className="main-sidebar sidebar-dark-primary ">
+    <aside className="main-sidebar sidebar-dark-primary">
       <Link to="/admin/dashboard" className="brand-link">
         <img
           src={Env.REACT_APP_PROJECT_ICON}
@@ -20,6 +27,18 @@ export default function Sidebar({ menuItems }) {
         </span>
       </Link>
       <div className="sidebar">
+        <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div className="image">
+            <img
+              src="https://cdn-icons-png.freepik.com/256/747/747694.png"
+              className="img-circle elevation-2"
+              alt="User"
+            />
+          </div>
+          <div className="info">
+            <Link to="/" className="d-block">Alexander Pierce</Link>
+          </div>
+        </div>
         <nav className="mt-2">
           <ul
             className="nav nav-pills nav-sidebar flex-column"
@@ -27,16 +46,16 @@ export default function Sidebar({ menuItems }) {
             role="menu"
             data-accordion="false"
           >
-            {menuItems.map((item, index) => (
+            {menuItems.map((item, index) =>
               item.RName && item.RLink && (
-                <li key={index} className="nav-item has-treeview">
+                <li key={index} className="nav-item">
                   <Link to={item.RLink} className={`nav-link ${item.active || ""}`}>
                     <i className={`nav-icon ${item.icon}`}></i>
                     <p>{item.RName}</p>
                   </Link>
                 </li>
               )
-            ))}
+            )}
           </ul>
         </nav>
       </div>

@@ -10375,7 +10375,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
 }
 
 .layout-navbar-fixed .wrapper .main-sidebar:hover .brand-link {
-  transition: width 0.3s ease-in-out;
+  transition: width 1.3s ease-in-out;
   width: 250px;
 }
 
@@ -10383,7 +10383,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
   overflow: hidden;
   position: fixed;
   top: 0;
-  transition: width 0.3s ease-in-out;
+  transition: width 1.3s ease-in-out;
   width: 250px;
   z-index: 1035;
 }
@@ -10527,7 +10527,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
 
 .layout-navbar-fixed .wrapper.sidebar-collapse .brand-link {
   height: calc(3.5rem + 1px);
-  transition: width 0.3s ease-in-out;
+  transition: width 1.3s ease-in-out;
   width: 4.6rem;
 }
 
@@ -10536,7 +10536,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
 }
 
 .layout-navbar-fixed .wrapper.sidebar-collapse .main-sidebar:hover .brand-link {
-  transition: width 0.3s ease-in-out;
+  transition: width 1.3s ease-in-out;
   width: 250px;
 }
 
@@ -10544,7 +10544,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
   overflow: hidden;
   position: fixed;
   top: 0;
-  transition: width 0.3s ease-in-out;
+  transition: width 1.3s ease-in-out;
   width: 250px;
   z-index: 1035;
 }
