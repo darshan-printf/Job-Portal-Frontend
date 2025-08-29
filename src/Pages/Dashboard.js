@@ -1,38 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { MdWorkHistory } from "react-icons/md";
 import { TbWorldCog, TbBuildingEstate } from "react-icons/tb";
 import { FaCity, FaUsersGear } from "react-icons/fa6";
-import ContentHeader from '../components/ContentHeader';
-import CountUp from 'react-countup';
-import axios from 'axios';
-
+import ContentHeader from "../components/ContentHeader";
+import CountUp from "react-countup";
+import axios from "axios";
 
 export default function Dashboard() {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const [count, setCount] = useState({
     country: 0,
     states: 0,
     city: 0,
     users: 0,
     job: 0,
-    resume: 0
+    resume: 0,
   });
   const links = [
-    { to: "/admin/userlist", text: "Manage Users", icon: <FaUsersGear />, bg: "bg-danger", count: `${count.users}` },
-    { to: "/admin/", text: "Manage Job", icon: <i className="fas fa-users"></i>, bg: "bg-warning", count: `${count.job}` },
-    { to: "/admin/", text: "Manage Resume", icon: <MdWorkHistory />, bg: "bg-info", count: 1400 },
+    {
+      to: "/admin/userlist",
+      text: "Manage Users",
+      icon: <i className="fas fa-users"></i>,
+      bg: "bg-primary",
+      count: `${count.users}`,
+    },
+    {
+      to: "/admin/",
+      text: "Manage Company",
+      icon: <i className="fas fa-building"></i>,
+      bg: "bg-secondary",
+      count: `${count.job}`,
+    },
+    {
+      to: "/admin/",
+      text: "Manage Locations",
+      icon: <i className="fas fa-map-marker-alt"></i>,
+      bg: "bg-info",
+      count: 1400,
+    },
+    {
+      to: "/admin/",
+      text: "Manage jobs",
+      icon: <i className="fas fa-briefcase"></i>,
+      bg: "bg-success",
+      count: 1400,
+    },
   ];
 
-
   useEffect(() => {
-    if (!localStorage.getItem('alertShown')) {
+    if (!localStorage.getItem("alertShown")) {
       toast.success("Login successfully");
-      localStorage.setItem('alertShown', 'true');
+      localStorage.setItem("alertShown", "true");
     }
   }, []);
 
@@ -50,29 +73,37 @@ export default function Dashboard() {
           states: data.totalStates || 0,
           city: data.totalCities || 0,
           users: data.totalUsers || 0,
-          job: data.totalJobs || 0
+          job: data.totalJobs || 0,
         });
       } catch (error) {
-        console.error('Error fetching report count:', error);
+        console.error("Error fetching report count:", error);
       }
     };
     fetchCount();
   }, []);
   return (
     <Layout ac1="active">
-      <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
+      <ContentHeader
+        title="Dashboard"
+        breadcrumbs={[{ label: "Admin Dashboard" }]}
+      />
       <section className="content mb-4">
         <div className="container-fluid">
           <div className="row">
             {links.map(({ to, text, icon, bg, count }, idx) => (
-              <div key={idx} className="col-12 col-sm-6 col-md-3">
+              <div key={idx} className="col-lg-3 col-6">
                 <Link to={to} className="text-dark">
-                  <div className="info-box mb-3">
-                    <span className={`info-box-icon ${bg} elevation-1`}>{icon}</span>
-                    <div className="info-box-content">
-                      <span className="info-box-text pb-1">{text}</span>
-                      <span className="info-box-number">Total:  <CountUp end={count} /></span>
+                  <div className={`small-box ${bg}`}>
+                    <div className="inner">
+                      <h3>
+                        <CountUp end={count} />
+                      </h3>
+                      <p>{text}</p>
                     </div>
+                    <div className="icon">{icon}</div>
+                    <span className="small-box-footer">
+                      More info <i className="fas fa-arrow-circle-right"></i>
+                    </span>
                   </div>
                 </Link>
               </div>
