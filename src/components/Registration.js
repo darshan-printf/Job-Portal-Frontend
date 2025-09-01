@@ -8,8 +8,22 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Registration() {
     const apiUrl = process.env.REACT_APP_API_URL; // Get the API URL from the .env file
     const [email, setEmail] = useState('');
-    const navigate = useNavigate();
+    const [formdata, setFormdata] = useState({
+        name: '',
+        address: '',
+        email: '',
+        phone: '',
+        website: '',
+        GST: '',
+        PAN: '',
+        CIN: '',
+        type: '',
+        logo: null,
+
+    });
+
     const [loaded, setLoaded] = useState(false); // Button loading effect state
+
     const Env = process.env;
     return (
         <>
@@ -30,33 +44,26 @@ export default function Registration() {
                                 <p className="login-box-msg">{Env.REACT_APP_PROJECT_NAME} Sine Up</p>
                                 <form>
                                     <div className="row">
-                                        <div className="col-md-6 mb-3">
+                                        <div className="col-md-12 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="First Name"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
+                                                value={formdata.name}
+                                                onChange={(e) => setFormdata({ ...formdata, name: e.target.value })}
                                                 required
                                             />
                                         </div>
+
+
+                                        
                                         <div className="col-md-6 mb-3">
                                             <input
-                                                type="text"
+                                                type="number"
                                                 className="form-control"
-                                                placeholder="Last Name"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                required
-                                            />
-                                        </div>
-                                        <div className="col-md-12 mb-3">
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                placeholder="Email Address"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="Email contact number"
+                                                value={formdata.phone}
+                                                onChange={(e) => setFormdata({ ...formdata, phone: e.target.value })}
                                                 required
                                             />
                                         </div>
@@ -84,7 +91,7 @@ export default function Registration() {
                                             <input
                                                 type="email"
                                                 className="form-control"
-                                                placeholder="Institution Name"
+                                                placeholder="Institution Name" 
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 required
