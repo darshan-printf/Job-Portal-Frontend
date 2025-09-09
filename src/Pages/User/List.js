@@ -9,6 +9,7 @@ import ContentHeader from '../../components/ContentHeader';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
+
 export default function List() {
     const apiUrl = process.env.REACT_APP_API_URL;
     const [searchQuery, setSearchQuery] = useState('');
