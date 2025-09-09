@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,7 +15,7 @@ export default function Registration() {
     GSTNumber: "",
     PANNumber: "",
     CINNumber: "",
-    type: ""
+    type: "",
   });
 
   const [loaded, setLoaded] = useState(false);
@@ -37,33 +37,45 @@ export default function Registration() {
     setLoaded(true);
     try {
       const data = new FormData();
-      data.append('name', formdata.name);
-      data.append('address', formdata.address);
-      data.append('email', formdata.email);
-      data.append('phone', formdata.phone);
-      data.append('website', formdata.website);
-      data.append('GSTNumber', formdata.GSTNumber);
-      data.append('PANNumber', formdata.PANNumber);
-      data.append('CINNumber', formdata.CINNumber);
-      data.append('type', formdata.type);
-    
+      data.append("name", formdata.name);
+      data.append("address", formdata.address);
+      data.append("email", formdata.email);
+      data.append("phone", formdata.phone);
+      data.append("website", formdata.website);
+      data.append("GSTNumber", formdata.GSTNumber);
+      data.append("PANNumber", formdata.PANNumber);
+      data.append("CINNumber", formdata.CINNumber);
+      data.append("type", formdata.type);
+
       const config = {
-        method: 'post',
+        method: "post",
         maxBodyLength: Infinity,
         url: `${apiUrl}/company/register`,
-        headers: { 
-          'Content-Type': 'multipart/form-data'
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        data: data
+        data: data,
       };
       const response = await axios.request(config);
-      
+
       toast.success(response.data.message);
-      setFormdata({ name: "", address: "", email: "", phone: "", website: "", GSTNumber: "", PANNumber: "", CINNumber: "", type: "" });
-      
+      setFormdata({
+        name: "",
+        address: "",
+        email: "",
+        phone: "",
+        website: "",
+        GSTNumber: "",
+        PANNumber: "",
+        CINNumber: "",
+        type: "",
+      });
     } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.message || "Registration failed. Please try again.");
+      toast.error(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
     } finally {
       setLoaded(false);
     }
@@ -76,7 +88,7 @@ export default function Registration() {
         <div className="layer"></div>
         <div className="layer"></div>
         <div className="login-page-bg bg" id="page-bg">
-          <div className="card card-outline card-primary w-50 m-4">
+          <div className="card card-outline card-primary col-5 p-2">
             <div className="text-center">
               <img
                 className="profile-user-img-com img-fluid border border-0"
@@ -85,9 +97,8 @@ export default function Registration() {
               />
               <h3>{Env.REACT_APP_PROJECT_NAME}</h3>
             </div>
-            <div className="card-body " > 
-                
- <form onSubmit={handleSubmit}  >
+            <div className="card-body ">
+              <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-12 col-12 mb-3">
                     <input
@@ -108,6 +119,9 @@ export default function Registration() {
                       placeholder="Enter Contact Number *"
                       value={formdata.phone}
                       onChange={handleInputChange}
+                      maxLength="10"
+                      pattern="[0-9]{10}"
+                      title="Phone number must be 10 digits"
                       required
                     />
                   </div>
@@ -182,7 +196,7 @@ export default function Registration() {
                       rows="3"
                     />
                   </div>
-                 
+
                   <div className="col-12">
                     <button
                       type="submit"
@@ -205,8 +219,6 @@ export default function Registration() {
                   </div>
                 </div>
               </form>
-                
-             
             </div>
             <div className="text-center">
               <p className="text-center mb-1">

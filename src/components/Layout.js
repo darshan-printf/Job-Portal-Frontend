@@ -8,13 +8,13 @@ export default function Layout({
 }) {
   const menuItems = [
     { active: ac1, RName: "Dashboard", RLink: "/admin/dashboard", icon: "fas fa-tachometer-alt" },
-    { active: ac5, RName: "Manage User", RLink: "/admin/userlist", icon: "fas fa-users" },
-    { active: ac8, RName: "Company", RLink: "/admin/companys", icon: "fas fa-building" },
-    { active: ac2, RName: "Manage Location", RLink: "/admin/location", icon: "fas fa-map-marker-alt"},
-    { active: ac6, RName: "Manage Job", RLink: "/admin/joblist", icon: "fas fa-briefcase" },
-    { active: ac9, RName: "Reports", RLink: "/admin/reports", icon: "fas fa-chart-line" },
+    { active: ac2, RName: "Company", RLink: "/admin/companys", icon: "fas fa-building" },
+    { active: ac3, RName: "Manage User", RLink: "/admin/userlist", icon: "fas fa-users" },
+    { active: ac4, RName: "Manage Location", RLink: "/admin/location", icon: "fas fa-map-marker-alt"},
+    { active: ac5, RName: "Manage Job", RLink: "/admin/joblist", icon: "fas fa-briefcase" },
+    { active: ac6, RName: "Reports", RLink: "/admin/reports", icon: "fas fa-chart-line" },
     { active: ac7, RName: "Mails", RLink: "/admin/mails", icon: "fas fa-envelope" },
-    { active: ac10, RName: "Feed Back", RLink: "/admin/feedback", icon: "fas fa-comments" },
+    { active: ac8, RName: "Feed Back", RLink: "/admin/feedback", icon: "fas fa-comments" },
   ];
 
   return (

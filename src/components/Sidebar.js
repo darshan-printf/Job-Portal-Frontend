@@ -36,7 +36,7 @@ export default function Sidebar({ menuItems }) {
             />
           </div>
           <div className="info">
-            <Link to="/" className="d-block">Alexander Pierce</Link>
+            <Link to="/" className="d-block">{Env.REACT_APP_DEVLOPER_NAME}</Link>
           </div>
         </div>
         <nav className="mt-2">

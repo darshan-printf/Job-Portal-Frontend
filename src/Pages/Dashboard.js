@@ -20,19 +20,20 @@ export default function Dashboard() {
   });
   const links = [
     {
-      to: "/admin/userlist",
-      text: "Manage Users",
-      icon: <i className="fas fa-users"></i>,
-      bg: "bg-primary",
-      count: `${count.users}`,
-    },
-    {
       to: "/admin/",
       text: "Manage Company",
       icon: <i className="fas fa-building"></i>,
       bg: "bg-secondary",
       count: `${count.job}`,
     },
+    {
+      to: "/admin/userlist",
+      text: "Manage Users",
+      icon: <i className="fas fa-users"></i>,
+      bg: "bg-primary",
+      count: `${count.users}`,
+    },
+    
     {
       to: "/admin/",
       text: "Manage Locations",
