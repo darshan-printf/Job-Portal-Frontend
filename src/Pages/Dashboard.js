@@ -17,14 +17,15 @@ export default function Dashboard() {
     users: 0,
     job: 0,
     resume: 0,
+    company: 0
   });
   const links = [
     {
-      to: "/admin/",
+      to: "/admin/companys/list",
       text: "Manage Company",
       icon: <i className="fas fa-building"></i>,
       bg: "bg-secondary",
-      count: `${count.job}`,
+      count: `${count.company}`,
     },
     {
       to: "/admin/userlist",
@@ -72,6 +73,7 @@ export default function Dashboard() {
           city: data.totalCities || 0,
           users: data.totalUsers || 0,
           job: data.totalJobs || 0,
+          company: data.totalCompanies || 0
         });
       } catch (error) {
         console.error("Error fetching report count:", error);

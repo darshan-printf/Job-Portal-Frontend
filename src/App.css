@@ -89,15 +89,34 @@
 
 /* top  */
 .custom-table .rdt_TableCol {
-  padding-left: 10px;
+  
   background-color: white;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;
   height: 45px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
 }
-
+.custom-table .kFhx {
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    line-height: normal;
+    padding-left: 5px;
+    padding-right: 5px;
+    word-break: break-word;
+    
+}
+.custom-table .rdt_TableRow{
+  min-height: 30px;
+}
+.custom-table .rdt_TableRow:hover {
+  min-height: 40px; /* hover par badi ho jaaye */
+  background-color: #e4e9ef;
+  cursor: pointer;
+  font-weight: 700;
+}
 
 .sc-csKJxZ .eSnilV .rdt_TableCol_Sortable {
   max-width: 100px;
@@ -196,167 +215,13 @@
 .cmcNky div:first-child {
   font-size: 15px !important;
 }
-.esVMSV {
-  min-height: 35px !important;
-}
-.hMJXiY {
-  min-height: 35px !important;
-}
+
 
 @keyframes blink-animation {
   to {
     visibility: hidden;
   }
 }
-
-/* folder deshboard css */
-
-/*------------- folder box----------- */
-.folder {
-  width: 109px;
-  height: 79px;
-  margin: 25px 50px;
-  float: left;
-  position: relative;
-  background: rgb(110, 166, 239);
-  background: linear-gradient(183deg, rgba(110, 166, 239, 1) 11%, rgba(30, 92, 172, 1) 100%);
-  border-radius: 0 6px 6px 6px;
-  transition: 0.10s ease-out;
-  /* box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.59); */
-}
-
-/*-------------folder box----x------- */
-.folder:hover {
-  transform: scale(1.2);
-}
-
-/*-------------file opener----------- */
-.folder:before {
-  content: '';
-  width: 46%;
-  height: 21px;
-  clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
-  border-radius: 4px 0px 0 0;
-  background-color: #1e5cac;
-  position: absolute;
-  top: -10.3px;
-  left: 0px;
-}
-
-/*-------------file opener----x------- */
-
-/*------------- Document ----------- */
-.folder:after {
-  content: '';
-  width: 29%;
-  height: 5px;
-  border-radius: 2px 2px 0 0;
-  background-color: #ffffff;
-  position: absolute;
-  top: 5.6px;
-  left: 4px;
-}
-
-/*-------------Document ----x------- */
-
-/*------------- text  ----------- */
-.folder-p {
-  text-align: center;
-  position: relative;
-  top: 82px;
-  margin: 0%;
-  font-size: 13px;
-  color: rgb(12, 12, 12);
-
-}
-
-/* ----------------------------------------------------------------------------- */
-/*------------- folder box----------- */
-.Intfolder {
-  width: 109px;
-  height: 79px;
-  margin: 25px 50px;
-  float: left;
-  position: relative;
-  background: rgb(110, 166, 239);
-  background: linear-gradient(183deg, rgb(239, 194, 35) 11%, rgb(237, 226, 5) 100%);
-  border-radius: 0 6px 6px 6px;
-  transition: 0.10s ease-out;
-  /* box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.59); */
-}
-
-/*-------------folder box----x------- */
-.Intfolder:hover {
-  transform: scale(1.2);
-}
-
-/*-------------file opener----------- */
-.Intfolder:before {
-  content: '';
-  width: 46%;
-  height: 21px;
-  clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
-  border-radius: 4px 0px 0 0;
-  background-color: #3d3d3d;
-  position: absolute;
-  top: -10.3px;
-  left: 0px;
-}
-
-/*-------------file opener----x------- */
-
-/*------------- Document ----------- */
-.Intfolder:after {
-  content: '';
-  width: 29%;
-  height: 5px;
-  border-radius: 2px 2px 0 0;
-  background-color: #ffffff;
-  position: absolute;
-  top: 5.6px;
-  left: 4px;
-}
-
-/*-------------Document ----x------- */
-
-/*------------- text  ----------- */
-.Intfolder-p {
-  text-align: center;
-  position: relative;
-  top: 82px;
-  margin: 0%;
-  font-size: 13px;
-  color: rgb(12, 12, 12);
-
-}
-
-
-.exam-details-grid-container {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  /* 5 columns */
-  gap: 0px;
-  /* Spacing between grid items */
-}
-
-.exam-details-image-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.10s ease-out;
-  /* Smooth transition for the transform effect */
-}
-
-.exam-details-image-item:hover {
-  transform: scale(1.2);
-
-}
-
-.result-bodar {
-  border: 2px solid black;
-}
-
 
 /* Login page animation */
 
