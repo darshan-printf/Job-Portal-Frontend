@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ContentHeader from "../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FilePenLine, Trash2, UserRoundPlus } from "lucide-react";
+import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
 import Swal from "sweetalert2";
 
 export default function List() {
@@ -16,6 +16,7 @@ export default function List() {
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState({}); // Track loading state per row
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function List() {
 
     Swal.fire({
       title: "Are you sure?",
-      text: "You won’t be able to revert this action!",
+      text: "You won't be able to revert this action!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -75,59 +76,42 @@ export default function List() {
       }
     });
   };
+
   const handleToggleStatus = async (id, isActive) => {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    Swal.fire({
-      title: isActive ? "Deactivate this company?" : "Activate this company?",
-      text: "You can change the status anytime.",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: isActive ? "Yes, deactivate it!" : "Yes, activate it!",
-      cancelButtonText: "Cancel",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await axios.put(
-            `${apiUrl}company/activate/${id}`,
-            {},
-            {
-              headers: {
-                Authorization: `${token}`,
-              },
-            }
-          );
 
-          Swal.fire(
-            "Updated!",
-            response.data?.message || "Status updated successfully",
-            "success"
-          );
+  setStatusLoading(prev => ({ ...prev, [id]: true }));
 
-          fetchRecords(); // Refresh table
-        } catch (error) {
-          Swal.fire(
-            "Error!",
-            error.response?.data?.message || "Error updating status",
-            "error"
-          );
-        }
+  try {
+    const response = await axios.put(
+      `${apiUrl}company/activate/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
       }
-    });
-  };
+    );
+    toast.success(response.message );
+    fetchRecords(prev => ({ ...prev, [id]: false }));
+  } catch (error) {
+    toast.error(error.response?.data?.message );
+  } finally {
+    setStatusLoading(prev => ({ ...prev, [id]: false }));
+  }
+};
 
   const columns = [
     {
       name: "No",
       selector: (row, index) =>
         row.isSkeleton ? (
-          <Skeleton width={20} />
+          <Skeleton width={60} />
         ) : (
           (currentPage - 1) * perPage + index + 1
         ),
-      width: "80px",
+      width: "60px",
       center: true,
     },
     {
@@ -148,45 +132,64 @@ export default function List() {
     },
     {
       name: "GST Number",
-      sortable: true,
+      width: "120px",
       cell: (row) =>
         row.isSkeleton ? <Skeleton width={100} /> : row.GSTNumber,
     },
     {
       name: "Type",
       sortable: true,
-      cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.type),
+      width: "80px",
+      center: "true",
+      cell: (row) => (row.isSkeleton ? <Skeleton width={60} /> : row.type),
     },
+    
     {
       name: "Actions",
-      width: "110px",
+      width: "150px",
       center: true,
       cell: (row) =>
         row.isSkeleton ? (
-          <Skeleton width={80} height={30} />
+          <Skeleton width={120} height={30} />
         ) : (
-          <div>
+          <div className="d-flex">
             <button
               type="button"
-              className={`btn btn-xs mr-1 ${
+              className={`btn btn-xs mr-1 d-flex align-items-center justify-content-center rounded-circle ${
                 row.isActive ? "btn-success" : "btn-secondary"
               }`}
               onClick={() => handleToggleStatus(row._id, row.isActive)}
+              disabled={statusLoading[row._id]}
+              style={{ width: "32px", height: "32px" }}
+              title={row.isActive ? "Deactivate" : "Activate"}
             >
-              <UserRoundPlus size={16} />
+              {statusLoading[row._id] ? (
+                <div className="spinner-border spinner-border-sm" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              ) : row.isActive ? (
+                <UserCheck size={16} />
+              ) : (
+                <UserX size={16} />
+              )}
             </button>
 
             <button
               type="button"
-              className="btn btn-primary btn-xs mr-1"
+              className="btn btn-primary btn-xs mr-1 d-flex align-items-center justify-content-center rounded-circle"
               onClick={() => navigate(`/admin/company/edit/${row._id}`)}
+              style={{ width: "32px", height: "32px" }}
+              title="Edit"
             >
               <FilePenLine size={16} />
             </button>
+
             <button
               type="button"
-              className="btn btn-danger btn-xs"
+              className="btn btn-danger btn-xs d-flex align-items-center justify-content-center rounded-circle"
               onClick={() => handleDelete(row._id)}
+              style={{ width: "32px", height: "32px" }}
+              title="Delete"
             >
               <Trash2 size={16} />
             </button>

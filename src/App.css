@@ -109,13 +109,13 @@
     
 }
 .custom-table .rdt_TableRow{
-  min-height: 30px;
+  min-height: 40px;
 }
 .custom-table .rdt_TableRow:hover {
-  min-height: 40px; /* hover par badi ho jaaye */
   background-color: #e4e9ef;
   cursor: pointer;
-  font-weight: 700;
+  color: #000;
+  font-weight: 500;
 }
 
 .sc-csKJxZ .eSnilV .rdt_TableCol_Sortable {
@@ -209,7 +209,8 @@
 }
 
 .rdt_TableCol {
-  padding-right: 10px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
 }
 
 .cmcNky div:first-child {
