@@ -97,7 +97,7 @@ export default function Registration() {
               />
               <h3>{Env.REACT_APP_PROJECT_NAME}</h3>
             </div>
-            <div className="card-body ">
+            <div className="card-body  p-0 px-2">
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-12 col-12 mb-3">
@@ -177,15 +177,20 @@ export default function Registration() {
                     />
                   </div>
                   <div className="col-md-6 col-12 mb-3">
-                    <input
-                      type="text"
+                    <select
                       className="form-control"
                       name="type"
-                      placeholder="Enter Type of (PVT,LTD,ORG,ETC)"
                       value={formdata.type}
                       onChange={handleInputChange}
-                    />
+                    >
+                      <option value="">Select Type</option>
+                      <option value="PVT">PVT</option>
+                      <option value="LTD">LTD</option>
+                      <option value="ORG">ORG</option>
+                      <option value="ETC">ETC</option>
+                    </select>
                   </div>
+
                   <div className="col-md-12 col-12 mb-3">
                     <textarea
                       className="form-control"
