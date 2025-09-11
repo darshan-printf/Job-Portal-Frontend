@@ -16,10 +16,12 @@ export default function List() {
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [statusLoading, setStatusLoading] = useState({}); // Track loading state per row
+  const [statusLoading, setStatusLoading] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const Env = process.env;
 
   useEffect(() => {
     fetchRecords();
@@ -28,7 +30,7 @@ export default function List() {
 
   const fetchRecords = async () => {
     setLoading(true);
-    const token = localStorage.getItem("token");
+
     try {
       const response = await axios.get(`${apiUrl}company/get`, {
         headers: {
@@ -45,8 +47,6 @@ export default function List() {
   };
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem("token");
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this action!",
@@ -77,30 +77,27 @@ export default function List() {
     });
   };
 
-  const handleToggleStatus = async (id, isActive) => {
-  const token = localStorage.getItem("token");
-
-
-  setStatusLoading(prev => ({ ...prev, [id]: true }));
-
-  try {
-    const response = await axios.put(
-      `${apiUrl}company/activate/${id}`,
-      {},
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-    );
-    toast.success(response.message );
-    fetchRecords(prev => ({ ...prev, [id]: false }));
-  } catch (error) {
-    toast.error(error.response?.data?.message );
-  } finally {
-    setStatusLoading(prev => ({ ...prev, [id]: false }));
-  }
-};
+  const handleToggleStatus = async (id) => {
+    setStatusLoading((prev) => ({ ...prev, [id]: true }));
+    try {
+      const response = await axios.put(
+        `${apiUrl}company/activate/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      toast.success(response.data.data.message);
+    
+      fetchRecords((prev) => ({ ...prev, [id]: false }));
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    } finally {
+      setStatusLoading((prev) => ({ ...prev, [id]: false }));
+    }
+  };
 
   const columns = [
     {
@@ -113,6 +110,23 @@ export default function List() {
         ),
       width: "60px",
       center: true,
+    },
+    {
+      name: "Logo",
+      width: "100px",
+      center: true,
+      cell: (row) =>
+        row.isSkeleton ? (
+          <Skeleton circle height={45} width={45} />
+        ) : (
+          <img
+            src={row.logo || Env.REACT_APP_PROJECT_ICON}
+            alt="Profile"
+            height={45}
+            width={45}
+            className="p-1"
+          />
+        ),
     },
     {
       name: "Name",
@@ -143,7 +157,7 @@ export default function List() {
       center: "true",
       cell: (row) => (row.isSkeleton ? <Skeleton width={60} /> : row.type),
     },
-    
+
     {
       name: "Actions",
       width: "150px",
@@ -177,7 +191,7 @@ export default function List() {
             <button
               type="button"
               className="btn btn-primary btn-xs mr-1 d-flex align-items-center justify-content-center rounded-circle"
-              onClick={() => navigate(`/admin/company/edit/${row._id}`)}
+              onClick={() => navigate(`/admin/companys/edit?id=${row._id}`)}
               style={{ width: "32px", height: "32px" }}
               title="Edit"
             >
@@ -209,12 +223,13 @@ export default function List() {
   return (
     <Layout ac2="active">
       <ContentHeader
-        title="Company List"
+        title="Manage Company "
         breadcrumbs={[
           { label: "Dashboard", to: "/admin/dashboard" },
-          { label: "Company List" },
+          { label: "Manage Company " },
         ]}
       />
+
       <section className="content">
         <div className="container-fluid">
           <div className="row">
@@ -234,7 +249,7 @@ export default function List() {
                     </div>
                     <div className="bd-highlight">
                       <button
-                        onClick={() => navigate("/admin/company/add")}
+                        onClick={() => navigate("/admin/companys/add")}
                         type="button"
                         className="btn btn-block btn-primary"
                       >
