@@ -7,6 +7,13 @@ import ContentHeader from "../components/ContentHeader";
 import CountUp from "react-countup";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+import DataTable from "react-data-table-component";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
+import Swal from "sweetalert2";
+
 export default function Dashboard() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
@@ -17,8 +24,17 @@ export default function Dashboard() {
     users: 0,
     job: 0,
     resume: 0,
-    company: 0
+    company: 0,
   });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const navigate = useNavigate();
+  const Env = process.env;
+
   const links = [
     {
       to: "/admin/companys/list",
@@ -34,7 +50,7 @@ export default function Dashboard() {
       bg: "bg-primary",
       count: `${count.users}`,
     },
-    
+
     {
       to: "/admin/",
       text: "Manage Locations",
@@ -57,6 +73,167 @@ export default function Dashboard() {
       localStorage.setItem("alertShown", "true");
     }
   }, []);
+  useEffect(() => {
+    fetchRecords();
+    // eslint-disable-next-line
+  }, []);
+
+  const fetchRecords = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.get(
+        `${apiUrl}company/getLettestFiveCompanies`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setLoading(false);
+      const data = response.data?.data || [];
+      setRecords(data);
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.response?.data?.message);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this action!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${apiUrl}company/delete/${id}`, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+          fetchRecords();
+          Swal.fire("Deleted!", "Company has been deleted.", "success");
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            error.response?.data?.message || "Error deleting company",
+            "error"
+          );
+        }
+      }
+    });
+  };
+
+  const handleToggleStatus = async (id) => {
+    setStatusLoading((prev) => ({ ...prev, [id]: true }));
+    try {
+      const response = await axios.put(
+        `${apiUrl}company/activate/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      toast.success(response.data.data.message);
+
+      fetchRecords((prev) => ({ ...prev, [id]: false }));
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    } finally {
+      setStatusLoading((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
+  const columns = [
+    {
+      name: "No",
+      selector: (row, index) =>
+        row.isSkeleton ? (
+          <Skeleton width={60} />
+        ) : (
+          (currentPage - 1) * perPage + index + 1
+        ),
+      width: "40px",
+      center: true,
+    },
+    {
+      name: "Logo",
+      width: "100px",
+      center: true,
+      cell: (row) =>
+        row.isSkeleton ? (
+          <Skeleton circle height={45} width={45} />
+        ) : (
+          <img
+            src={row.logo || Env.REACT_APP_PROJECT_ICON}
+            alt="Profile"
+            height={45}
+            width={45}
+            className="p-1"
+          />
+        ),
+    },
+    {
+      name: "Name",
+
+      cell: (row) =>
+        row.isSkeleton ? <Skeleton width={120} /> : `${row.name}`,
+    },
+    {
+      name: "Type",
+      width: "80px",
+      center: "true",
+      cell: (row) => (row.isSkeleton ? <Skeleton width={60} /> : row.type),
+    },
+    {
+      name: "Actions",
+      width: "70px",
+      center: true,
+      cell: (row) =>
+        row.isSkeleton ? (
+          <Skeleton width={50} height={30} />
+        ) : (
+          <div className="d-flex">
+            <button
+              type="button"
+              className={`btn btn-xs mr-1 d-flex align-items-center justify-content-center rounded-circle ${
+                row.isActive ? "btn-success" : "btn-secondary"
+              }`}
+              onClick={() => handleToggleStatus(row._id, row.isActive)}
+              disabled={statusLoading[row._id]}
+              style={{ width: "32px", height: "32px" }}
+              title={row.isActive ? "Deactivate" : "Activate"}
+            >
+              {statusLoading[row._id] ? (
+                <div className="spinner-border spinner-border-sm" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              ) : row.isActive ? (
+                <UserCheck size={16} />
+              ) : (
+                <UserX size={16} />
+              )}
+            </button>
+          </div>
+        ),
+    },
+  ];
+
+  // Skeleton rows
+  const skeletonData = Array(10)
+    .fill({})
+    .map((_, index) => ({
+      _id: index,
+      isSkeleton: true,
+    }));
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -73,7 +250,7 @@ export default function Dashboard() {
           city: data.totalCities || 0,
           users: data.totalUsers || 0,
           job: data.totalJobs || 0,
-          company: data.totalCompanies || 0
+          company: data.totalCompanies || 0,
         });
       } catch (error) {
         console.error("Error fetching report count:", error);
@@ -87,7 +264,7 @@ export default function Dashboard() {
         title="Dashboard"
         breadcrumbs={[{ label: "Admin Dashboard" }]}
       />
-      <section className="content mb-4">
+      <section className="content mb-1">
         <div className="container-fluid">
           <div className="row">
             {links.map(({ to, text, icon, bg, count }, idx) => (
@@ -108,6 +285,58 @@ export default function Dashboard() {
                 </Link>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+      <section className="content">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-6">
+              <div className="card card-primary card-outline">
+                <div className="card-header">
+                  <div className="d-flex justify-content-center font-weight-bold align-items-center">
+                    <i className="fas fa-building"></i> &nbsp; Companies{" "}
+                  </div>
+                </div>
+                <div className="card-body text-center p-2">
+                  {loading ? (
+                    <DataTable
+                      columns={columns}
+                      data={skeletonData}
+                      className="custom-table"
+                      noHeader
+                      highlightOnHover
+                      striped
+                      customStyles={{
+                        headCells: { style: { justifyContent: "center" } },
+                      }}
+                    />
+                  ) : (
+                    <DataTable
+                      columns={columns}
+                      data={records.filter((r) =>
+                        r.name
+                          ?.toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                      )}
+                      onChangePage={(page) => setCurrentPage(page)}
+                      onChangeRowsPerPage={(newPerPage) =>
+                        setPerPage(newPerPage)
+                      }
+                      className="custom-table"
+                      noDataComponent="No data available"
+                      highlightOnHover
+                      striped
+                      customStyles={{
+                        headCells: { style: { justifyContent: "center" } },
+                      }}
+                      pointerOnHover
+                      responsive
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
