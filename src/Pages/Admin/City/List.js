@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FilePenLine, Trash2 } from "lucide-react";
 
 export default function List() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -95,23 +96,25 @@ export default function List() {
         row.isSkeleton ? (
           <Skeleton width={50} height={30} />
         ) : (
-          <div>
+          <div className="d-flex">
             <button
               type="button"
-              className="btn btn-primary btn-xs mr-2"
+              className="btn btn-primary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
+              style={{ width: "32px", height: "32px" }}
               onClick={() =>
                 navigate("/admin/cityedit", { state: { id: row._id } })
               }
             >
-              <i className="fas fa-pen"></i>
+             <FilePenLine size={16} />
             </button>
 
             <button
               type="button"
-              className="btn btn-danger btn-xs"
+              className="btn btn-danger btn-xs d-flex align-items-center justify-content-center rounded-circle"
+              style={{ width: "32px", height: "32px" }}
               onClick={() => handleDelete(row._id)}
             >
-              <i className="fas fa-trash"></i>
+             <Trash2 size={16} />
             </button>
           </div>
         ),
@@ -180,11 +183,7 @@ export default function List() {
                     fontSize: "14px"
                   } 
                 },
-                cells: {
-                  style: {
-                    justifyContent: "center",
-                  }
-                }
+                
               }}
               pointerOnHover
               responsive
