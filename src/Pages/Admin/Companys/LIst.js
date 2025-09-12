@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/Layout";
+import Layout from "../../../components/Layout";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ContentHeader from "../../components/ContentHeader";
+import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";

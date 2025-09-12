@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdWorkHistory } from "react-icons/md";
 import { TbWorldCog, TbBuildingEstate } from "react-icons/tb";
 import { FaCity, FaUsersGear } from "react-icons/fa6";
-import ContentHeader from '../components/ContentHeader';
+import ContentHeader from '../../components/ContentHeader';
 import CountUp from 'react-countup';
 import axios from 'axios';
 
@@ -60,7 +60,7 @@ export default function Dashboard() {
     fetchCount();
   }, []);
   return (
-    <Layout ac2="active">
+    <Layout ac3="active">
       <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
       <section className="content mb-4">
         <div className="container-fluid">

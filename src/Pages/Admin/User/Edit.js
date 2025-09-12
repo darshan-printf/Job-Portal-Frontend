@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContentHeader from '../../components/ContentHeader';
+import ContentHeader from '../../../components/ContentHeader';
 
 export default function Add() {
   const navigate = useNavigate();

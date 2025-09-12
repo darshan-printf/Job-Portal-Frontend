@@ -13,23 +13,23 @@ import Registration from "../components/Registration";
 import Error from "../components/Error";
 
 //  Super Admin Pages
-import Dashboard from "../Pages/Dashboard";
-import CountryAdd from "../Pages/Country/Add";
-import CountryEdit from "../Pages/Country/Edit";
-import CountryList from "../Pages/Country/List";
-import StatesAdd from "../Pages/States/Add";
-import StatesEdit from "../Pages/States/Edit";
-import StatesList from "../Pages/States/List";
-import CityAdd from "../Pages/City/Add";
-import CityEdit from "../Pages/City/Edit";
-import CityList from "../Pages/City/List";
-import UserAdd from "../Pages/User/Add";
-import UserEdit from "../Pages/User/Edit";
-import UserList from "../Pages/User/List";
-import Location from "../Pages/Location";
-import AddCompanys from "../Pages/Companys/Add";
-import EditCompany from "../Pages/Companys/Edit";
-import ListCompany from "../Pages/Companys/LIst";
+import Dashboard from "../Pages/Admin/Dashboard";
+import CountryAdd from "../Pages/Admin/Country/Add";
+import CountryEdit from "../Pages/Admin/Country/Edit";
+import CountryList from "../Pages/Admin/Country/List";
+import StatesAdd from "../Pages/Admin/States/Add";
+import StatesEdit from "../Pages/Admin/States/Edit";
+import StatesList from "../Pages/Admin/States/List";
+import CityAdd from "../Pages/Admin/City/Add";
+import CityEdit from "../Pages/Admin/City/Edit";
+import CityList from "../Pages/Admin/City/List";
+import UserAdd from "../Pages/Admin/User/Add";
+import UserEdit from "../Pages/Admin/User/Edit";
+import UserList from "../Pages/Admin/User/List";
+import Location from "../Pages/Admin/Location";
+import AddCompanys from "../Pages/Admin/Companys/Add";
+import EditCompany from "../Pages/Admin/Companys/Edit";
+import ListCompany from "../Pages/Admin/Companys/LIst";
 
 
 

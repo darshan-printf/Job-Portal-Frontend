@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import { Link, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
-import ContentHeader from '../../components/ContentHeader';
+import ContentHeader from '../../../components/ContentHeader';
 
 
 

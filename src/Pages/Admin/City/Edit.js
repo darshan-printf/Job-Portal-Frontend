@@ -1,68 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import Layout from '../../components/Layout';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import Layout from '../../../components/Layout'
+import { Link, MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContentHeader from '../../components/ContentHeader';
-
+import ContentHeader from '../../../components/ContentHeader';
 
 export default function Edit() {
+
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = location.state || {};
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [name, setName] = useState('');
-  const [designation, setDesignation] = useState('');
+  const [form, setForm] = useState({
+    name: '',
+    code: '',
+    selectedStateId: '',
+  }) 
+  const [states, setStates] = useState([]);
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold stat
   const currentPath = location?.pathname || "";
 
+  // Fetch existing state data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}country/get/${id}`, {
+        const response = await axios.get(`${apiUrl}city/get/${id}`, {
           headers: {
             'Authorization': ` ${localStorage.getItem('token')}`,
           },
         });
         const memberData = response.data;
-        setName(memberData.name);
-        setDesignation(memberData.code);
-
+       setForm({
+        name: memberData.name,
+        code: memberData.code,
+        selectedStateId: memberData.state,
+       })
       } catch (error) {
         console.error('Error fetching member data:', error);
       }
     };
 
     fetchData();
-  }, [id]);
+
+  }, [id])
 
 
+  // Fetch all countries
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}state/get`, {
+          headers: {
+            authorization: `${localStorage.getItem('token')}`,
+          },
+        });
+        setStates(response.data); // Store API data in state
+      } catch (error) {
+        console.error("Error fetching states:", error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+   
+
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoaded(true);
 
     const payload = {
       id,
-      name: name,
-      code: designation,
+      name: form.name,
+      code: form.code,
+      stateId: form.selectedStateId,
     };
 
+
     try {
-      await axios.put(`${apiUrl}country/update`, payload, {
+      await axios.put(`${apiUrl}city/update`, payload, {
         headers: {
-          'Authorization': `${localStorage.getItem('token')}`,
+          "Authorization": `${localStorage.getItem('token')}`,
           'Content-Type': 'application/json',
         },
       });
 
       setLoaded(false);
-      toast.success('Country updated successfully');
+      toast.success('city updated successfully');
 
-      if (currentPath === "/admin/countryedit") {
+      if (currentPath === "/admin/cityedit") {
         setTimeout(() => {
-          if (window.location.pathname === "/admin/countryedit") {
-            navigate('/admin/countrylist');
+          if (window.location.pathname === "/admin/cityedit") {
+            navigate('/admin/citylist');
           }
         }, 3000);
       }
@@ -71,15 +101,16 @@ export default function Edit() {
       console.error('Error updating member:', error);
       toast.error(error.response?.data?.message || 'Update failed');
     }
-  };
+  }
 
 
   return (
-    <Layout ac2="active">
-      <ContentHeader title="Update Country" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'Country List', to: '/admin/countrylist' }, { label: 'Update Country' }]} />
+
+    <Layout ac4="active">
+      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'City List', to: '/admin/citylist' }, { label: 'Update City' }]} />
       <section className="content">
         <div className="container-fluid">
-          <div className="card  card-primary card-outline">
+          <div className="card card-primary card-outline">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">
@@ -91,26 +122,51 @@ export default function Edit() {
                         className="form-control"
                         id="memberName"
                         placeholder="Enter Member Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={form.name}
+                        onChange={(e) => 
+                          setForm(prev => ({...prev, name:e.target.value}))
+                        }
                         required
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label htmlFor="designation">Designation</label>
+                      <label htmlFor="designation">Code</label>
                       <input
                         type="text"
                         className="form-control"
-                        id="designation"
-                        placeholder="Enter Designation"
-                        value={designation}
-                        onChange={(e) => setDesignation(e.target.value)}
+                        id="code"
+                        placeholder="Enter Code"
+                        value={form.code}
+                        onChange={(e) => 
+                          setForm(prev => ({...prev, code:e.target.value}))
+                        }
                       />
                     </div>
                   </div>
+
+                  <div className='col-md-6'>
+                    <div class="form-group">
+                      <label for="exampleSelectRounded0">Select State:</label>
+                      <select class="custom-select rounded-0" 
+                        id="exampleSelectRounded0"
+                        value={form.selectedStateId}
+                        onChange={(e) => 
+                          setForm(prev => ({...prev, selectedStateId:e.target.value}))
+                        }
+                      >
+                        <option value="">Select a State</option>
+                        {states.map((state) => (
+                          <option key={state._id} value={state._id}>
+                            {state.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
+
                 <div className="card-footer">
                   <div className="float-right">
                     <button type="button" className="btn btn-primary mx-2" onClick={() => window.history.back()}>
@@ -138,5 +194,5 @@ export default function Edit() {
       </section>
       <ToastContainer position="top-center" style={{ width: "auto" }} />
     </Layout>
-  );
+  )
 }

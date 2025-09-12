@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import Layout from '../../components/Layout'
+import Layout from '../../../components/Layout'
 import { Link, MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContentHeader from '../../components/ContentHeader';
+import ContentHeader from '../../../components/ContentHeader';
 
 export default function Edit() {
 
@@ -15,9 +15,9 @@ export default function Edit() {
   const [form, setForm] = useState({
     name: '',
     code: '',
-    selectedStateId: '',
+    selectedCountryId: '',
   }) 
-  const [states, setStates] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold stat
   const currentPath = location?.pathname || "";
 
@@ -25,7 +25,7 @@ export default function Edit() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}city/get/${id}`, {
+        const response = await axios.get(`${apiUrl}state/get/${id}`, {
           headers: {
             'Authorization': ` ${localStorage.getItem('token')}`,
           },
@@ -34,7 +34,7 @@ export default function Edit() {
        setForm({
         name: memberData.name,
         code: memberData.code,
-        selectedStateId: memberData.state,
+        selectedCountryId: memberData.country
        })
       } catch (error) {
         console.error('Error fetching member data:', error);
@@ -50,12 +50,12 @@ export default function Edit() {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get(`${apiUrl}state/get`, {
+        const response = await axios.get(`${apiUrl}country/get`, {
           headers: {
             authorization: `${localStorage.getItem('token')}`,
           },
         });
-        setStates(response.data); // Store API data in state
+        setCountries(response.data); // Store API data in state
       } catch (error) {
         console.error("Error fetching states:", error);
       }
@@ -74,12 +74,12 @@ export default function Edit() {
       id,
       name: form.name,
       code: form.code,
-      stateId: form.selectedStateId,
+      countryId: form.selectedCountryId,
     };
 
 
     try {
-      await axios.put(`${apiUrl}city/update`, payload, {
+      await axios.put(`${apiUrl}state/update`, payload, {
         headers: {
           "Authorization": `${localStorage.getItem('token')}`,
           'Content-Type': 'application/json',
@@ -87,12 +87,12 @@ export default function Edit() {
       });
 
       setLoaded(false);
-      toast.success('city updated successfully');
+      toast.success('State updated successfully');
 
-      if (currentPath === "/admin/cityedit") {
+      if (currentPath === "/admin/statesedit") {
         setTimeout(() => {
-          if (window.location.pathname === "/admin/cityedit") {
-            navigate('/admin/citylist');
+          if (window.location.pathname === "/admin/statesedit") {
+            navigate('/admin/stateslist');
           }
         }, 3000);
       }
@@ -106,8 +106,8 @@ export default function Edit() {
 
   return (
 
-    <Layout ac4="active">
-      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'City List', to: '/admin/citylist' }, { label: 'Update City' }]} />
+    <Layout ac3="active">
+      <ContentHeader title="Update State" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'State List', to: '/admin/stateslist' }, { label: 'Update State' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">
@@ -148,18 +148,18 @@ export default function Edit() {
 
                   <div className='col-md-6'>
                     <div class="form-group">
-                      <label for="exampleSelectRounded0">Select State:</label>
+                      <label for="exampleSelectRounded0">Select Country:</label>
                       <select class="custom-select rounded-0" 
                         id="exampleSelectRounded0"
-                        value={form.selectedStateId}
+                        value={form.selectedCountryId}
                         onChange={(e) => 
-                          setForm(prev => ({...prev, selectedStateId:e.target.value}))
+                          setForm(prev => ({...prev, selectedCountryId:e.target.value}))
                         }
                       >
-                        <option value="">Select a State</option>
-                        {states.map((state) => (
-                          <option key={state._id} value={state._id}>
-                            {state.name}
+                        <option value="">Select a country</option>
+                        {countries.map((country) => (
+                          <option key={country._id} value={country._id}>
+                            {country.name}
                           </option>
                         ))}
                       </select>

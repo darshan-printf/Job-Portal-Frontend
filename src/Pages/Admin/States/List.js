@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import { Link, useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Swal from 'sweetalert2';
-import ContentHeader from '../../components/ContentHeader';
-
+import ContentHeader from '../../../components/ContentHeader';
 
 
 export default function ListMember() {
@@ -16,7 +14,6 @@ export default function ListMember() {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
-  const token = localStorage.getItem('token');
 
 
   useEffect(() => {
@@ -26,14 +23,17 @@ export default function ListMember() {
 
   const fetchRecords = async () => {
     setLoaded(true);
+    const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`${apiUrl}country/get`, {
+      const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
           'Authorization': `${token}`,
         },
       });
+
       setLoaded(false);
       const data = response.data || [];
+
       setRecords(data);
     } catch (error) {
       setLoaded(false);
@@ -44,24 +44,22 @@ export default function ListMember() {
 
   // Function to handle deletion of a record
   const handleDelete = async (id) => {
+    const token = localStorage.getItem('token');
+
     // Show confirmation dialog
-    const result = await Swal.fire({
-      title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
-      showCancelButton: true,
-      confirmButtonColor: '#28a745', // Bootstrap success green
-      cancelButtonColor: '#dc3545',  // Bootstrap danger red
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel'
-    });
-    if (!result.isConfirmed) return;
+    const confirmed = window.confirm("Are you sure you want to delete this record?");
+    if (!confirmed) {
+      return; // Exit if the user cancels
+    }
+
     try {
-      await axios.delete(`${apiUrl}country/delete/${id}`, {
+      await axios.delete(`${apiUrl}state/delete/${id}`, {
         headers: {
           'Authorization': ` ${token}`,
         },
       });
-      fetchRecords();
-      toast.success("Country deleted successfully");
+      fetchRecords(); // Refresh records after deletion
+      toast.success("State deleted successfully");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -84,7 +82,6 @@ export default function ListMember() {
       name: 'Code',
       selector: (row) => row.code,
       sortable: true,
-      width: '150px',
     },
     {
       name: 'Actions',
@@ -92,7 +89,7 @@ export default function ListMember() {
       center: 'true',
       cell: (row) => (
         <div>
-          <button type="button" className="btn btn-primary btn-xs mr-2" onClick={() => navigate('/admin/countryedit', { state: { id: row._id } })}>
+          <button type="button" className="btn btn-primary btn-xs mr-2" onClick={() => navigate('/admin/statesedit', { state: { id: row._id } })}>
             <i className="fas fa-pen"></i>
           </button>
 
@@ -112,8 +109,8 @@ export default function ListMember() {
   );
 
   return (
-    <Layout ac2="active">
-      <ContentHeader title="Country List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'Country List' }]} />
+    <Layout ac3="active">
+      <ContentHeader title="State List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'State List'}]} />
       <section className="content">
         <div className="container-fluid">
           <div className="row">
@@ -134,7 +131,7 @@ export default function ListMember() {
                     <div className="bd-highlight"></div>
                     <div className="bd-highlight">
                       <button
-                        onClick={() => navigate('/admin/countryadd')}
+                        onClick={() => navigate('/admin/statesadd')}
                         type="button"
                         className="btn btn-block btn-primary"
                       >
@@ -143,7 +140,7 @@ export default function ListMember() {
                     </div>
                   </div>
                 </div>
-                <div className="card-body  text-center" disabled={loaded}>
+                <div className="card-body text-center" disabled={loaded}>
                   {loaded ? (
                     <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></>
                   ) : (
