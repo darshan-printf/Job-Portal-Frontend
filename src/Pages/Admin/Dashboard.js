@@ -81,7 +81,7 @@ export default function Dashboard() {
       text: "Manage Locations",
       icon: <i className="fas fa-map-marker-alt"></i>,
       bg: "bg-info",
-      count: 1400,
+      count: `${count.city + count.states + count.country}`,
     },
     {
       to: "/admin/",

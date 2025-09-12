@@ -151,7 +151,7 @@ export default function List() {
               </div>
             </div>
           </div>
-          <div className="card-body  text-center" disabled={loaded}>
+          <div className="card-body  text-center p-2" disabled={loaded}>
             {loaded ? (
               <>
                 {" "}

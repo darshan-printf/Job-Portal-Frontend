@@ -74,7 +74,7 @@ export default function AddMember() {
         if (currentPath === "/admin/cityadd") {
           setTimeout(() => {
             if (window.location.pathname === "/admin/cityadd") {
-              navigate('/admin/citylist');
+              navigate('/admin/location');
             }
           }, 3000);
         }

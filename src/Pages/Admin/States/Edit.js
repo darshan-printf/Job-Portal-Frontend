@@ -92,7 +92,7 @@ export default function Edit() {
       if (currentPath === "/admin/statesedit") {
         setTimeout(() => {
           if (window.location.pathname === "/admin/statesedit") {
-            navigate('/admin/stateslist');
+            navigate('/admin/location');
           }
         }, 3000);
       }

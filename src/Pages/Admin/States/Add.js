@@ -73,7 +73,7 @@ export default function AddMember() {
         if (currentPath === "/admin/statesadd") {
           setTimeout(() => {
             if (window.location.pathname === "/admin/statesadd") {
-              navigate('/admin/stateslist');
+              navigate('/admin/location');
             }
           }, 3000);
         }

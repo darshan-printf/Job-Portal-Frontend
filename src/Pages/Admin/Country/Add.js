@@ -48,7 +48,7 @@ export default function AddMember() {
         if (currentPath === "/admin/countryadd") {
           setTimeout(() => {
             if (window.location.pathname === "/admin/countryadd") {
-              navigate('/admin/countrylist');
+              navigate('/admin/location');
             }
           }, 3000);
         }

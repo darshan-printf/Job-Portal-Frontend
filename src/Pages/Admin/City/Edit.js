@@ -92,7 +92,7 @@ export default function Edit() {
       if (currentPath === "/admin/cityedit") {
         setTimeout(() => {
           if (window.location.pathname === "/admin/cityedit") {
-            navigate('/admin/citylist');
+            navigate('/admin/location');
           }
         }, 3000);
       }

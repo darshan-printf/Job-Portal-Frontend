@@ -62,7 +62,7 @@ export default function Edit() {
       if (currentPath === "/admin/countryedit") {
         setTimeout(() => {
           if (window.location.pathname === "/admin/countryedit") {
-            navigate('/admin/countrylist');
+            navigate('/admin/location');
           }
         }, 3000);
       }
