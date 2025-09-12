@@ -144,7 +144,7 @@ export default function List() {
       cell: (row) =>
         row.isSkeleton ? <Skeleton width={100} /> : row.instituteName,
     },
-    
+
     {
       name: "Actions",
       width: "130px",
@@ -178,9 +178,7 @@ export default function List() {
               type="button"
               className="btn btn-primary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
               style={{ width: "32px", height: "32px" }}
-              onClick={() =>
-                navigate("/admin/useredit", { state: { id: row._id } })
-              }
+              onClick={() =>navigate(`/admin/useredit?id=${row._id}`, { state: { id: row._id },})}
               disabled={statusLoading[row._id] || deleteLoading[row._id]}
             >
               <FilePenLine size={16} />

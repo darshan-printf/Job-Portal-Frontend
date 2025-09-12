@@ -5,58 +5,82 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContentHeader from '../../../components/ContentHeader';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-export default function Add() {
+export default function Edit() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location?.pathname || "";
   const apiUrl = process.env.REACT_APP_API_URL;
   const userId = location.state?.id;
+  const token = localStorage.getItem("token");
 
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
-    username: '',
+    userName: '',
     email: '',
-    password: '',
     instituteName: '',
     profileImage: '',
-    logo: '',
+    companyId: '',
   });
 
+  const [companies, setCompanies] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  
+  const [previewProfile, setPreviewProfile] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!userId) return;
-
-      try {
-        const response = await axios.get(`${apiUrl}user/get/${userId}`, {
-          headers: {
-            Authorization: `${localStorage.getItem('token')}`,
-          },
-        });
-
-        const user = response.data || {};
-
-        setForm({
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-          username: user.username || '',
-          email: user.email || '',
-          password: '', // Do not fetch password
-          instituteName: user.instituteName || '',
-          profileImage: user.profileImage || '',
-          logo: user.logo || '',
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        toast.error("Failed to fetch user details.");
-      }
-    };
-
-    fetchData();
+    fetchCompanies();
+    
+    if (userId) {
+      fetchUserData();
+    }
+    // eslint-disable-next-line
   }, [userId, apiUrl]);
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}company/get`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const data = response.data?.data || [];
+      setCompanies(data);
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}user/get/${userId}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      const user = response.data || {};
+
+      setForm({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        userName: user.username || '',
+        email: user.email || '',
+        instituteName: user.instituteName || '',
+        profileImage: user.profileImage || '',
+        companyId: user.companyId || '',
+      });
+      
+      if (user.profileImage) {
+        setPreviewProfile(user.profileImage);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      toast.error("Failed to fetch user details.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,22 +90,20 @@ export default function Add() {
     formData.append('id', userId);
     formData.append('firstName', form.firstName);
     formData.append('lastName', form.lastName);
-    formData.append('username', form.username);
+    formData.append('username', form.userName);
     formData.append('email', form.email);
     formData.append('password', form.password || '');
     formData.append('instituteName', form.instituteName);
+    formData.append('companyId', form.companyId);
 
     if (form.profileImage && typeof form.profileImage !== 'string') {
       formData.append('profileImage', form.profileImage);
-    }
-    if (form.logo && typeof form.logo !== 'string') {
-      formData.append('logo', form.logo);
     }
 
     try {
       await axios.put(`${apiUrl}user/update`, formData, {
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: token,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -153,14 +175,14 @@ export default function Add() {
                   {/* Username */}
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label htmlFor="username">Username</label> <span className="text-danger">*</span>
+                      <label htmlFor="userName">Username</label> <span className="text-danger">*</span>
                       <input
                         type="text"
                         className="form-control"
-                        id="username"
+                        id="userName"
                         placeholder="Enter Username"
-                        value={form.username}
-                        onChange={(e) => setForm({ ...form, username: e.target.value })}
+                        value={form.userName}
+                        onChange={(e) => setForm({ ...form, userName: e.target.value })}
                         required
                       />
                     </div>
@@ -181,24 +203,8 @@ export default function Add() {
                       />
                     </div>
                   </div>
-
-                  {/* Password */}
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="password">Password</label> <span className="text-danger">*</span>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        placeholder="Enter Password"
-                        value={form.password}
-                        onChange={(e) => setForm({ ...form, password: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
                   {/* Institute Name */}
-                  <div className="col-md-6">
+                  <div className="col-md-12 col-12">
                     <div className="form-group">
                       <label htmlFor="instituteName">Institute Name</label> <span className="text-danger">*</span>
                       <input
@@ -213,6 +219,27 @@ export default function Add() {
                     </div>
                   </div>
 
+                  {/* Company Dropdown */}
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="companyId">Company</label> <span className="text-danger">*</span>
+                      <select
+                        className="form-control"
+                        id="companyId"
+                        value={form.companyId}
+                        onChange={(e) => setForm({ ...form, companyId: e.target.value })}
+                        required
+                      >
+                        <option value="">Select Company</option>
+                        {companies.map((company) => (
+                          <option key={company._id} value={company._id}>
+                            {company.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
                   {/* Profile Image */}
                   <div className="col-md-6">
                     <div className="form-group">
@@ -224,47 +251,20 @@ export default function Add() {
                         accept="image/*"
                         onChange={(e) => {
                           const file = e.target.files[0];
-                          setForm({ ...form, profileImage: file });
+                          if (file) {
+                            setPreviewProfile(URL.createObjectURL(file));
+                            setForm({ ...form, profileImage: file });
+                          }
                         }}
                       />
-                      {form.profileImage && (
-                        <img
-                          src={
-                            typeof form.profileImage === 'string'
-                              ? form.profileImage
-                              : URL.createObjectURL(form.profileImage)
-                          }
-                          alt="Profile"
-                          style={{ width: '100px', marginTop: '10px', borderRadius: '5px' }}
-                        />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Logo */}
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="logo">Logo</label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        id="logo"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          setForm({ ...form, logo: file });
-                        }}
-                      />
-                      {form.logo && (
-                        <img
-                          src={
-                            typeof form.logo === 'string'
-                              ? form.logo
-                              : URL.createObjectURL(form.logo)
-                          }
-                          alt="Logo"
-                          style={{ width: '100px', marginTop: '10px', borderRadius: '5px' }}
-                        />
+                      {previewProfile && (
+                        <div className="mt-2">
+                          <img 
+                            src={previewProfile} 
+                            alt="Profile Preview" 
+                            style={{ width: '100px', borderRadius: '5px' }} 
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -273,30 +273,11 @@ export default function Add() {
                 {/* Footer */}
                 <div className="card-footer">
                   <div className="float-right">
-                    <button
-                      type="button"
-                      className="btn btn-secondary mx-2"
-                      onClick={() => window.history.back()}
-                    >
+                    <button type="button" className="btn btn-secondary mx-2"  onClick={() => window.history.back()}>
                       Cancel
                     </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={loaded}
-                    >
-                      {loaded ? (
-                        <>
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true"
-                          ></span>{' '}
-                          Loading...
-                        </>
-                      ) : (
-                        'Submit'
-                      )}
+                    <button  type="submit" className="btn btn-primary" disabled={loaded}>
+                      {loaded ? (<> Submiting... </>) : ('Submit')}
                     </button>
                   </div>
                 </div>

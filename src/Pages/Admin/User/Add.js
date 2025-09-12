@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../../components/Layout';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,12 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import ContentHeader from '../../../components/ContentHeader';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-
 export default function Add() {
     const navigate = useNavigate();
     const apiUrl = process.env.REACT_APP_API_URL;
     const location = useLocation();
     const currentPath = location?.pathname || "";
+    const token = localStorage.getItem("token");
 
     const [form, setForm] = useState({
         firstName: '',
@@ -22,18 +22,35 @@ export default function Add() {
         password: '',
         instituteName: '',
         profileImage: '',
-        logo: '',
+        companyId: '',
     });
-
+    const [companies, setCompanies] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [previewProfile, setPreviewProfile] = useState(null);
-    const [previewLogo, setPreviewLogo] = useState(null);
+
+    useEffect(() => {
+        fetchCompanies();
+        // eslint-disable-next-line
+    }, []);
+
+    const fetchCompanies = async () => {
+        try {
+            const response = await axios.get(`${apiUrl}company/get`, {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            });
+            const data = response.data?.data || [];
+            setCompanies(data);
+        } catch (error) {
+            toast.error(error.response?.data?.message);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoaded(true);
-
         const formData = new FormData();
         formData.append("firstName", form.firstName);
         formData.append("lastName", form.lastName);
@@ -42,12 +59,12 @@ export default function Add() {
         formData.append("password", form.password);
         formData.append("instituteName", form.instituteName);
         formData.append("profileImage", form.profileImage);
-        formData.append("logo", form.logo);
+        formData.append("companyId", form.companyId);
 
         try {
             await axios.post(`${apiUrl}user/add`, formData, {
                 headers: {
-                    "Authorization": localStorage.getItem("token"),
+                    "Authorization": token,
                     "Content-Type": "multipart/form-data",
                 },
             });
@@ -91,7 +108,6 @@ export default function Add() {
                                             />
                                         </div>
                                     </div>
-
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="lastName">Last Name <span className="text-danger">*</span></label>
@@ -106,7 +122,6 @@ export default function Add() {
                                             />
                                         </div>
                                     </div>
-
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="userName">User Name <span className="text-danger">*</span></label>
@@ -121,22 +136,6 @@ export default function Add() {
                                             />
                                         </div>
                                     </div>
-
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="email">Email <span className="text-danger">*</span></label>
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                id="email"
-                                                placeholder="Enter Email"
-                                                value={form.email}
-                                                onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
                                     <div className="col-md-6">
                                         <div className="form-group position-relative">
                                             <label htmlFor="password">Password <span className="text-danger">*</span></label>
@@ -164,7 +163,20 @@ export default function Add() {
                                             </span>
                                         </div>
                                     </div>
-
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="email">Email <span className="text-danger">*</span></label>
+                                            <input
+                                                type="email"
+                                                className="form-control"
+                                                id="email"
+                                                placeholder="Enter Email"
+                                                value={form.email}
+                                                onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="instituteName">Institute Name <span className="text-danger">*</span></label>
@@ -179,8 +191,25 @@ export default function Add() {
                                             />
                                         </div>
                                     </div>
-
-                                    {/* Profile Image Upload */}
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="companyId">Company <span className="text-danger">*</span></label>
+                                            <select
+                                                className="form-control"
+                                                id="companyId"
+                                                value={form.companyId}
+                                                onChange={(e) => setForm(prev => ({ ...prev, companyId: e.target.value }))}
+                                                required
+                                            >
+                                                <option value="">Select Company</option>
+                                                {companies.map((company) => (
+                                                    <option key={company._id} value={company._id}>
+                                                        {company.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="profileImage">Profile Image</label>
@@ -204,48 +233,14 @@ export default function Add() {
                                             )}
                                         </div>
                                     </div>
-
-                                    {/* Logo Upload */}
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="logo">Logo</label>
-                                            <input
-                                                type="file"
-                                                className="form-control"
-                                                id="logo"
-                                                accept="image/*"
-                                                onChange={(e) => {
-                                                    const file = e.target.files[0];
-                                                    if (file) {
-                                                        setPreviewLogo(URL.createObjectURL(file));
-                                                        setForm(prev => ({ ...prev, logo: file }));
-                                                    }
-                                                }}
-                                            />
-                                            {previewLogo && (
-                                                <div className="mt-2">
-                                                    <img src={previewLogo} alt="Logo Preview" height="100" />
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
                                 </div>
-
                                 <div className="card-footer">
                                     <div className="float-right">
                                         <button type="button" className="btn btn-primary mx-2" onClick={() => window.history.back()}>
                                             Cancel
                                         </button>
-                                        <button
-                                            type="submit"
-                                            className="btn btn-primary"
-                                            disabled={loaded}
-                                        >
-                                            {loaded ? (
-                                                <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...</>
-                                            ) : (
-                                                <> Submit </>
-                                            )}
+                                        <button type="submit" className="btn btn-primary"disabled={loaded} >
+                                            {loaded ? ( <> Submiting...</>) : ( <> Submit </>)}
                                         </button>
                                     </div>
                                 </div>
