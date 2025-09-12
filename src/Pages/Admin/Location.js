@@ -1,87 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from "react";
 import Layout from "../../components/Layout";
-import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { MdWorkHistory } from "react-icons/md";
-import { TbWorldCog, TbBuildingEstate } from "react-icons/tb";
-import { FaCity, FaUsersGear } from "react-icons/fa6";
-import ContentHeader from '../../components/ContentHeader';
-import CountUp from 'react-countup';
-import axios from 'axios';
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import City from "./City/List";
+import Country from "./Country/List";
+import States from "./States/List";
 
 export default function Dashboard() {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const token = localStorage.getItem('token');
-  const [count, setCount] = useState({
-    country: 0,
-    states: 0,
-    city: 0,
-    users: 0,
-    job: 0,
-    resume: 0
-  });
-  const links = [
-    { to: "/admin/countrylist", text: "Manage Country", icon: <TbWorldCog />, bg: "bg-primary", count: `${count.country}` },
-    { to: "/admin/stateslist", text: "Manage States", icon: <TbBuildingEstate />, bg: "bg-secondary", count: `${count.states}` },
-    { to: "/admin/citylist", text: "Manage City", icon: <FaCity />, bg: "bg-success", count: `${count.city}` },
-    
-  ];
-
-
-  useEffect(() => {
-    if (!localStorage.getItem('alertShown')) {
-      toast.success("Login successfully");
-      localStorage.setItem('alertShown', 'true');
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}reports/getCount`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        const data = response.data;
-        setCount({
-          country: data.totalCountries || 0,
-          states: data.totalStates || 0,
-          city: data.totalCities || 0,
-          users: data.totalUsers || 0,
-          job: data.totalJobs || 0
-        });
-      } catch (error) {
-        console.error('Error fetching report count:', error);
-      }
-    };
-    fetchCount();
-  }, []);
   return (
-    <Layout ac3="active">
-      <ContentHeader title="Dashboard" breadcrumbs={[{ label: 'Admin Dashboard' }]} />
-      <section className="content mb-4">
-        <div className="container-fluid">
-          <div className="row">
-            {links.map(({ to, text, icon, bg, count }, idx) => (
-              <div key={idx} className="col-12 col-sm-6 col-md-4">
-                <Link to={to} className="text-dark">
-                  <div className="info-box mb-3">
-                    <span className={`info-box-icon ${bg} elevation-1`}>{icon}</span>
-                    <div className="info-box-content">
-                      <span className="info-box-text pb-1">{text}</span>
-                      <span className="info-box-number">Total:  <CountUp end={count} /></span>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+    <Layout ac4="active">
+      <Country />
+      <section className="content">
+        <div className="row">
+          <div className="col-6">
+            <States />
+          </div>
+          <div className="col-6">
+            <City />
           </div>
         </div>
       </section>
-      <ToastContainer />
+      <ToastContainer position="top-center" style={{ width: "auto" }} />
     </Layout>
   );
 }
