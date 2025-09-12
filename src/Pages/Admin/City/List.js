@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FilePenLine, Trash2 } from "lucide-react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FilePenLine, Trash2 } from "lucide-react";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function List() {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(false); 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Loading state for skeleton
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -25,14 +25,12 @@ export default function List() {
 
   const fetchRecords = async () => {
     setLoading(true);
-    
     try {
       const response = await axios.get(`${apiUrl}city/get`, {
         headers: {
           Authorization: `${token}`,
         },
       });
-
       setLoading(false);
       const data = response.data || [];
       setRecords(data);
@@ -43,7 +41,6 @@ export default function List() {
   };
 
   // Function to handle deletion of a record
-  
    const handleDelete = async (id) => {
       Swal.fire({
         title: "Are you sure?",
@@ -63,13 +60,9 @@ export default function List() {
               },
             });
             fetchRecords();
-            Swal.fire("Deleted!", "Company has been deleted.", "success");
+            Swal.fire("Deleted!", `City has been deleted.`, "success");
           } catch (error) {
-            Swal.fire(
-              "Error",
-              error.response?.data?.message || "Error deleting company",
-              "error"
-            );
+            Swal.fire( "Error", error.response?.data?.message , "error");
           }
         }
       });
@@ -187,8 +180,7 @@ export default function List() {
                     fontWeight: "bold",
                     fontSize: "14px"
                   } 
-                },
-                
+                }
               }}
               pointerOnHover
               responsive

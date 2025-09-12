@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
-import Layout from '../../../components/Layout'
-import { Link, MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Layout from '../../../components/Layout'
+import axios from 'axios';
 import ContentHeader from '../../../components/ContentHeader';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Edit() {
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { id } = location.state || {};
   const apiUrl = process.env.REACT_APP_API_URL;
   const [form, setForm] = useState({
     name: '',
@@ -20,6 +16,9 @@ export default function Edit() {
   const [states, setStates] = useState([]);
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold stat
   const currentPath = location?.pathname || "";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = location.state || {};
 
   // Fetch existing state data
   useEffect(() => {
