@@ -5,13 +5,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ContentHeader from "../../../components/ContentHeader";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function ListMember() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
-  const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
+  const [loading, setLoading] = useState(false); // Loading state for skeleton
 
   useEffect(() => {
     fetchRecords();
@@ -19,7 +21,7 @@ export default function ListMember() {
   }, []);
 
   const fetchRecords = async () => {
-    setLoaded(true);
+    setLoading(true);
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(`${apiUrl}state/get`, {
@@ -28,12 +30,12 @@ export default function ListMember() {
         },
       });
 
-      setLoaded(false);
+      setLoading(false);
       const data = response.data || [];
 
       setRecords(data);
     } catch (error) {
-      setLoaded(false);
+      setLoading(false);
       toast.error(error.response.data.message);
     }
   };
@@ -66,46 +68,48 @@ export default function ListMember() {
   const columns = [
     {
       name: "No",
-      selector: (row, index) => index + 1,
+      selector: (row, index) => row.isSkeleton ? <Skeleton width={30} /> : index + 1,
       width: "50px",
       center: "true",
     },
-
     {
       name: "Name",
-      selector: (row) => row.name,
+      cell: (row) => row.isSkeleton ? <Skeleton width={120} /> : row.name,
       sortable: true,
     },
     {
       name: "Code",
-      selector: (row) => row.code,
+      cell: (row) => row.isSkeleton ? <Skeleton width={80} /> : row.code,
       sortable: true,
     },
     {
       name: "Actions",
       width: "110px",
       center: "true",
-      cell: (row) => (
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary btn-xs mr-2"
-            onClick={() =>
-              navigate("/admin/statesedit", { state: { id: row._id } })
-            }
-          >
-            <i className="fas fa-pen"></i>
-          </button>
+      cell: (row) => 
+        row.isSkeleton ? (
+          <Skeleton width={80} height={30} />
+        ) : (
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary btn-xs mr-2"
+              onClick={() =>
+                navigate("/admin/statesedit", { state: { id: row._id } })
+              }
+            >
+              <i className="fas fa-pen"></i>
+            </button>
 
-          <button
-            type="button"
-            className="btn btn-danger btn-xs"
-            onClick={() => handleDelete(row._id)}
-          >
-            <i className="fas fa-trash"></i>
-          </button>
-        </div>
-      ),
+            <button
+              type="button"
+              className="btn btn-danger btn-xs"
+              onClick={() => handleDelete(row._id)}
+            >
+              <i className="fas fa-trash"></i>
+            </button>
+          </div>
+        ),
     },
   ];
 
@@ -115,6 +119,15 @@ export default function ListMember() {
       record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       record.code.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Skeleton data for loading state
+  const skeletonData = Array(8)
+    .fill({})
+    .map((item, index) => ({
+      ...item,
+      _id: `skeleton-${index}`,
+      isSkeleton: true
+    }));
 
   return (
     <>
@@ -145,34 +158,32 @@ export default function ListMember() {
               </div>
             </div>
           </div>
-          <div className="card-body text-center p-2" disabled={loaded}>
-            {loaded ? (
-              <>
-                {" "}
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-              </>
-            ) : (
-              <>
-                <DataTable
-                  columns={columns}
-                  data={filteredRecords}
-                  pagination
-                  className="custom-table"
-                  noDataComponent="No data available"
-                  highlightOnHover
-                  striped
-                  customStyles={{
-                    headCells: { style: { justifyContent: "center" } },
-                  }}
-                  pointerOnHover
-                  responsive
-                />
-              </>
-            )}
+          <div className="card-body text-center p-2">
+            <DataTable
+              columns={columns}
+              data={loading ? skeletonData : filteredRecords}
+              pagination
+              className="custom-table"
+              noDataComponent="No data available"
+              highlightOnHover
+              striped
+              customStyles={{
+                headCells: { 
+                  style: { 
+                    justifyContent: "center",
+                    fontWeight: "bold",
+                    fontSize: "14px"
+                  } 
+                },
+                cells: {
+                  style: {
+                    justifyContent: "center",
+                  }
+                }
+              }}
+              pointerOnHover
+              responsive
+            />
           </div>
         </div>
       </div>

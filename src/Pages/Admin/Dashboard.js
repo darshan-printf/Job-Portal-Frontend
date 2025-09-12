@@ -77,7 +77,7 @@ export default function Dashboard() {
       count: `${count.users}`,
     },
     {
-      to: "/admin/",
+      to: "/admin/location",
       text: "Manage Locations",
       icon: <i className="fas fa-map-marker-alt"></i>,
       bg: "bg-info",
