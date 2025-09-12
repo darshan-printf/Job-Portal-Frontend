@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
+import { UserCheck, UserX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Layout from "../components/Layout";
 import ContentHeader from "../components/ContentHeader";
 import CountUp from "react-countup";
 import axios from "axios";
-
-import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
-import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Dashboard() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
+  const Env = process.env;
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const [count, setCount] = useState({
     country: 0,
     states: 0,
@@ -26,14 +29,37 @@ export default function Dashboard() {
     resume: 0,
     company: 0,
   });
-  const [searchQuery, setSearchQuery] = useState("");
-  const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [statusLoading, setStatusLoading] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-  const navigate = useNavigate();
-  const Env = process.env;
+
+  useEffect(() => {
+    if (!localStorage.getItem("alertShown")) {
+      toast.success("Login successfully");
+      localStorage.setItem("alertShown", "true");
+    }
+    fetchRecords();
+    fetchCount();
+    // eslint-disable-next-line
+  }, []);
+
+  const fetchCount = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}reports/getCount`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      const data = response.data;
+      setCount({
+        country: data.totalCountries || 0,
+        states: data.totalStates || 0,
+        city: data.totalCities || 0,
+        users: data.totalUsers || 0,
+        job: data.totalJobs || 0,
+        company: data.totalCompanies || 0,
+      });
+    } catch (error) {
+      console.error("Error fetching report count:", error);
+    }
+  };
 
   const links = [
     {
@@ -50,7 +76,6 @@ export default function Dashboard() {
       bg: "bg-primary",
       count: `${count.users}`,
     },
-
     {
       to: "/admin/",
       text: "Manage Locations",
@@ -66,17 +91,6 @@ export default function Dashboard() {
       count: 1400,
     },
   ];
-
-  useEffect(() => {
-    if (!localStorage.getItem("alertShown")) {
-      toast.success("Login successfully");
-      localStorage.setItem("alertShown", "true");
-    }
-  }, []);
-  useEffect(() => {
-    fetchRecords();
-    // eslint-disable-next-line
-  }, []);
 
   const fetchRecords = async () => {
     setLoading(true);
@@ -98,60 +112,7 @@ export default function Dashboard() {
       toast.error(error.response?.data?.message);
     }
   };
-
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this action!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`${apiUrl}company/delete/${id}`, {
-            headers: {
-              Authorization: `${token}`,
-            },
-          });
-          fetchRecords();
-          Swal.fire("Deleted!", "Company has been deleted.", "success");
-        } catch (error) {
-          Swal.fire(
-            "Error",
-            error.response?.data?.message || "Error deleting company",
-            "error"
-          );
-        }
-      }
-    });
-  };
-
-  const handleToggleStatus = async (id) => {
-    setStatusLoading((prev) => ({ ...prev, [id]: true }));
-    try {
-      const response = await axios.put(
-        `${apiUrl}company/activate/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
-      toast.success(response.data.data.message);
-
-      fetchRecords((prev) => ({ ...prev, [id]: false }));
-    } catch (error) {
-      toast.error(error.response?.data?.message);
-    } finally {
-      setStatusLoading((prev) => ({ ...prev, [id]: false }));
-    }
-  };
-
+  
   const columns = [
     {
       name: "No",
@@ -226,7 +187,6 @@ export default function Dashboard() {
         ),
     },
   ];
-
   // Skeleton rows
   const skeletonData = Array(10)
     .fill({})
@@ -235,29 +195,28 @@ export default function Dashboard() {
       isSkeleton: true,
     }));
 
-  useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}reports/getCount`, {
+  const handleToggleStatus = async (id) => {
+    setStatusLoading((prev) => ({ ...prev, [id]: true }));
+    try {
+      const response = await axios.put(
+        `${apiUrl}company/activate/${id}`,
+        {},
+        {
           headers: {
-            Authorization: token,
+            Authorization: `${token}`,
           },
-        });
-        const data = response.data;
-        setCount({
-          country: data.totalCountries || 0,
-          states: data.totalStates || 0,
-          city: data.totalCities || 0,
-          users: data.totalUsers || 0,
-          job: data.totalJobs || 0,
-          company: data.totalCompanies || 0,
-        });
-      } catch (error) {
-        console.error("Error fetching report count:", error);
-      }
-    };
-    fetchCount();
-  }, []);
+        }
+      );
+      toast.success(response.data.data.message);
+
+      fetchRecords((prev) => ({ ...prev, [id]: false }));
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    } finally {
+      setStatusLoading((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
   return (
     <Layout ac1="active">
       <ContentHeader
@@ -314,11 +273,7 @@ export default function Dashboard() {
                   ) : (
                     <DataTable
                       columns={columns}
-                      data={records.filter((r) =>
-                        r.name
-                          ?.toLowerCase()
-                          .includes(searchQuery.toLowerCase())
-                      )}
+                      data={records}
                       onChangePage={(page) => setCurrentPage(page)}
                       onChangeRowsPerPage={(newPerPage) =>
                         setPerPage(newPerPage)
