@@ -16,6 +16,7 @@ export default function List() {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Loading state for skeleton
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchRecords();
@@ -24,7 +25,7 @@ export default function List() {
 
   const fetchRecords = async () => {
     setLoading(true);
-    const token = localStorage.getItem("token");
+    
     try {
       const response = await axios.get(`${apiUrl}city/get`, {
         headers: {
@@ -42,33 +43,37 @@ export default function List() {
   };
 
   // Function to handle deletion of a record
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem("token");
-
-    // Show confirmation dialog
-    const result = await Swal.fire({
-      title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
-      showCancelButton: true,
-      confirmButtonColor: "#28a745", // Bootstrap success green
-      cancelButtonColor: "#dc3545", // Bootstrap danger red
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-    });
-
-    if (!result.isConfirmed) return;
-
-    try {
-      await axios.delete(`${apiUrl}city/delete/${id}`, {
-        headers: {
-          Authorization: ` ${token}`,
-        },
+  
+   const handleDelete = async (id) => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this action!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await axios.delete(`${apiUrl}city/delete/${id}`, {
+              headers: {
+                Authorization: `${token}`,
+              },
+            });
+            fetchRecords();
+            Swal.fire("Deleted!", "Company has been deleted.", "success");
+          } catch (error) {
+            Swal.fire(
+              "Error",
+              error.response?.data?.message || "Error deleting company",
+              "error"
+            );
+          }
+        }
       });
-      fetchRecords(); // Refresh records after deletion
-      toast.success("City deleted successfully");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
+    };
 
   const columns = [
     {

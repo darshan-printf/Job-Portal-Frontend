@@ -8,6 +8,7 @@ import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FilePenLine, Trash2 } from "lucide-react";
+import Swal from "sweetalert2";
 
 export default function ListMember() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -15,6 +16,7 @@ export default function ListMember() {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Loading state for skeleton
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchRecords();
@@ -23,7 +25,7 @@ export default function ListMember() {
 
   const fetchRecords = async () => {
     setLoading(true);
-    const token = localStorage.getItem("token");
+    
     try {
       const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
@@ -42,28 +44,35 @@ export default function ListMember() {
   };
 
   // Function to handle deletion of a record
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem("token");
-
-    // Show confirmation dialog
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this record?"
-    );
-    if (!confirmed) {
-      return; // Exit if the user cancels
-    }
-
-    try {
-      await axios.delete(`${apiUrl}state/delete/${id}`, {
-        headers: {
-          Authorization: ` ${token}`,
-        },
-      });
-      fetchRecords(); // Refresh records after deletion
-      toast.success("State deleted successfully");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
+   const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this action!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${apiUrl}state/delete/${id}`, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+          fetchRecords();
+          Swal.fire("Deleted!", "Company has been deleted.", "success");
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            error.response?.data?.message || "Error deleting company",
+            "error"
+          );
+        }
+      }
+    });
   };
 
   const columns = [

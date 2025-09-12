@@ -41,28 +41,36 @@ export default function ListMember() {
   };
 
   // Function to handle deletion of a record
-  const handleDelete = async (id) => {
-    // Show confirmation dialog
-    const result = await Swal.fire({
-      title: `<i class="fas fa-trash-alt text-danger mr-2"></i>Are you sure you want to delete this record? `,
+  
+   const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this action!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#28a745", // Bootstrap success green
-      cancelButtonColor: "#dc3545", // Bootstrap danger red
-      confirmButtonText: "Delete",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
       cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${apiUrl}country/delete/${id}`, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+          fetchRecords();
+          Swal.fire("Deleted!", "country has been deleted.", "success");
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            error.response?.data?.message || "Error deleting company",
+            "error"
+          );
+        }
+      }
     });
-    if (!result.isConfirmed) return;
-    try {
-      await axios.delete(`${apiUrl}country/delete/${id}`, {
-        headers: {
-          Authorization: ` ${token}`,
-        },
-      });
-      fetchRecords();
-      toast.success("Country deleted successfully");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
   };
 
   const columns = [
