@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "axios";
@@ -32,17 +32,16 @@ export default function ListMember() {
         },
       });
       setLoading(false);
-      const data = response.data || [];
+      const data = response.data.data || []; // Changed from response.data[0] to response.data.data
       setRecords(data);
     } catch (error) {
       setLoading(false);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Error fetching data");
     }
   };
 
   // Function to handle deletion of a record
-  
-   const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this action!",
@@ -61,11 +60,11 @@ export default function ListMember() {
             },
           });
           fetchRecords();
-          Swal.fire("Deleted!", "country has been deleted.", "success");
+          Swal.fire("Deleted!", "Country has been deleted.", "success");
         } catch (error) {
           Swal.fire(
             "Error",
-            error.response?.data?.message || "Error deleting company",
+            error.response?.data?.message || "Error deleting country",
             "error"
           );
         }
@@ -73,18 +72,45 @@ export default function ListMember() {
     });
   };
 
+  // Filter records based on the search query for name and code
+  const filteredRecords = useMemo(() => {
+    if (!searchQuery) return records;
+    
+    return records.filter(
+      (record) =>
+        record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        record.code.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [records, searchQuery]);
+
   const columns = [
     {
       name: "No",
       selector: (row, index) => row.isSkeleton ? <Skeleton width={30} /> : index + 1,
       width: "50px",
-      center: "true",
+      center: true,
+    },
+    {
+      name: "Flag",
+      cell: (row) => 
+        row.isSkeleton ? (
+          <Skeleton width={40} height={30} />
+        ) : row.flag ? (
+          <img 
+            src={row.flag} 
+            alt={`${row.name} flag`} 
+            style={{ width: "30px", height: "20px", objectFit: "cover" }}
+          />
+        ) : (
+          "No flag"
+        ),
+      width: "80px",
+      center: true,
     },
     {
       name: "Name",
       cell: (row) => row.isSkeleton ? <Skeleton width={120} /> : row.name,
       sortable: true,
-      
     },
     {
       name: "Code",
@@ -92,10 +118,11 @@ export default function ListMember() {
       sortable: true,
       width: "150px",
     },
+    
     {
       name: "Actions",
       width: "110px",
-      center: "true",
+      center: true,
       cell: (row) => 
         row.isSkeleton ? (
           <Skeleton width={80} height={30} />
@@ -125,13 +152,6 @@ export default function ListMember() {
     },
   ];
 
-  // Filter records based on the search query for name and designation
-  const filteredRecords = records.filter(
-    (record) =>
-      record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      record.code.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   // Skeleton data for loading state
   const skeletonData = Array(8)
     .fill({})
@@ -156,8 +176,8 @@ export default function ListMember() {
                         className="form-control"
                         type="search"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)} // Update search query
-                        placeholder="Search"
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by name or code"
                         title="Search within table"
                       />
                     </div>
@@ -190,7 +210,6 @@ export default function ListMember() {
                           fontSize: "14px"
                         } 
                       },
-                     
                     }}
                     pointerOnHover
                     responsive

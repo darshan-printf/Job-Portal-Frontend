@@ -34,7 +34,7 @@ export default function ListMember() {
       });
 
       setLoading(false);
-      const data = response.data || [];
+      const data = response.data.data || [];
 
       setRecords(data);
     } catch (error) {
@@ -83,6 +83,23 @@ export default function ListMember() {
       center: "true",
     },
     {
+      name: "Flag",
+      cell: (row) => 
+        row.isSkeleton ? (
+          <Skeleton width={40} height={30} />
+        ) : row.flag ? (
+          <img 
+            src={row.flag} 
+            alt={`${row.name} flag`} 
+            style={{ width: "30px", height: "20px", objectFit: "cover" }}
+          />
+        ) : (
+          "No flag"
+        ),
+      width: "80px",
+      center: true,
+    },
+    {
       name: "Name",
       cell: (row) => row.isSkeleton ? <Skeleton width={120} /> : row.name,
       sortable: true,
@@ -91,6 +108,8 @@ export default function ListMember() {
       name: "Code",
       cell: (row) => row.isSkeleton ? <Skeleton width={80} /> : row.code,
       sortable: true,
+      width: "90px",
+
     },
     {
       name: "Actions",

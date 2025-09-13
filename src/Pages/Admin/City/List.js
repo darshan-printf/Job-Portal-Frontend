@@ -32,7 +32,7 @@ export default function List() {
         },
       });
       setLoading(false);
-      const data = response.data || [];
+      const data = response.data.data || [];
       setRecords(data);
     } catch (error) {
       setLoading(false);
@@ -76,6 +76,23 @@ export default function List() {
       center: "true",
     },
     {
+          name: "Flag",
+          cell: (row) => 
+            row.isSkeleton ? (
+              <Skeleton width={40} height={30} />
+            ) : row.flag ? (
+              <img 
+                src={row.flag} 
+                alt={`${row.name} flag`} 
+                style={{ width: "30px", height: "20px", objectFit: "cover" }}
+              />
+            ) : (
+              "No flag"
+            ),
+          width: "80px",
+          center: true,
+        },
+    {
       name: "Name",
       cell: (row) => row.isSkeleton ? <Skeleton width={120} /> : row.name,
       sortable: true,
@@ -84,7 +101,7 @@ export default function List() {
       name: "Code",
       cell: (row) => row.isSkeleton ? <Skeleton width={70} /> : row.code,
       sortable: true,
-      width: "120px",
+      width: "90px",
     },
     {
       name: "Actions",
