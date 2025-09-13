@@ -6,25 +6,49 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContentHeader from '../../../components/ContentHeader';
 
-
 export default function AddMember() {
   const navigate = useNavigate();
   const location = useLocation();
   const apiUrl = process.env.REACT_APP_API_URL;
   const [name, setName] = useState('');
-  const [designation, setDesignation] = useState('');
-  const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
+  const [code, setCode] = useState('');
+  const [flag, setFlag] = useState(null);
+  const [flagPreview, setFlagPreview] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const currentPath = location?.pathname || "";
 
+  // Handle flag file selection
+  const handleFlagChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFlag(file);
+      
+      // Create a preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFlagPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Clear flag selection
+  const clearFlag = () => {
+    setFlag(null);
+    setFlagPreview(null);
+  };
 
   const handleSubmit = (e) => {
     setLoaded(true);
     e.preventDefault();
 
-    let data = JSON.stringify({
-      "name": name,
-      "code": designation,
-    });
+    // Create form data for file upload
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('code', code);
+    if (flag) {
+      formData.append('flag', flag);
+    }
 
     let config = {
       method: 'post',
@@ -32,9 +56,8 @@ export default function AddMember() {
       url: `${apiUrl}country/add`,
       headers: {
         'Authorization': `${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
       },
-      data: data,
+      data: formData,
     };
 
     axios
@@ -42,8 +65,10 @@ export default function AddMember() {
       .then((response) => {
         setLoaded(false);
         setName('');
-        setDesignation('');
-        toast.success("Cuntry added successfully");
+        setCode('');
+        setFlag(null);
+        setFlagPreview(null);
+        toast.success("Country added successfully");
 
         if (currentPath === "/admin/countryadd") {
           setTimeout(() => {
@@ -52,14 +77,12 @@ export default function AddMember() {
             }
           }, 3000);
         }
-
       })
       .catch((error) => {
         toast.error(error.response?.data?.message || "Something went wrong!");
         setLoaded(false);
       });
   };
-
 
   return (
     <Layout ac4="active">
@@ -72,12 +95,12 @@ export default function AddMember() {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label htmlFor="memberName">Name</label> <span className="text-danger">*</span>
+                      <label htmlFor="countryName">Country Name</label> <span className="text-danger">*</span>
                       <input
                         type="text"
                         className="form-control"
-                        id="memberName"
-                        placeholder="Enter Member Name"
+                        id="countryName"
+                        placeholder="Enter Country Name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
@@ -86,19 +109,58 @@ export default function AddMember() {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label htmlFor="designation">Code</label>
+                      <label htmlFor="countryCode">Country Code</label>
                       <input
                         type="text"
                         className="form-control"
-                        id="designation"
-                        placeholder="Enter Designation"
-                        value={designation}
-                        onChange={(e) => setDesignation(e.target.value)}
-
+                        id="countryCode"
+                        placeholder="Enter Country Code"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
+                
+                <div className="row mt-3">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label htmlFor="countryFlag">Country Flag</label>
+                      <div className="custom-file">
+                        <input
+                          type="file"
+                          className="custom-file-input"
+                          id="countryFlag"
+                          accept="image/*"
+                          onChange={handleFlagChange}
+                        />
+                        <label className="custom-file-label" htmlFor="countryFlag">
+                          {flag ? flag.name : "Choose flag image"}
+                        </label>
+                      </div>
+                      {flagPreview && (
+                        <div className="mt-3">
+                          <div className="flag-preview-container">
+                            <img 
+                              src={flagPreview} 
+                              alt="Flag preview" 
+                              className="flag-preview img-thumbnail"
+                              style={{maxHeight: '100px'}}
+                            />
+                            <button 
+                              type="button" 
+                              className="btn btn-sm btn-danger ml-2"
+                              onClick={clearFlag}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
                 <div className="card-footer">
                   <div className="float-right">
                     <button type="button" className="btn btn-primary mx-2" onClick={() => window.history.back()}>

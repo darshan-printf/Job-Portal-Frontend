@@ -17,6 +17,7 @@ export default function ListMember() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Loading state for skeleton
   const token = localStorage.getItem("token");
+   const Env = process.env;
 
   useEffect(() => {
     fetchRecords();
@@ -87,14 +88,12 @@ export default function ListMember() {
       cell: (row) => 
         row.isSkeleton ? (
           <Skeleton width={40} height={30} />
-        ) : row.flag ? (
+        ) : (
           <img 
-            src={row.flag} 
+            src={row.flag|| Env.REACT_APP_PROJECT_ICON} 
             alt={`${row.name} flag`} 
             style={{ width: "30px", height: "20px", objectFit: "cover" }}
           />
-        ) : (
-          "No flag"
         ),
       width: "80px",
       center: true,
