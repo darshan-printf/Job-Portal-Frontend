@@ -7,6 +7,10 @@ import ContentHeader from '../../../components/ContentHeader';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Edit() {
+  const location = useLocation();
+  const currentPath = location?.pathname || "";
+  const navigate = useNavigate();
+  const { id } = location.state || {};
   const apiUrl = process.env.REACT_APP_API_URL;
   const [form, setForm] = useState({
     name: '',
@@ -15,10 +19,6 @@ export default function Edit() {
   }) 
   const [states, setStates] = useState([]);
   const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold stat
-  const currentPath = location?.pathname || "";
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { id } = location.state || {};
 
   // Fetch existing state data
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Edit() {
             authorization: `${localStorage.getItem('token')}`,
           },
         });
-        setStates(response.data); // Store API data in state
+        setStates(response.data.data); // Store API data in state
       } catch (error) {
         console.error("Error fetching states:", error);
       }
@@ -106,13 +106,32 @@ export default function Edit() {
   return (
 
     <Layout ac4="active">
-      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'City List', to: '/admin/citylist' }, { label: 'Update City' }]} />
+      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: "Location", to: "/admin/location" }, { label: 'Update City' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">
+                  <div className='col-md-12'>
+                    <div class="form-group">
+                      <label for="exampleSelectRounded0">Select State:</label>
+                      <select class="custom-select rounded-0" 
+                        id="exampleSelectRounded0"
+                        value={form.selectedStateId}
+                        onChange={(e) => 
+                          setForm(prev => ({...prev, selectedStateId:e.target.value}))
+                        }
+                      >
+                        <option value="">Select a State</option>
+                        {states.map((state) => (
+                          <option key={state._id} value={state._id}>
+                            {state.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="memberName">Name</label> <span className="text-danger">*</span>
@@ -142,26 +161,6 @@ export default function Edit() {
                           setForm(prev => ({...prev, code:e.target.value}))
                         }
                       />
-                    </div>
-                  </div>
-
-                  <div className='col-md-6'>
-                    <div class="form-group">
-                      <label for="exampleSelectRounded0">Select State:</label>
-                      <select class="custom-select rounded-0" 
-                        id="exampleSelectRounded0"
-                        value={form.selectedStateId}
-                        onChange={(e) => 
-                          setForm(prev => ({...prev, selectedStateId:e.target.value}))
-                        }
-                      >
-                        <option value="">Select a State</option>
-                        {states.map((state) => (
-                          <option key={state._id} value={state._id}>
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
                     </div>
                   </div>
                 </div>

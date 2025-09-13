@@ -101,7 +101,7 @@ export default function Edit() {
 
   return (
     <Layout ac4="active">
-      <ContentHeader title="Update Country" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: 'Country List', to: '/admin/countrylist' }, { label: 'Update Country' }]} />
+      <ContentHeader title="Update Country" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' },  { label: "Location", to: "/admin/location" }, { label: 'Update Country' }]} />
       <section className="content">
         <div className="container-fluid">
           <div className="card  card-primary card-outline">

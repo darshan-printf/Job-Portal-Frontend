@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../../components/Layout";
 import axios from "axios";
@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function AddMember() {
   const [name, setName] = useState("");
   const [designation, setDesignation] = useState("");
-  const [loaded, setLoaded] = useState(false); 
+  const [loaded, setLoaded] = useState(false);
   const [states, setStates] = useState([]);
   const [selectedStatesId, setSelectedStatesId] = useState("");
   const location = useLocation();
@@ -30,7 +30,7 @@ export default function AddMember() {
           authorization: token,
         },
       });
-      setStates(response.data);
+      setStates(response.data.data);
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
@@ -73,7 +73,7 @@ export default function AddMember() {
         }
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message );
+        toast.error(error.response?.data?.message);
         setLoaded(false);
       });
   };
@@ -84,7 +84,7 @@ export default function AddMember() {
         title="Add New City"
         breadcrumbs={[
           { label: "Dashboard", to: "/admin/dashboard" },
-          { label: "City List", to: "/admin/citylist" },
+          { label: "Location", to: "/admin/location" },
           { label: "Add City" },
         ]}
       />
@@ -94,20 +94,7 @@ export default function AddMember() {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="memberName">Name</label>{" "}
-                      <span className="text-danger">*</span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="memberName"
-                        placeholder="Enter Member Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </div>
+                  <div className="col-md-12">
                     <div class="form-group">
                       <label for="exampleSelectRounded0">Select State:</label>
                       <select
@@ -123,6 +110,22 @@ export default function AddMember() {
                           </option>
                         ))}
                       </select>
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="memberName">Name</label>{" "}
+                      <span className="text-danger">*</span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="memberName"
+                        placeholder="Enter Member Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
