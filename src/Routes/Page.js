@@ -30,6 +30,9 @@ import Location from "../Pages/Admin/Location";
 import AddCompanys from "../Pages/Admin/Companys/Add";
 import EditCompany from "../Pages/Admin/Companys/Edit";
 import ListCompany from "../Pages/Admin/Companys/LIst";
+import JobList from "../Pages/Admin/Job/List";
+import AddJob from "../Pages/Admin/Job/Add";
+import EditJob from "../Pages/Admin/Job/Edit";
 
 
 
@@ -80,12 +83,15 @@ export default function App() {
             <Route   path="companys/add"       element={<ProtectedRoute        element={<AddCompanys />}       allowedRoles={['admin']}   />} />
             <Route   path="companys/edit"      element={<ProtectedRoute        element={<EditCompany />}       allowedRoles={['admin']}   />} />
             <Route   path="companys/list"      element={<ProtectedRoute        element={<ListCompany />}       allowedRoles={['admin']}   />} />
+            <Route   path="joblist"            element={<ProtectedRoute        element={<JobList />}           allowedRoles={['admin']}   />} />
+            <Route   path="jobadd"             element={<ProtectedRoute        element={<AddJob />}            allowedRoles={['admin']}   />} />
+            <Route   path="jobedit"            element={<ProtectedRoute        element={<EditJob />}           allowedRoles={['admin']}   />} />
             
 
 
             {/* User protected routes */}
             <Route   path="userdashboard"      element={<ProtectedRoute    element={<ClientDashboard />}   allowedRoles={['user']}    />} />
-            <Route   path="joblist"            element={<ProtectedRoute    element={<Joblist />}           allowedRoles={['user']}    />} />
+            <Route   path="ik"            element={<ProtectedRoute    element={<Joblist />}           allowedRoles={['user']}    />} />
           </Route>
           
           {/* Web layout and routes */}
