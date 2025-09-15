@@ -77,7 +77,7 @@ export default function AddCompanys() {
       center: true,
     },
     {
-      name: "Flag",
+      name: "Company",
       width: "100px",
       center: true,
       cell: (row) =>

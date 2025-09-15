@@ -163,7 +163,6 @@ export default function ListMember() {
   return (
     <>
       <ContentHeader title="Country List" />
-      <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
@@ -218,7 +217,7 @@ export default function ListMember() {
             </div>
           </div>
         </div>
-      </section>
+      
     </>
   );
 }
