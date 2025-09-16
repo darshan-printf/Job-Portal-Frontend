@@ -137,7 +137,7 @@ export default function AddCompanys() {
         row.isSkeleton ? (
           <Skeleton width={100} />
         ) : (
-          `(${row.country}) ${row.state}, ${row.city}`
+          `${row.country}, ${row.state}, ${row.city}`
         ),
     },
 
@@ -155,7 +155,7 @@ export default function AddCompanys() {
               className="btn btn-primary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
               style={{ width: "32px", height: "32px" }}
               onClick={() =>
-                navigate(`/admin/useredit?id=${row._id}`, {
+                navigate(`/admin/jobedit?id=${row._id}`, {
                   state: { id: row._id },
                 })
               }
