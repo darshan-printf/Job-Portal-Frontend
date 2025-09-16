@@ -109,12 +109,12 @@ export default function List() {
           (currentPage - 1) * perPage + index + 1
         ),
       width: "60px",
-      center: true,
+      center: "true",
     },
     {
       name: "Logo",
       width: "100px",
-      center: true,
+       center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
@@ -161,7 +161,7 @@ export default function List() {
     {
       name: "Actions",
       width: "150px",
-      center: true,
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={120} height={30} />

@@ -96,7 +96,7 @@ export default function ListMember() {
           />
         ),
       width: "80px",
-      center: true,
+      center: "true",
     },
     {
       name: "Name",

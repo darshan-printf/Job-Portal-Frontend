@@ -123,12 +123,12 @@ export default function Dashboard() {
           (currentPage - 1) * perPage + index + 1
         ),
       width: "40px",
-      center: true,
+       center: "true",
     },
     {
       name: "Logo",
       width: "100px",
-      center: true,
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
@@ -157,7 +157,7 @@ export default function Dashboard() {
     {
       name: "Actions",
       width: "70px",
-      center: true,
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={50} height={30} />

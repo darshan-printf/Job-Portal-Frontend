@@ -89,7 +89,7 @@ export default function ListMember() {
       name: "No",
       selector: (row, index) => row.isSkeleton ? <Skeleton width={30} /> : index + 1,
       width: "50px",
-      center: true,
+       center: "true",
     },
    {
          name: "Flag",
@@ -104,7 +104,7 @@ export default function ListMember() {
              />
            ),
          width: "80px",
-         center: true,
+         center: "true",
        },
     {
       name: "Name",
@@ -121,7 +121,7 @@ export default function ListMember() {
     {
       name: "Actions",
       width: "110px",
-      center: true,
+      center: "true",
       cell: (row) => 
         row.isSkeleton ? (
           <Skeleton width={80} height={30} />

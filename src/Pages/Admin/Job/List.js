@@ -74,12 +74,12 @@ export default function AddCompanys() {
       selector: (row, index) =>
         row.isSkeleton ? <Skeleton width={20} /> : index + 1,
       width: "60px",
-      center: true,
+      center: "true",
     },
     {
       name: "Company",
       width: "100px",
-      center: true,
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
@@ -110,7 +110,7 @@ export default function AddCompanys() {
     {
       name: "Salary",
       sortable: true,
-       width: "100px",
+      width: "100px",
       cell: (row) =>
         row.isSkeleton ? <Skeleton width={80} /> : `₹ ${row.salary} /-`,
     },
@@ -134,7 +134,7 @@ export default function AddCompanys() {
     {
       name: "Actions",
       width: "100px",
-      center: true,
+       center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={60} height={30} />

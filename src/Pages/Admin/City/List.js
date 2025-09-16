@@ -89,7 +89,7 @@ export default function List() {
               />
             ),
           width: "80px",
-          center: true,
+          center: "true",
         },
     {
       name: "Name",

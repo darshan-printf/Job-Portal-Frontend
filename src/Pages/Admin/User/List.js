@@ -102,12 +102,12 @@ export default function List() {
       selector: (row, index) =>
         row.isSkeleton ? <Skeleton width={20} /> : index + 1,
       width: "60px",
-      center: true,
+      center: "true",
     },
     {
       name: "Profile",
       width: "100px",
-      center: true,
+       center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
@@ -148,7 +148,7 @@ export default function List() {
     {
       name: "Actions",
       width: "130px",
-      center: true,
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={60} height={30} />
