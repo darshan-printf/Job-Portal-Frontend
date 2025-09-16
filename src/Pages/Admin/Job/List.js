@@ -78,19 +78,21 @@ export default function AddCompanys() {
     },
     {
       name: "Company",
-      width: "100px",
-      center: "true",
+      width: "200px",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
         ) : (
-          <img
-            src={row.countryFlag || Env.REACT_APP_PROJECT_ICON}
-            alt="Profile"
-            height={45}
-            width={45}
-            className="p-1"
-          />
+          <div className=" d-flex align-items-center">
+            <img
+              src={row?.company?.logo || Env.REACT_APP_PROJECT_ICON}
+              alt="company logo"
+              height={25}
+              width={25}
+              className="mr-1 "
+            />
+            <span className="d-block">{row?.company?.name || Env.REACT_APP_PROJECT_NAME }</span>
+          </div>
         ),
     },
 
@@ -134,7 +136,7 @@ export default function AddCompanys() {
     {
       name: "Actions",
       width: "100px",
-       center: "true",
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={60} height={30} />
@@ -217,7 +219,7 @@ export default function AddCompanys() {
                     </div>
                     <div className="bd-highlight">
                       <button
-                        onClick={() => navigate("/admin/useradd")}
+                        onClick={() => navigate("/admin/jobadd")}
                         type="button"
                         className="btn btn-block btn-primary"
                       >
