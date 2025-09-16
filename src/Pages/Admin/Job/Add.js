@@ -18,7 +18,7 @@ export default function AddJob() {
     salary: 0,
     workingHours: "",
     type: "",
-    flexibleWorkingHours: '',
+    flexibleWorkingHours: true,
     shift: "",
     bondTime: "",
     bondDescription: "",
@@ -46,9 +46,11 @@ export default function AddJob() {
     { value: "Contract", label: "Contract" },
     { value: "Internship", label: "Internship" },
   ];
-  const workingHours = [
+  
+  // Flexible working hours options
+  const flexibleWorkingHoursOptions = [
     { value: true, label: "Yes" },
-    { value: false, label: "No" },
+    { value: false, label: "No" }
   ];
 
   // Fetch countries from API
@@ -347,25 +349,17 @@ export default function AddJob() {
                   </div>
                   <div className="col-md-4 col-12">
                     <div className="form-group">
-                      <label htmlFor="flexibleWorkingHours">
-                        Flexible Working Hours
-                      </label>
+                      <label htmlFor="flexibleWorkingHours">Flexible Working Hours</label>
                       <Select
                         id="flexibleWorkingHours"
-                        name="flexibleWorkingHours"
-                        options={workingHours}
-                        value={workingHours.find(
-                          (option) =>
-                            option.value === formData.flexibleWorkingHours
+                        options={flexibleWorkingHoursOptions}
+                        value={flexibleWorkingHoursOptions.find(
+                          (option) => option.value === formData.flexibleWorkingHours
                         )}
-                        onChange={(selectedOption) =>
-                          handleInputChange({
-                            target: {
-                              name: "flexibleWorkingHours",
-                              value: selectedOption.value,
-                            },
-                          })
+                        onChange={(selected) => 
+                          handleSelectChange(selected, "flexibleWorkingHours")
                         }
+                        placeholder="Select Flexible Hours Option"
                       />
                     </div>
                   </div>

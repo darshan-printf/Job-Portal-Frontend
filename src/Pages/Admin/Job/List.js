@@ -9,6 +9,7 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 export default function AddCompanys() {
   const navigate = useNavigate();
@@ -43,29 +44,36 @@ export default function AddCompanys() {
   };
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this record?"
-    );
-    if (!confirmed) return;
-
     setDeleteLoading((prev) => ({ ...prev, [id]: true }));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this action!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${apiUrl}job/delete/${id}`, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
 
-    try {
-      await axios.delete(`${apiUrl}job/delete/${id}`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      // Update local state immediately for a responsive UI
-      setRecords((prevRecords) =>
-        prevRecords.filter((record) => record._id !== id)
-      );
-      toast.success("User deleted successfully");
-    } catch (error) {
-      toast.error(error.response?.data?.message);
-    } finally {
-      setDeleteLoading((prev) => ({ ...prev, [id]: false }));
-    }
+          fetchRecords();
+          Swal.fire("Deleted!", "Job has been deleted.", "success");
+          setDeleteLoading((prev) => ({ ...prev, [id]: false }));
+          
+        } catch (error) {
+
+          setDeleteLoading((prev) => ({ ...prev, [id]: false }));
+          Swal.fire("Error",error.response?.data?.message ,"error");
+        }
+      }
+    });
   };
 
   const columns = [
