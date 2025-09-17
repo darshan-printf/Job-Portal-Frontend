@@ -25,6 +25,7 @@ export default function Edit() {
         const response = await axios.get(`${apiUrl}country/get/${id}`, {
           headers: {
             'Authorization': ` ${localStorage.getItem('token')}`,
+            "Cache-Control": "no-cache",
           },
         });
         const countryData = response.data.data;

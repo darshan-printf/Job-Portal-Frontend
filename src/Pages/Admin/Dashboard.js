@@ -45,6 +45,7 @@ export default function Dashboard() {
       const response = await axios.get(`${apiUrl}reports/getCount`, {
         headers: {
           Authorization: token,
+          "Cache-Control": "no-cache",
         },
       });
       const data = response.data;
@@ -101,6 +102,8 @@ export default function Dashboard() {
         {
           headers: {
             Authorization: `${token}`,
+            "Cache-Control": "no-cache",
+            
           },
         }
       );

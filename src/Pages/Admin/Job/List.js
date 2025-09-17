@@ -32,6 +32,7 @@ export default function AddCompanys() {
       const response = await axios.get(`${apiUrl}job/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
       setLoading(false);

@@ -31,6 +31,7 @@ export default function ListMember() {
       const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 

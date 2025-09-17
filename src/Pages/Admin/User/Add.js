@@ -39,6 +39,7 @@ export default function Add() {
             const response = await axios.get(`${apiUrl}company/get`, {
                 headers: {
                     Authorization: `${token}`,
+                    "Cache-Control": "no-cache",
                 },
             });
             const data = response.data?.data || [];

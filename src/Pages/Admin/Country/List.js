@@ -30,6 +30,7 @@ export default function ListMember() {
       const response = await axios.get(`${apiUrl}country/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
       setLoading(false);

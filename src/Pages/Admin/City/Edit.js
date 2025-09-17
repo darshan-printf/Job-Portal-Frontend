@@ -27,6 +27,7 @@ export default function Edit() {
         const response = await axios.get(`${apiUrl}city/get/${id}`, {
           headers: {
             'Authorization': ` ${localStorage.getItem('token')}`,
+            "Cache-Control": "no-cache",
           },
         });
         const memberData = response.data;
@@ -52,6 +53,7 @@ export default function Edit() {
         const response = await axios.get(`${apiUrl}state/get`, {
           headers: {
             authorization: `${localStorage.getItem('token')}`,
+            "Cache-Control": "no-cache",
           },
         });
         setStates(response.data.data); // Store API data in state

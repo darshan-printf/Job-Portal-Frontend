@@ -44,6 +44,7 @@ export default function Edit() {
       const response = await axios.get(`${apiUrl}company/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
       const data = response.data?.data || [];
@@ -58,6 +59,7 @@ export default function Edit() {
       const response = await axios.get(`${apiUrl}user/get/${userId}`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 

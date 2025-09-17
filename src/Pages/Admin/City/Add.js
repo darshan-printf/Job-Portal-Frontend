@@ -28,6 +28,7 @@ export default function AddMember() {
       const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
           authorization: token,
+          "Cache-Control": "no-cache",
         },
       });
       setStates(response.data.data);

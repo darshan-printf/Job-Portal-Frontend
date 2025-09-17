@@ -31,6 +31,7 @@ export default function Edit() {
         const countriesResponse = await axios.get(`${apiUrl}country/get`, {
           headers: {
             authorization: `${localStorage.getItem("token")}`,
+            "Cache-Control": "no-cache",
           },
         });
         
@@ -40,6 +41,7 @@ export default function Edit() {
         const stateResponse = await axios.get(`${apiUrl}state/get/${id}`, {
           headers: {
             Authorization: ` ${localStorage.getItem("token")}`,
+            "Cache-Control": "no-cache",
           },
         });
         

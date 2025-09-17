@@ -30,6 +30,7 @@ export default function List() {
       const response = await axios.get(`${apiUrl}city/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
       setLoading(false);

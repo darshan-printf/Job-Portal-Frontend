@@ -34,7 +34,8 @@ export default function Edit() {
       try {
         const response = await axios.get(`${apiUrl}company/get/${id}`, {
           headers: {
-            'Authorization': `${token}`
+            'Authorization': `${token}`,
+            "Cache-Control": "no-cache",
           }
         });
         

@@ -63,6 +63,7 @@ export default function Edit() {
       const response = await axios.get(`${apiUrl}job/get/${jobId}`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 
@@ -110,6 +111,7 @@ export default function Edit() {
       const response = await axios.get(`${apiUrl}country/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 
@@ -148,6 +150,7 @@ export default function Edit() {
       const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 
@@ -169,6 +172,7 @@ export default function Edit() {
       const response = await axios.get(`${apiUrl}city/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 

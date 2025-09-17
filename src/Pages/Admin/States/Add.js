@@ -27,6 +27,7 @@ export default function AddMember() {
       const response = await axios.get(`${apiUrl}country/get`, {
         headers: {
           authorization: `${localStorage.getItem("token")}`,
+          "Cache-Control": "no-cache",
         },
       });
 

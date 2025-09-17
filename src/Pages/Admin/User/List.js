@@ -32,6 +32,7 @@ export default function List() {
       const response = await axios.get(`${apiUrl}user/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
       setLoading(false);

@@ -59,6 +59,7 @@ export default function AddJob() {
       const response = await axios.get(`${apiUrl}country/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 
@@ -97,6 +98,7 @@ export default function AddJob() {
       const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 
@@ -118,6 +120,7 @@ export default function AddJob() {
       const response = await axios.get(`${apiUrl}city/get`, {
         headers: {
           Authorization: `${token}`,
+          "Cache-Control": "no-cache",
         },
       });
 
