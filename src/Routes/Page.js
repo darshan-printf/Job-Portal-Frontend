@@ -38,6 +38,7 @@ import EditJob from "../Pages/Admin/Job/Edit";
 import Report from "../Pages/Admin/Reports/GrafPage";
 import FeedBackLIst  from "../Pages/Admin/FeedBack/LIst";
 import Mails from "../Pages/Admin/Mails/Inbox";
+import Profile from "../Pages/Admin/Profile/AdminProfile";
 
 
 
@@ -97,6 +98,7 @@ export default function App() {
             <Route   path="report"             element={<ProtectedRoute        element={<Report />}            allowedRoles={['admin']}   />} />
             <Route   path="feedbacklist"       element={<ProtectedRoute        element={<FeedBackLIst />}      allowedRoles={['admin']}   />} />
             <Route   path="mails"              element={<ProtectedRoute        element={<Mails />}             allowedRoles={['admin']}   />} />
+            <Route   path="profile"            element={<ProtectedRoute        element={<Profile />}           allowedRoles={['admin']}   />} />
             
 
 
