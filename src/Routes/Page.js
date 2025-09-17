@@ -2,6 +2,7 @@
 import React from "react";
 import {  Routes, Route } from "react-router-dom";
 import "../App.css";
+import ProtectedRoute from "../utils/ProtectedRoute"; // Utility 
 
 // Layouts
 import AdminLayout from "../components/AdminRouteLayout";
@@ -34,14 +35,21 @@ import JobList from "../Pages/Admin/Job/List";
 import AddJob from "../Pages/Admin/Job/Add";
 import EditJob from "../Pages/Admin/Job/Edit";
 
+import Report from "../Pages/Admin/Reports/GrafPage";
+import FeedBackLIst  from "../Pages/Admin/FeedBack/LIst";
+import Mails from "../Pages/Admin/Mails/Inbox";
+
+
+
+
 
 
 // Admin Pages
 import ClientDashboard from "../Pages/Client/Dashboard";
 import Joblist  from "../Pages/Client/Job/List";
 
-// Utility
-import ProtectedRoute from "../utils/ProtectedRoute";
+
+
 
 // Public Pages
 import Home from "../Pages/Web/Home";
@@ -86,6 +94,9 @@ export default function App() {
             <Route   path="joblist"            element={<ProtectedRoute        element={<JobList />}           allowedRoles={['admin']}   />} />
             <Route   path="jobadd"             element={<ProtectedRoute        element={<AddJob />}            allowedRoles={['admin']}   />} />
             <Route   path="jobedit"            element={<ProtectedRoute        element={<EditJob />}           allowedRoles={['admin']}   />} />
+            <Route   path="report"             element={<ProtectedRoute        element={<Report />}            allowedRoles={['admin']}   />} />
+            <Route   path="feedbacklist"       element={<ProtectedRoute        element={<FeedBackLIst />}      allowedRoles={['admin']}   />} />
+            <Route   path="mails"              element={<ProtectedRoute        element={<Mails />}             allowedRoles={['admin']}   />} />
             
 
 

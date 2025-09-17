@@ -12,9 +12,9 @@ export default function Layout({
     { active: ac3, RName: "Manage User", RLink: "/admin/userlist", icon: "fas fa-users" },
     { active: ac4, RName: "Manage Location", RLink: "/admin/location", icon: "fas fa-map-marker-alt"},
     { active: ac5, RName: "Manage Job", RLink: "/admin/joblist", icon: "fas fa-briefcase" },
-    { active: ac6, RName: "Reports", RLink: "/admin/reports", icon: "fas fa-chart-line" },
+    { active: ac6, RName: "Reports", RLink: "/admin/report", icon: "fas fa-chart-line" },
     { active: ac7, RName: "Mails", RLink: "/admin/mails", icon: "fas fa-envelope" },
-    { active: ac8, RName: "Feed Back", RLink: "/admin/feedback", icon: "fas fa-comments" },
+    { active: ac8, RName: "Feed Back", RLink: "/admin/feedbacklist", icon: "fas fa-comments" },
   ];
 
   return (
