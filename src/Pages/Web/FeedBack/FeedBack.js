@@ -1,12 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import WebLayout from "../../../components/WebLayout";
-
+import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function FeedBack() {
+  const [rating, setRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const Env = process.env;
+
+  const handleRating = (value) => {
+    setRating(value);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage("");
+    const data = JSON.stringify({
+      name: name,
+      email: email,
+      message: feedback,
+      rating: rating
+    });
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${Env.REACT_APP_API_URL}feedback/add`,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data: data
+    };
+
+    try {
+      const response = await axios.request(config);
+      toast.success(response.data.message);
+      setRating(0);
+      setFeedback("");
+      setName("");
+      setEmail("");
+    } catch (error) {
+
+      toast.error(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <WebLayout>
       <section id="contact" className="contact section">
         {/* Section Title */}
-        <div className="container section-title" data-aos="fade-up">
+        <div className="container section-title pb-1" data-aos="fade-up">
           <h2>Feed Back</h2>
           <p>
             Necessitatibus eius consequatur ex aliquid fuga eum quidem sint
@@ -19,106 +67,82 @@ export default function FeedBack() {
           data-aos="fade-up"
           data-aos-delay={100}
         >
-          <div className="row gy-4">
-            <div className="col-lg-5">
-              <div
-                className="info-item d-flex"
-                data-aos="fade-up"
-                data-aos-delay={200}
-              >
-                <i className="bi bi-geo-alt flex-shrink-0" />
-                <div>
-                  <h3>Address</h3>
-                  <p>A108 Adam Street, New York, NY 535022</p>
+          <div className="col-lg-12">
+            <form
+              onSubmit={handleSubmit}
+              className="php-email-form"
+              data-aos="fade-up"
+              data-aos-delay={500}
+            >
+              <div className="row gy-4">
+                <div className="col-md-12">
+                  <div className="d-flex justify-content-center">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <i
+                        key={star}
+                        className={`bi ${
+                          star <= rating
+                            ? "bi-star-fill text-warning"
+                            : "bi-star text-muted"
+                        } fs-1 mx-1`}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleRating(star)}
+                      ></i>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              {/* End Info Item */}
-              <div
-                className="info-item d-flex"
-                data-aos="fade-up"
-                data-aos-delay={300}
-              >
-                <i className="bi bi-telephone flex-shrink-0" />
-                <div>
-                  <h3>Call Us</h3>
-                  <p>+1 5589 55488 55</p>
+                <div className="col-md-6">
+                  <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    placeholder="Your Name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                 </div>
-              </div>
-              {/* End Info Item */}
-              <div
-                className="info-item d-flex"
-                data-aos="fade-up"
-                data-aos-delay={400}
-              >
-                <i className="bi bi-envelope flex-shrink-0" />
-                <div>
-                  <h3>Email Us</h3>
-                  <p>info@example.com</p>
+                <div className="col-md-6 ">
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Your Email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
-              </div>
-              {/* End Info Item */}
-            </div>
-            <div className="col-lg-7">
-              <form
-                action="forms/contact.php"
-                method="post"
-                className="php-email-form"
-                data-aos="fade-up"
-                data-aos-delay={500}
-              >
-                <div className="row gy-4">
-                  <div className="col-md-6">
-                    <input
-                      type="text"
-                      name="name"
-                      className="form-control"
-                      placeholder="Your Name"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-md-6 ">
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Your Email"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-md-12">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="subject"
-                      placeholder="Subject"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-md-12">
-                    <textarea
-                      className="form-control"
-                      name="message"
-                      rows={6}
-                      placeholder="Message"
-                      required=""
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="col-md-12 text-center">
-                    <div className="loading">Loading</div>
-                    <div className="error-message" />
-                    <div className="sent-message">
-                      Your message has been sent. Thank you!
+
+                <div className="col-md-12">
+                  <textarea
+                    className="form-control"
+                    name="message"
+                    rows={3}
+                    placeholder="Message"
+                    required
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                  />
+                </div>
+                <div className="col-md-12 text-center">
+                  {isLoading && <div className="loading">Loading</div>}
+                  {message && (
+                    <div className={message.includes("error") ? "error-message" : "sent-message"}>
+                      {message}
                     </div>
-                    <button type="submit">Send Message</button>
-                  </div>
+                  )}
+                  <button type="submit" disabled={isLoading}>
+                    {isLoading ? "Submitting..." : "Send Message"}
+                  </button>
                 </div>
-              </form>
-            </div>
-            {/* End Contact Form */}
+              </div>
+            </form>
           </div>
+          {/* End Contact Form */}
         </div>
       </section>
+        <ToastContainer  style={{ width: "auto" }} />
     </WebLayout>
   );
 }
