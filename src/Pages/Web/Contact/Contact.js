@@ -1,7 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import WebLayout from "../../../components/WebLayout";
+import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({
+    sent: false,
+    error: false,
+    message: ''
+  });
+  const Env = process.env;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setSubmitStatus({ sent: false, error: false, message: '' });
+
+    try {
+      const response = await axios.post(`${Env.REACT_APP_API_URL}inbox/add`, formData, {
+        headers: { 
+          'Content-Type': 'application/json'
+        }
+      });
+      toast.success(response.data.message);
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+     
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <WebLayout>
       <section id="contact" className="contact section">
@@ -29,7 +81,7 @@ export default function Contact() {
                 <i className="bi bi-geo-alt flex-shrink-0" />
                 <div>
                   <h3>Address</h3>
-                  <p>A108 Adam Street, New York, NY 535022</p>
+                  <p>{Env.REACT_APP_DEVLOPER_ADDRESS}</p>
                 </div>
               </div>
               {/* End Info Item */}
@@ -41,7 +93,7 @@ export default function Contact() {
                 <i className="bi bi-telephone flex-shrink-0" />
                 <div>
                   <h3>Call Us</h3>
-                  <p>+1 5589 55488 55</p>
+                  <p>{Env.REACT_APP_DEVLOPER_PHONE}</p>
                 </div>
               </div>
               {/* End Info Item */}
@@ -53,15 +105,14 @@ export default function Contact() {
                 <i className="bi bi-envelope flex-shrink-0" />
                 <div>
                   <h3>Email Us</h3>
-                  <p>info@example.com</p>
+                  <p>{Env.REACT_APP_DEVLOPER_EMAIL}</p>
                 </div>
               </div>
               {/* End Info Item */}
             </div>
             <div className="col-lg-7">
               <form
-                action="forms/contact.php"
-                method="post"
+                onSubmit={handleSubmit}
                 className="php-email-form"
                 data-aos="fade-up"
                 data-aos-delay={500}
@@ -73,7 +124,9 @@ export default function Contact() {
                       name="name"
                       className="form-control"
                       placeholder="Your Name"
-                      required=""
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="col-md-6 ">
@@ -82,7 +135,9 @@ export default function Contact() {
                       className="form-control"
                       name="email"
                       placeholder="Your Email"
-                      required=""
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="col-md-12">
@@ -91,7 +146,9 @@ export default function Contact() {
                       className="form-control"
                       name="subject"
                       placeholder="Subject"
-                      required=""
+                      required
+                      value={formData.subject}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="col-md-12">
@@ -100,17 +157,24 @@ export default function Contact() {
                       name="message"
                       rows={6}
                       placeholder="Message"
-                      required=""
-                      defaultValue={""}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="col-md-12 text-center">
-                    <div className="loading">Loading</div>
-                    <div className="error-message" />
-                    <div className="sent-message">
-                      Your message has been sent. Thank you!
-                    </div>
-                    <button type="submit">Send Message</button>
+                    {isLoading && <div className="loading">Loading</div>}
+                    {submitStatus.error && (
+                      <div className="error-message">{submitStatus.message}</div>
+                    )}
+                    {submitStatus.sent && (
+                      <div className="sent-message">
+                        {submitStatus.message}
+                      </div>
+                    )}
+                    <button type="submit" disabled={isLoading}>
+                      {isLoading ? 'Sending...' : 'Send Message'}
+                    </button>
                   </div>
                 </div>
               </form>
@@ -119,6 +183,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <ToastContainer  style={{ width: "auto" }} />
     </WebLayout>
   );
 }
