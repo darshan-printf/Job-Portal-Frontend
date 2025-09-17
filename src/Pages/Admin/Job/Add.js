@@ -303,7 +303,7 @@ export default function AddJob() {
   };
 
   return (
-    <Layout ac2="active">
+    <Layout ac5="active">
       <ContentHeader
         title="Add New Job"
         breadcrumbs={[

@@ -127,7 +127,7 @@ export default function Edit() {
   };
 
   return (
-    <Layout ac5="active">
+    <Layout ac3="active">
       <ContentHeader
         title="Edit User"
         breadcrumbs={[

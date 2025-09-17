@@ -14,6 +14,7 @@ import { CSS } from "@dnd-kit/utilities";
 import City from "./City/List";
 import Country from "./Country/List";
 import States from "./States/List";
+import ContentHeader from "../../components/ContentHeader";
 
 // 🔥 SortableItem wrapper (Fixed with drag handle)
 function SortableItem({ id, children }) {
@@ -85,6 +86,10 @@ export default function Dashboard() {
 
   return (
     <Layout ac4="active">
+      <ContentHeader
+              title="Manage Location"
+              breadcrumbs={[{ label: "Manage Location (Country, States &  City)" }]}
+            />
       <section className="content">
         <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={items} strategy={verticalListSortingStrategy}>

@@ -120,12 +120,12 @@ export default function Inbox() {
     }));
 
   return (
-    <Layout ac7="active">
+    <Layout ac8="active">
       <ContentHeader
-        title="Manage User"
+        title="Feedback"
         breadcrumbs={[
           { label: "Dashboard", to: "/admin/dashboard" },
-          { label: "Manage User" },
+          { label: "Feedback" },
         ]}
       />
       <section className="content">
