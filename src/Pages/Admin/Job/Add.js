@@ -11,7 +11,7 @@ export default function AddJob() {
     title: "",
     description: "",
     experience: "",
-    field: "",
+    fild: "", // Changed from field
     country: "",
     state: "",
     city: "",
@@ -19,11 +19,11 @@ export default function AddJob() {
     workingHours: "",
     type: "",
     flexibleWorkingHours: true,
-    shift: "",
+    sift: "", // Changed from shift
     bondTime: "",
     bondDescription: "",
     noticePeriod: "",
-    benefits: "",
+    benifits: "", // Changed from benefits
   });
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({
@@ -46,11 +46,11 @@ export default function AddJob() {
     { value: "Contract", label: "Contract" },
     { value: "Internship", label: "Internship" },
   ];
-  
+
   // Flexible working hours options
   const flexibleWorkingHoursOptions = [
     { value: true, label: "Yes" },
-    { value: false, label: "No" }
+    { value: false, label: "No" },
   ];
 
   // Fetch countries from API
@@ -349,14 +349,17 @@ export default function AddJob() {
                   </div>
                   <div className="col-md-4 col-12">
                     <div className="form-group">
-                      <label htmlFor="flexibleWorkingHours">Flexible Working Hours</label>
+                      <label htmlFor="flexibleWorkingHours">
+                        Flexible Working Hours
+                      </label>
                       <Select
                         id="flexibleWorkingHours"
                         options={flexibleWorkingHoursOptions}
                         value={flexibleWorkingHoursOptions.find(
-                          (option) => option.value === formData.flexibleWorkingHours
+                          (option) =>
+                            option.value === formData.flexibleWorkingHours
                         )}
-                        onChange={(selected) => 
+                        onChange={(selected) =>
                           handleSelectChange(selected, "flexibleWorkingHours")
                         }
                         placeholder="Select Flexible Hours Option"

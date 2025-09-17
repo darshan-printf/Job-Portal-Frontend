@@ -84,11 +84,11 @@ export default function Dashboard() {
       count: `${count.city + count.states + count.country}`,
     },
     {
-      to: "/admin/",
+      to: "/admin/joblist",
       text: "Manage jobs",
       icon: <i className="fas fa-briefcase"></i>,
       bg: "bg-success",
-      count: 1400,
+      count: `${count.job}`,
     },
   ];
 

@@ -8,6 +8,9 @@ import Select from "react-select";
 import { useLocation } from "react-router-dom";
 
 export default function Edit() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const jobId = queryParams.get("id");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -39,11 +42,6 @@ export default function Edit() {
   const [selectedStateId, setSelectedStateId] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
-  
-  // Get job ID from URL
-   const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const jobId = queryParams.get("id");
 
   // Job type options
   const jobTypeOptions = [
@@ -52,11 +50,11 @@ export default function Edit() {
     { value: "Contract", label: "Contract" },
     { value: "Internship", label: "Internship" },
   ];
-  
+
   // Flexible working hours options
   const flexibleWorkingHoursOptions = [
     { value: true, label: "Yes" },
-    { value: false, label: "No" }
+    { value: false, label: "No" },
   ];
 
   // Fetch job data from API
@@ -67,9 +65,9 @@ export default function Edit() {
           Authorization: `${token}`,
         },
       });
-      
+
       const jobData = response.data;
-      
+
       // Update form data with fetched job data
       setFormData({
         title: jobData.title || "",
@@ -82,14 +80,17 @@ export default function Edit() {
         salary: jobData.salary || 0,
         workingHours: jobData.workingHours || "",
         type: jobData.type || "",
-        flexibleWorkingHours: jobData.flexibleWorkingHours !== undefined ? jobData.flexibleWorkingHours : true,
+        flexibleWorkingHours:
+          jobData.flexibleWorkingHours !== undefined
+            ? jobData.flexibleWorkingHours
+            : true,
         shift: jobData.shift || "",
         bondTime: jobData.bondTime || "",
         bondDescription: jobData.bondDescription || "",
         noticePeriod: jobData.noticePeriod || "",
         benefits: jobData.benefits || "",
       });
-      
+
       // Set selected country and state IDs for filtering
       if (jobData.country) {
         setSelectedCountryId(jobData.country);
@@ -97,7 +98,6 @@ export default function Edit() {
       if (jobData.state) {
         setSelectedStateId(jobData.state);
       }
-      
     } catch (error) {
       console.error("Error fetching job data:", error);
       toast.error(error.response?.data?.message || "Error fetching job data");
@@ -251,11 +251,13 @@ export default function Edit() {
     }));
 
     // Fetch job data, countries, states and cities
-    fetchJobData();
+    if (jobId) {
+      fetchJobData();
+    }
     fetchCountries();
     fetchAllStates();
     fetchAllCities();
-  }, [apiUrl, token]);
+  }, [apiUrl, token, jobId]);
 
   // When country changes, filter states
   useEffect(() => {
@@ -309,12 +311,22 @@ export default function Edit() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.put(`${apiUrl}job/update/${jobId}`, formData, {
-        headers: {
-          Authorization: `${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      // Create the data object to send, including the job ID
+      const dataToSend = {
+        ...formData,
+        id: jobId  // Add the job ID here
+      };
+      
+      const response = await axios.put(
+        `${apiUrl}job/update`,
+        dataToSend,
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
@@ -381,14 +393,17 @@ export default function Edit() {
                   </div>
                   <div className="col-md-4 col-12">
                     <div className="form-group">
-                      <label htmlFor="flexibleWorkingHours">Flexible Working Hours</label>
+                      <label htmlFor="flexibleWorkingHours">
+                        Flexible Working Hours
+                      </label>
                       <Select
                         id="flexibleWorkingHours"
                         options={flexibleWorkingHoursOptions}
                         value={flexibleWorkingHoursOptions.find(
-                          (option) => option.value === formData.flexibleWorkingHours
+                          (option) =>
+                            option.value === formData.flexibleWorkingHours
                         )}
-                        onChange={(selected) => 
+                        onChange={(selected) =>
                           handleSelectChange(selected, "flexibleWorkingHours")
                         }
                         placeholder="Select Flexible Hours Option"
