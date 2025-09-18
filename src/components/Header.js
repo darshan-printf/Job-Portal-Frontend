@@ -64,18 +64,18 @@ export default function Header() {
                 <i class="fas fa-user mr-2"></i> User
               </span>
               <div class="dropdown-divider"></div>
-              <Link href="#" class="dropdown-item">
-                <i class="fas fa-envelope mr-2"></i> Profile
+              <Link to="/admin/profile" class="dropdown-item">
+                <i class="fas fa-user mr-2"></i> Profile
                
               </Link>
               <div class="dropdown-divider"></div>
               <Link href="#" class="dropdown-item">
-                <i class="fas fa-users mr-2"></i> Change Password
+                <i class="fas fa-lock mr-2"></i> Change Password
                 
               </Link>
               <div class="dropdown-divider"></div>
               <Link href="#" class="dropdown-item">
-                <i class="fas fa-file mr-2"></i> Log out
+                <i class="fas fa-sign-out-alt mr-2"></i> Log out
                 
               </Link>
               
