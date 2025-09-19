@@ -408,14 +408,15 @@
 
 /* login page animeton css */
 .bg {
-  background: url(https://i.ibb.co/87GbbFP/2799006.jpg) no-repeat;
+  background: url(/public/Admin/img/login-bg.jpg) no-repeat;
   background-size: cover;
   height: 100%;
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -3;
+  z-index: -1;
+  
 }
 .bg:before {
   content: "";
@@ -426,7 +427,7 @@
   z-index: -1;
   top: 0;
   left: 0;
-  opacity: 0.3;
+  opacity: 0.1;
 }
 @keyframes sf-fly-by-1 {
   from {
