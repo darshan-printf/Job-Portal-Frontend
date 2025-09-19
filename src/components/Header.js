@@ -44,7 +44,7 @@ export default function Header() {
         </li>
       </ul>
       <ul className="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
+        <li className="nav-item dropdown">
           <Link
             className="nav-link"
             onClick={(e) => {
@@ -60,31 +60,32 @@ export default function Header() {
           </Link>
         </li>
         <li className="nav-item dropdown">
-          <Link className="nav-link" data-toggle="dropdown" href="#">
+          <Link
+            className="nav-link"
+            onClick={(e) => {
+              e.preventDefault();
+              logout();
+            }}
+          >
+            <i className="fas fa-lock"></i>
+          </Link>
+        </li>
+        <li className="nav-item dropdown">
+          <Link to="/admin/profile" className="nav-link"
+          >
             <i className="fas fa-user"></i>
           </Link>
-          <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span className="dropdown-item dropdown-header">
-              <i className="fas fa-user mr-2"></i> User
-            </span>
-            <div className="dropdown-divider"></div>
-            <Link to="/admin/profile" class="dropdown-item">
-              <i className="fas fa-user mr-2"></i> Profile
-            </Link>
-            <div className="dropdown-divider"></div>
-            <Link href="#" class="dropdown-item">
-              <i className="fas fa-lock mr-2"></i> Change Password
-            </Link>
-            <div className="dropdown-divider"></div>
-            <li className="dropdown-divider"></li>
-            <span
-              onClick={logout}
-              className="dropdown-item"
-              style={{ cursor: "pointer" }}
-            >
-              <i className="fas fa-sign-out-alt mr-2"></i> Log out
-            </span>
-          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <Link
+            className="nav-link"
+            onClick={(e) => {
+              e.preventDefault();
+              logout();
+            }}
+          >
+            <i className="fas fa-power-off"></i>
+          </Link>
         </li>
       </ul>
     </nav>
