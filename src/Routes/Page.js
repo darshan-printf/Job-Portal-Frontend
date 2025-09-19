@@ -39,6 +39,8 @@ import Report from "../Pages/Admin/Reports/GrafPage";
 import FeedBackLIst  from "../Pages/Admin/FeedBack/LIst";
 import Mails from "../Pages/Admin/Mails/Inbox";
 import Profile from "../Pages/Admin/Profile/AdminProfile";
+import ForgetPassWord from "../Pages/Admin/Profile/ForgetPassword"
+
 
 
 
@@ -99,6 +101,7 @@ export default function App() {
             <Route   path="feedbacklist"       element={<ProtectedRoute        element={<FeedBackLIst />}      allowedRoles={['admin']}   />} />
             <Route   path="mails"              element={<ProtectedRoute        element={<Mails />}             allowedRoles={['admin']}   />} />
             <Route   path="profile"            element={<ProtectedRoute        element={<Profile />}           allowedRoles={['admin']}   />} />
+            <Route   path="forgetpassword"            element={<ProtectedRoute        element={<ForgetPassWord />}           allowedRoles={['admin']}   />} />
             
 
 

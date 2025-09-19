@@ -62,10 +62,7 @@ export default function Header() {
         <li className="nav-item dropdown">
           <Link
             className="nav-link"
-            onClick={(e) => {
-              e.preventDefault();
-              logout();
-            }}
+            to="/admin/forgetpassword"
           >
             <i className="fas fa-lock"></i>
           </Link>

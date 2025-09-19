@@ -154,7 +154,7 @@ export default function AdminProfile() {
                   <h3 className="profile-username text-center">
                     {adminData.instituteName}
                   </h3>
-                  <ul className="list-group list-group-unbordered mb-3">
+                  <ul className="list-group list-group-unbordered mb-5">
                     <li className="list-group-item">
                       <b>Username</b>
                       <span className="float-right text-primary">
@@ -308,7 +308,7 @@ export default function AdminProfile() {
                           <div className="offset-sm-2 col-sm-10">
                             <button
                               type="submit"
-                              className="btn btn-danger"
+                              className="btn btn-danger mb-0"
                               disabled={updating}
                             >
                               {updating ? (
