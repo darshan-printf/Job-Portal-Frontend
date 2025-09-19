@@ -38,7 +38,10 @@ import Report from "../Pages/Admin/Reports/GrafPage";
 import FeedBackLIst  from "../Pages/Admin/FeedBack/LIst";
 import Mails from "../Pages/Admin/Mails/Inbox";
 import Profile from "../Pages/Admin/Profile/AdminProfile";
-import ForgetPassWord from "../Pages/Admin/Profile/ForgetPassword"
+import ForgetPassWord from "../Pages/Admin/Profile/ForgetPassword";
+import TeamAdd from "../Pages/Admin/Team/Add";
+import TeamEdit from "../Pages/Admin/Team/Edit";
+import TeamList from "../Pages/Admin/Team/List";
 
 
 // Admin Pages
@@ -56,6 +59,7 @@ import JobBoard from "../Pages/Web/JobBoard/JobBoard";
 
 export default function App() {
   return (
+
         <Routes>
           {/* Admin layout and routes */}
           <Route     path="/admin"             element={<AdminLayout />}>
@@ -91,6 +95,9 @@ export default function App() {
             <Route   path="mails"              element={<ProtectedRoute        element={<Mails />}             allowedRoles={['admin']}   />} />
             <Route   path="profile"            element={<ProtectedRoute        element={<Profile />}           allowedRoles={['admin']}   />} />
             <Route   path="forgetpassword"     element={<ProtectedRoute        element={<ForgetPassWord />}    allowedRoles={['admin']}   />} />
+            <Route   path="team/add"           element={<ProtectedRoute        element={<TeamAdd />}           allowedRoles={['admin']}   />} />
+            <Route   path="team/edit"          element={<ProtectedRoute        element={<TeamEdit />}          allowedRoles={['admin']}   />} />
+            <Route   path="team/list"          element={<ProtectedRoute        element={<TeamList />}          allowedRoles={['admin']}   />} />
             
             {/* User protected routes */}
             <Route   path="userdashboard"      element={<ProtectedRoute        element={<ClientDashboard />}   allowedRoles={['user']}    />} />
