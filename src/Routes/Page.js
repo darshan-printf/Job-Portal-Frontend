@@ -34,7 +34,6 @@ import ListCompany from "../Pages/Admin/Companys/LIst";
 import JobList from "../Pages/Admin/Job/List";
 import AddJob from "../Pages/Admin/Job/Add";
 import EditJob from "../Pages/Admin/Job/Edit";
-
 import Report from "../Pages/Admin/Reports/GrafPage";
 import FeedBackLIst  from "../Pages/Admin/FeedBack/LIst";
 import Mails from "../Pages/Admin/Mails/Inbox";
@@ -42,17 +41,9 @@ import Profile from "../Pages/Admin/Profile/AdminProfile";
 import ForgetPassWord from "../Pages/Admin/Profile/ForgetPassword"
 
 
-
-
-
-
-
 // Admin Pages
 import ClientDashboard from "../Pages/Client/Dashboard";
 import Joblist  from "../Pages/Client/Job/List";
-
-
-
 
 // Public Pages
 import Home from "../Pages/Web/Home";
@@ -65,8 +56,6 @@ import JobBoard from "../Pages/Web/JobBoard/JobBoard";
 
 export default function App() {
   return (
-    
-      
         <Routes>
           {/* Admin layout and routes */}
           <Route     path="/admin"             element={<AdminLayout />}>
@@ -101,26 +90,22 @@ export default function App() {
             <Route   path="feedbacklist"       element={<ProtectedRoute        element={<FeedBackLIst />}      allowedRoles={['admin']}   />} />
             <Route   path="mails"              element={<ProtectedRoute        element={<Mails />}             allowedRoles={['admin']}   />} />
             <Route   path="profile"            element={<ProtectedRoute        element={<Profile />}           allowedRoles={['admin']}   />} />
-            <Route   path="forgetpassword"            element={<ProtectedRoute        element={<ForgetPassWord />}           allowedRoles={['admin']}   />} />
+            <Route   path="forgetpassword"     element={<ProtectedRoute        element={<ForgetPassWord />}    allowedRoles={['admin']}   />} />
             
-
-
             {/* User protected routes */}
-            <Route   path="userdashboard"      element={<ProtectedRoute    element={<ClientDashboard />}   allowedRoles={['user']}    />} />
-            <Route   path="ik"            element={<ProtectedRoute    element={<Joblist />}           allowedRoles={['user']}    />} />
+            <Route   path="userdashboard"      element={<ProtectedRoute        element={<ClientDashboard />}   allowedRoles={['user']}    />} />
+            <Route   path="ik"                 element={<ProtectedRoute        element={<Joblist />}           allowedRoles={['user']}    />} />
           </Route>
           
           {/* Web layout and routes */}
-          <Route     path="/"          element={<WebLayout />}>
-
-            <Route   path="/"          element={<Home />} />
-            <Route   path="about"      element={<About />} />
-            <Route   path="services"   element={<Services />} />
-            <Route   path="team"       element={<Team />} />
-            <Route   path="contact"    element={<Contact />} />
-            <Route   path="feedback"   element={<FeedBack />} />
-            <Route   path="jobboard"   element={<JobBoard />} />
-
+           <Route    path="/"                   element={<WebLayout />}>
+            <Route   path="/"                   element={<Home />} />
+            <Route   path="about"               element={<About />} />
+            <Route   path="services"            element={<Services />} />
+            <Route   path="team"                element={<Team />} />
+            <Route   path="contact"             element={<Contact />} />
+            <Route   path="feedback"            element={<FeedBack />} />
+            <Route   path="jobboard"            element={<JobBoard />} />
           </Route>
         </Routes>
      
