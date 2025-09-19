@@ -57,6 +57,7 @@ export default function Login() {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("role", response.data.role);
           localStorage.setItem("isLogin", true);
+          localStorage.setItem("id", response.data.id);
           const duration = 1500000;
 
           setTimeout(() => {
@@ -92,8 +93,6 @@ export default function Login() {
   return (
     <>
       <div className="star-field">
-       
-
         <div className="login-page-bg bg" id="page-bg">
           <div className="login-box">
             <div className="card card-outline card-primary pb-4">
