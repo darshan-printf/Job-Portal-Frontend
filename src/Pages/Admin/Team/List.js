@@ -122,7 +122,7 @@ export default function List() {
               type="button"
               className="btn btn-primary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
               style={{ width: "32px", height: "32px" }}
-              onClick={() =>navigate(`/admin/useredit?id=${row._id}`, { state: { id: row._id },})}
+              onClick={() =>navigate(`/admin/team/edit?id=${row._id}`, { state: { id: row._id },})}
             >
               <FilePenLine size={16} />
             </button>
