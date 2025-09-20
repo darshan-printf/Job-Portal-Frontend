@@ -253,7 +253,7 @@ export default function Dashboard() {
       <section className="content">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-12">
               <div className="card card-primary card-outline">
                 <div className="card-header">
                   <div className="d-flex justify-content-center font-weight-bold align-items-center">
@@ -295,48 +295,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-md-6">
-              <div className="card card-primary card-outline">
-                <div className="card-header">
-                  <div className="d-flex justify-content-center font-weight-bold align-items-center">
-                    <i className="fas fa-briefcase"></i> &nbsp; Jobs{" "}
-                  </div>
-                </div>
-                <div className="card-body text-center p-2">
-                  {loading ? (
-                    <DataTable
-                      columns={columns}
-                      data={skeletonData}
-                      className="custom-table"
-                      noHeader
-                      highlightOnHover
-                      striped
-                      customStyles={{
-                        headCells: { style: { justifyContent: "center" } },
-                      }}
-                    />
-                  ) : (
-                    <DataTable
-                      columns={columns}
-                      data={records}
-                      onChangePage={(page) => setCurrentPage(page)}
-                      onChangeRowsPerPage={(newPerPage) =>
-                        setPerPage(newPerPage)
-                      }
-                      className="custom-table"
-                      noDataComponent="No data available"
-                      highlightOnHover
-                      striped
-                      customStyles={{
-                        headCells: { style: { justifyContent: "center" } },
-                      }}
-                      pointerOnHover
-                      responsive
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+           
           </div>
         </div>
       </section>
