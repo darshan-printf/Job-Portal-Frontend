@@ -47,6 +47,9 @@ export default function Login() {
           localStorage.setItem("role", response.data.role);
           localStorage.setItem("isLogin", true);
           localStorage.setItem("id", response.data.id);
+          localStorage.setItem("profileImage", response.data.profileImage);
+          localStorage.setItem("firstName", response.data.firstName);
+          localStorage.setItem("lastName", response.data.lastName);
           const duration = 1500000;
           setTimeout(() => {
             localStorage.setItem("isLogin", false);
