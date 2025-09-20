@@ -12,9 +12,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Dashboard() {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const token = localStorage.getItem("token");
-  const Env = process.env;
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [statusLoading, setStatusLoading] = useState({});
@@ -29,6 +26,9 @@ export default function Dashboard() {
     resume: 0,
     company: 0,
   });
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const token = localStorage.getItem("token");
+  const Env = process.env;
 
   useEffect(() => {
     if (!localStorage.getItem("alertShown")) {
@@ -58,7 +58,7 @@ export default function Dashboard() {
         company: data.totalCompanies || 0,
       });
     } catch (error) {
-      console.error("Error fetching report count:", error);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -95,7 +95,6 @@ export default function Dashboard() {
 
   const fetchRecords = async () => {
     setLoading(true);
-
     try {
       const response = await axios.get(
         `${apiUrl}company/getLettestFiveCompanies`,
@@ -103,7 +102,6 @@ export default function Dashboard() {
           headers: {
             Authorization: `${token}`,
             "Cache-Control": "no-cache",
-            
           },
         }
       );
@@ -115,7 +113,7 @@ export default function Dashboard() {
       toast.error(error.response?.data?.message);
     }
   };
-  
+
   const columns = [
     {
       name: "No",
@@ -126,7 +124,7 @@ export default function Dashboard() {
           (currentPage - 1) * perPage + index + 1
         ),
       width: "40px",
-       center: "true",
+      center: "true",
     },
     {
       name: "Logo",
@@ -177,9 +175,7 @@ export default function Dashboard() {
               title={row.isActive ? "Deactivate" : "Activate"}
             >
               {statusLoading[row._id] ? (
-                <div className="spinner-border spinner-border-sm" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" ></span>
               ) : row.isActive ? (
                 <UserCheck size={16} />
               ) : (
@@ -190,7 +186,7 @@ export default function Dashboard() {
         ),
     },
   ];
-  // Skeleton rows
+
   const skeletonData = Array(10)
     .fill({})
     .map((_, index) => ({
@@ -211,7 +207,6 @@ export default function Dashboard() {
         }
       );
       toast.success(response.data.data.message);
-
       fetchRecords((prev) => ({ ...prev, [id]: false }));
     } catch (error) {
       toast.error(error.response?.data?.message);
@@ -295,11 +290,10 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-           
           </div>
         </div>
       </section>
-      <ToastContainer />
+      <ToastContainer style={{width: 'auto'}} />
     </Layout>
   );
 }
