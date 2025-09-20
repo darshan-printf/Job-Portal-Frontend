@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../components/Layout";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Layout from "../../../components/Layout";
+import axios from "axios";
 import ContentHeader from "../../../components/ContentHeader";
 import Select from "react-select";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddMember() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const apiUrl = process.env.REACT_APP_API_URL;
   const [name, setName] = useState("");
   const [designation, setDesignation] = useState("");
-  const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold state
-  const currentPath = location?.pathname || "";
+  const [loaded, setLoaded] = useState(false);
   const [countries, setCountries] = useState([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchCountries();
@@ -36,46 +33,32 @@ export default function AddMember() {
       console.error("Error fetching countries:", error);
     }
   };
-
   const handleSubmit = (e) => {
     setLoaded(true);
     e.preventDefault();
-
     let data = JSON.stringify({
       name: name,
       code: designation,
       countryId: selectedCountryId,
     });
-
     let config = {
       method: "post",
       maxBodyLength: Infinity,
       url: `${apiUrl}state/add`,
       headers: {
-        Authorization: `${localStorage.getItem("token")}`,
+        Authorization: token,
         "Content-Type": "application/json",
       },
       data: data,
     };
-
-    axios
-      .request(config)
-      .then((response) => {
+    axios.request(config).then((response) => {
         setLoaded(false);
         setName("");
         setDesignation("");
-        toast.success("State added successfully");
-
-        if (currentPath === "/admin/statesadd") {
-          setTimeout(() => {
-            if (window.location.pathname === "/admin/statesadd") {
-              navigate("/admin/location");
-            }
-          }, 3000);
-        }
+        toast.success(response.data.message);
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message || "Something went wrong!");
+        toast.error(error.response?.data?.message);
         setLoaded(false);
       });
   };
@@ -155,7 +138,7 @@ export default function AddMember() {
                   <div className="float-right">
                     <button
                       type="button"
-                      className="btn btn-primary mx-2"
+                      className="btn btn-secondary mx-2"
                       onClick={() => window.history.back()}
                     >
                       Cancel
@@ -167,13 +150,11 @@ export default function AddMember() {
                     >
                       {loaded ? (
                         <>
-                          {" "}
                           <span
                             className="spinner-border spinner-border-sm"
                             role="status"
                             aria-hidden="true"
-                          ></span>{" "}
-                          Loading...
+                          ></span>
                         </>
                       ) : (
                         <>Submit</>
@@ -186,7 +167,7 @@ export default function AddMember() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

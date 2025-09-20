@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
-import Layout from "../../../components/Layout";
-import { Link, MemoryRouter, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useLocation} from "react-router-dom";
+import Layout from "../../../components/Layout";
+import axios from "axios";
 import ContentHeader from "../../../components/ContentHeader";
 import Select from "react-select";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Edit() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { id } = location.state || {};
-  const apiUrl = process.env.REACT_APP_API_URL;
   const [form, setForm] = useState({
     name: "",
     code: "",
@@ -20,62 +16,53 @@ export default function Edit() {
   const [countries, setCountries] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const currentPath = location?.pathname || "";
+  const location = useLocation();
+  const { id } = location.state || {};
+  const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Fetch existing state data and countries
+
   useEffect(() => {
     const fetchAllData = async () => {
       try {
         setIsLoading(true);
-        // Fetch countries first
         const countriesResponse = await axios.get(`${apiUrl}country/get`, {
           headers: {
             authorization: `${localStorage.getItem("token")}`,
             "Cache-Control": "no-cache",
           },
         });
-        
         setCountries(countriesResponse.data.data || []);
-        
-        // Then fetch state data
         const stateResponse = await axios.get(`${apiUrl}state/get/${id}`, {
           headers: {
             Authorization: ` ${localStorage.getItem("token")}`,
             "Cache-Control": "no-cache",
           },
         });
-        
         const stateData = stateResponse.data;
         setForm({
           name: stateData.name,
           code: stateData.code,
           selectedCountryId: stateData.country._id || stateData.country,
         });
-        
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setIsLoading(false);
       }
     };
-    
     if (id) {
       fetchAllData();
     }
   }, [id, apiUrl]);
 
-  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoaded(true);
-
     const payload = {
       id,
       name: form.name,
       code: form.code,
       countryId: form.selectedCountryId,
     };
-
     try {
       await axios.put(`${apiUrl}state/update`, payload, {
         headers: {
@@ -83,21 +70,11 @@ export default function Edit() {
           "Content-Type": "application/json",
         },
       });
-
       setLoaded(false);
       toast.success("State updated successfully");
-
-      if (currentPath === "/admin/statesedit") {
-        setTimeout(() => {
-          if (window.location.pathname === "/admin/statesedit") {
-            navigate("/admin/location");
-          }
-        }, 3000);
-      }
     } catch (error) {
       setLoaded(false);
-      console.error("Error updating member:", error);
-      toast.error(error.response?.data?.message || "Update failed");
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -114,8 +91,6 @@ export default function Edit() {
       </div>
     ),
   }));
-
-  
 
   return (
     <Layout ac4="active">
@@ -135,7 +110,9 @@ export default function Edit() {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="form-group">
-                      <label htmlFor="exampleSelectRounded0">Select Country:</label>
+                      <label htmlFor="exampleSelectRounded0">
+                        Select Country:
+                      </label>
                       <Select
                         options={options}
                         value={
@@ -185,8 +162,6 @@ export default function Edit() {
                       />
                     </div>
                   </div>
-
-                  
                 </div>
 
                 <div className="card-footer">
@@ -211,7 +186,6 @@ export default function Edit() {
                             role="status"
                             aria-hidden="true"
                           ></span>{" "}
-                          Loading...
                         </>
                       ) : (
                         <>Submit</>
@@ -224,7 +198,7 @@ export default function Edit() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

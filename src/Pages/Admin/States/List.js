@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FilePenLine, Trash2 } from "lucide-react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { FilePenLine, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
+import "react-loading-skeleton/dist/skeleton.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ListMember() {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Loading state for skeleton
   const token = localStorage.getItem("token");
-   const Env = process.env;
+  const Env = process.env;
 
   useEffect(() => {
     fetchRecords();
@@ -26,7 +28,6 @@ export default function ListMember() {
 
   const fetchRecords = async () => {
     setLoading(true);
-    
     try {
       const response = await axios.get(`${apiUrl}state/get`, {
         headers: {
@@ -34,10 +35,8 @@ export default function ListMember() {
           "Cache-Control": "no-cache",
         },
       });
-
       setLoading(false);
       const data = response.data.data || [];
-
       setRecords(data);
     } catch (error) {
       setLoading(false);
@@ -45,11 +44,10 @@ export default function ListMember() {
     }
   };
 
-  // Function to handle deletion of a record
-   const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this action!",
+      text: "Are you sure you want to delete this state?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -67,11 +65,7 @@ export default function ListMember() {
           fetchRecords();
           Swal.fire("Deleted!", "Company has been deleted.", "success");
         } catch (error) {
-          Swal.fire(
-            "Error",
-            error.response?.data?.message || "Error deleting company",
-            "error"
-          );
+          Swal.fire("Error", error.response?.data?.message, "error");
         }
       }
     });
@@ -80,19 +74,24 @@ export default function ListMember() {
   const columns = [
     {
       name: "No",
-      selector: (row, index) => row.isSkeleton ? <Skeleton width={30} /> : index + 1,
-      width: "50px",
+      selector: (row, index) =>
+        row.isSkeleton ? (
+          <Skeleton width={60} />
+        ) : (
+          (currentPage - 1) * perPage + index + 1
+        ),
+      width: "60px",
       center: "true",
     },
     {
       name: "Flag",
-      cell: (row) => 
+      cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={40} height={30} />
         ) : (
-          <img 
-            src={row.flag|| Env.REACT_APP_PROJECT_ICON} 
-            alt={`${row.name} flag`} 
+          <img
+            src={row.flag || Env.REACT_APP_PROJECT_ICON}
+            alt={`${row.name} flag`}
             style={{ width: "30px", height: "20px", objectFit: "cover" }}
           />
         ),
@@ -101,21 +100,20 @@ export default function ListMember() {
     },
     {
       name: "Name",
-      cell: (row) => row.isSkeleton ? <Skeleton width={120} /> : row.name,
+      cell: (row) => (row.isSkeleton ? <Skeleton width={120} /> : row.name),
       sortable: true,
     },
     {
       name: "Code",
-      cell: (row) => row.isSkeleton ? <Skeleton width={80} /> : row.code,
+      cell: (row) => (row.isSkeleton ? <Skeleton width={80} /> : row.code),
       sortable: true,
       width: "90px",
-
     },
     {
       name: "Actions",
       width: "110px",
       center: "true",
-      cell: (row) => 
+      cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={80} height={30} />
         ) : (
@@ -137,7 +135,7 @@ export default function ListMember() {
               style={{ width: "32px", height: "32px" }}
               onClick={() => handleDelete(row._id)}
             >
-             <Trash2 size={16} />
+              <Trash2 size={16} />
             </button>
           </div>
         ),
@@ -157,7 +155,7 @@ export default function ListMember() {
     .map((item, index) => ({
       ...item,
       _id: `skeleton-${index}`,
-      isSkeleton: true
+      isSkeleton: true,
     }));
 
   return (
@@ -194,17 +192,27 @@ export default function ListMember() {
               columns={columns}
               data={loading ? skeletonData : filteredRecords}
               pagination
+              paginationPerPage={perPage}
+              paginationRowsPerPageOptions={[10, 20, 30, 40]}
+              onChangePage={(page) => setCurrentPage(page)}
+              onChangeRowsPerPage={(newPerPage) => setPerPage(newPerPage)}
+              paginationComponentOptions={{
+                rowsPerPageText: "Rows per page",
+                rangeSeparatorText: "of",
+                selectAllRowsItem: true,
+                selectAllRowsItemText: "All",
+              }}
               className="custom-table"
               noDataComponent="No data available"
               highlightOnHover
               striped
               customStyles={{
-                headCells: { 
-                  style: { 
+                headCells: {
+                  style: {
                     justifyContent: "center",
                     fontWeight: "bold",
-                    fontSize: "14px"
-                  } 
+                    fontSize: "14px",
+                  },
                 },
               }}
               pointerOnHover
