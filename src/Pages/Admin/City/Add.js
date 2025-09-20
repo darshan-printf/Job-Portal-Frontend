@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../../components/Layout";
 import axios from "axios";
 import ContentHeader from "../../../components/ContentHeader";
+import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function AddMember() {
@@ -32,6 +33,21 @@ export default function AddMember() {
       console.error("Error fetching countries:", error);
     }
   };
+
+  // Generate options for react-select
+  const options = states.map((state) => ({
+    value: state._id,
+    label: (
+      <div className="d-flex align-items-center">
+        <img
+          src={`${state.flag}`}
+          alt={state.name}
+          style={{ width: "20px", height: "15px", marginRight: "8px" }}
+        />
+        {state.name}
+      </div>
+    ),
+  }));
 
   const handleSubmit = (e) => {
     setLoaded(true);
@@ -83,21 +99,19 @@ export default function AddMember() {
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-12">
-                    <div class="form-group">
-                      <label for="exampleSelectRounded0">Select State:</label>
-                      <select
-                        class="custom-select rounded-0"
-                        id="exampleSelectRounded0"
-                        onChange={(e) => setSelectedStatesId(e.target.value)}
-                        value={selectedStatesId}
-                      >
-                        <option value="">Select a state</option>
-                        {states.map((country) => (
-                          <option key={country._id} value={country._id}>
-                            {country.name}
-                          </option>
-                        ))}
-                      </select>
+                    <div className="form-group">
+                      <label htmlFor="stateSelect">Select State:</label>
+                      <Select
+                        id="stateSelect"
+                        options={options}
+                        onChange={(selectedOption) => 
+                          setSelectedStatesId(selectedOption.value)
+                        }
+                        placeholder="Select a state"
+                        isSearchable
+                        className="basic-select"
+                        classNamePrefix="select"
+                      />
                     </div>
                   </div>
 
