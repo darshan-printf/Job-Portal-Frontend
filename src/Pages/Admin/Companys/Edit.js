@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 import Layout from "../../../components/Layout";
 import ContentHeader from "../../../components/ContentHeader";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Edit() {
   const [formData, setFormData] = useState({
@@ -22,13 +22,13 @@ export default function Edit() {
   const [logo, setLogo] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true);
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  // Fetch company data on component mount
+  
+
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
@@ -59,18 +59,13 @@ export default function Edit() {
           }
         }
       } catch (error) {
-        toast.error("Failed to fetch company data");
+        toast.error(error.response?.data?.message);
         console.error(error);
-      } finally {
-        setFetching(false);
-      }
+      } 
     };
-
     if (id) {
       fetchCompanyData();
-    } else {
-      setFetching(false);
-    }
+    } 
   }, [id, apiUrl, token]);
 
   const handleInputChange = (e) => {
@@ -104,16 +99,13 @@ export default function Edit() {
     setLoading(true);
     try {
       const data = new FormData();
-      data.append('id', id); // Add company ID to the form data
-      
+      data.append('id', id); 
       Object.keys(formData).forEach(key => { 
         data.append(key, formData[key]); 
       });
-      
       if (logo) { 
         data.append('logo', logo);
       }
-      
       const response = await axios.put(`${apiUrl}company/update`, data, {
         headers: {
           'Authorization': `${token}`,
@@ -122,35 +114,11 @@ export default function Edit() {
       });
       toast.success(response.data.message);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Update failed");
+      toast.error(error.response?.data?.message);
     } finally {
       setLoading(false);
     }
   };
-
-  if (fetching) {
-    return (
-      <Layout ac2="active">
-        <ContentHeader
-          title="Update Company"
-          breadcrumbs={[
-            { label: "Dashboard", to: "/admin/dashboard" },
-            { label: "Manage Company", to: "/admin/companys/list" },
-            { label: "Update Company" },
-          ]}
-        />
-        <section className="content">
-          <div className="container-fluid">
-            <div className="card card-primary card-outline">
-              <div className="card-body text-center">
-                <p>Loading company data...</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </Layout>
-    );
-  }
 
   return (
     <Layout ac2="active">
@@ -359,7 +327,11 @@ export default function Edit() {
                       className="btn btn-primary"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update "}
+                       {loading ? (
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
                   </div>
                 </div>
@@ -368,7 +340,7 @@ export default function Edit() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

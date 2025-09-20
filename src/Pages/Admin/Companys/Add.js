@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../../components/Layout";
 import ContentHeader from "../../../components/ContentHeader";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddCompanys() {
   const [formData, setFormData] = useState({
@@ -292,7 +292,11 @@ export default function AddCompanys() {
                       className="btn btn-primary"
                       disabled={loading}
                     >
-                      {loading ? "Submitting..." : "Submit"}
+                      {loading ? (
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
                   </div>
                 </div>
@@ -301,7 +305,7 @@ export default function AddCompanys() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

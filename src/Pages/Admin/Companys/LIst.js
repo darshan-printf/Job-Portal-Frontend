@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../components/Layout";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
+import Layout from "../../../components/Layout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
 import Swal from "sweetalert2";
+import "react-loading-skeleton/dist/skeleton.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function List() {
-  const apiUrl = process.env.REACT_APP_API_URL;
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,6 +21,7 @@ export default function List() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const Env = process.env;
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchRecords();
@@ -30,7 +30,6 @@ export default function List() {
 
   const fetchRecords = async () => {
     setLoading(true);
-
     try {
       const response = await axios.get(`${apiUrl}company/get`, {
         headers: {
@@ -50,7 +49,7 @@ export default function List() {
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this action!",
+      text: "You want to delete this company?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -68,11 +67,7 @@ export default function List() {
           fetchRecords();
           Swal.fire("Deleted!", "Company has been deleted.", "success");
         } catch (error) {
-          Swal.fire(
-            "Error",
-            error.response?.data?.message || "Error deleting company",
-            "error"
-          );
+          Swal.fire( "Error",error.response?.data?.message ,"error");
         }
       }
     });
@@ -91,7 +86,6 @@ export default function List() {
         }
       );
       toast.success(response.data.data.message);
-    
       fetchRecords((prev) => ({ ...prev, [id]: false }));
     } catch (error) {
       toast.error(error.response?.data?.message);
@@ -230,7 +224,6 @@ export default function List() {
           { label: "Manage Company " },
         ]}
       />
-
       <section className="content">
         <div className="container-fluid">
           <div className="row">
@@ -311,7 +304,7 @@ export default function List() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }
