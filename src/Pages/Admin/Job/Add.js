@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../../components/Layout";
 import ContentHeader from "../../../components/ContentHeader";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Select from "react-select";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddJob() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     experience: "",
-    fild: "", // Changed from field
+    fild: "", 
     country: "",
     state: "",
     city: "",
@@ -19,11 +19,11 @@ export default function AddJob() {
     workingHours: "",
     type: "",
     flexibleWorkingHours: true,
-    sift: "", // Changed from shift
+    sift: "",
     bondTime: "",
     bondDescription: "",
     noticePeriod: "",
-    benifits: "", // Changed from benefits
+    benifits: "", 
   });
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({
@@ -39,21 +39,17 @@ export default function AddJob() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
-  // Job type options
   const jobTypeOptions = [
     { value: "Full-time", label: "Full-time" },
     { value: "Part-time", label: "Part-time" },
     { value: "Contract", label: "Contract" },
     { value: "Internship", label: "Internship" },
   ];
-
-  // Flexible working hours options
   const flexibleWorkingHoursOptions = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
   ];
 
-  // Fetch countries from API
   const fetchCountries = async () => {
     try {
       const response = await axios.get(`${apiUrl}country/get`, {
@@ -62,7 +58,6 @@ export default function AddJob() {
           "Cache-Control": "no-cache",
         },
       });
-
       const countries = response.data.data || [];
       const countryOptions = countries.map((country) => ({
         value: country._id,
@@ -87,12 +82,10 @@ export default function AddJob() {
         countries: countryOptions,
       }));
     } catch (error) {
-      console.error("Error fetching countries:", error);
-      toast.error(error.response?.data?.message || "Error fetching countries");
+      toast.error(error.response?.data?.message );
     }
   };
 
-  // Fetch all states from API
   const fetchAllStates = async () => {
     try {
       const response = await axios.get(`${apiUrl}state/get`, {
@@ -101,20 +94,16 @@ export default function AddJob() {
           "Cache-Control": "no-cache",
         },
       });
-
       const states = response.data.data || [];
       setAllStates(states);
-      // If a country is already selected, filter states
       if (selectedCountryId) {
         filterStates(selectedCountryId);
       }
-    } catch (error) {
-      console.error("Error fetching states:", error);
-      toast.error(error.response?.data?.message || "Error fetching states");
+    } 
+    catch (error) {toast.error(error.response?.data?.message );
     }
-  };
+  };  
 
-  // Fetch all cities from API
   const fetchAllCities = async () => {
     try {
       const response = await axios.get(`${apiUrl}city/get`, {
@@ -123,16 +112,13 @@ export default function AddJob() {
           "Cache-Control": "no-cache",
         },
       });
-
       const cities = response.data.data || [];
       setAllCities(cities);
-      // If a state is already selected, filter cities
       if (selectedStateId) {
         filterCities(selectedStateId);
       }
     } catch (error) {
-      console.error("Error fetching cities:", error);
-      toast.error(error.response?.data?.message || "Error fetching cities");
+      toast.error(error.response?.data?.message );
     }
   };
 
@@ -142,9 +128,7 @@ export default function AddJob() {
       setOptions((prev) => ({ ...prev, states: [] }));
       return;
     }
-    // Check API response structure - state object might have countryId or country object
     const filteredStates = allStates.filter((state) => {
-      // Try different possible property names
       return (
         state.country === countryId ||
         state.countryId === countryId ||
@@ -156,7 +140,6 @@ export default function AddJob() {
       label: <div className="d-flex align-items-center">{state.name}</div>,
       name: state.name,
     }));
-
     setOptions((prev) => ({
       ...prev,
       states: stateOptions,
@@ -288,7 +271,7 @@ export default function AddJob() {
       setSelectedCountryId("");
       setSelectedStateId("");
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data?.message );
     } finally {
       setLoading(false);
     }
@@ -576,7 +559,7 @@ export default function AddJob() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 import Layout from "../../../components/Layout";
 import ContentHeader from "../../../components/ContentHeader";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Select from "react-select";
-import { useLocation } from "react-router-dom";
 
 export default function Edit() {
   const location = useLocation();
@@ -101,7 +101,7 @@ export default function Edit() {
       }
     } catch (error) {
       console.error("Error fetching job data:", error);
-      toast.error(error.response?.data?.message || "Error fetching job data");
+      toast.error(error.response?.data?.message );
     }
   };
 
