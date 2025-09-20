@@ -94,6 +94,9 @@ export default function AdminProfile() {
       };
       const response = await axios.request(config);
       toast.success(response.data.message);
+      localStorage.setItem("firstName", response.data.firstName);
+      localStorage.setItem("lastName", response.data.lastName);
+      localStorage.setItem("profileImage", response.data.profileImage);
       setUpdating(false);
       fetchAdminData();
     } catch (error) {

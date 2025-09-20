@@ -9,7 +9,7 @@ export default function Sidebar({ menuItems }) {
   useEffect(() => {
     // Ensure AdminLTE only initializes once
     if (window.$) {
-      window.$('[data-widget="treeview"]').Treeview('init');
+      window.$('[data-widget="treeview"]').Treeview("init");
     }
   }, []);
 
@@ -26,8 +26,24 @@ export default function Sidebar({ menuItems }) {
           {Env.REACT_APP_PROJECT_NAME}
         </span>
       </Link>
+
       <div className="sidebar">
-       
+        <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div className="image">
+            <img
+              src={localStorage.getItem("profileImage") || Env.REACT_APP_PROJECT_ICON}
+              className="img-circle elevation-2"
+              alt="User"
+              style={{ cursor: "pointer", width: "40px", height: "40px" }}
+            />
+          </div>
+          <div className="info">
+            <Link to="/" className="d-block">
+              {Env.REACT_APP_DEVLOPER_NAME}
+            </Link>
+          </div>
+        </div>
+
         <nav className="mt-2">
           <ul
             className="nav nav-pills nav-sidebar flex-column"
@@ -35,15 +51,20 @@ export default function Sidebar({ menuItems }) {
             role="menu"
             data-accordion="false"
           >
-            {menuItems.map((item, index) =>
-              item.RName && item.RLink && (
-                <li key={index} className="nav-item">
-                  <Link to={item.RLink} className={`nav-link ${item.active || ""}`}>
-                    <i className={`nav-icon ${item.icon}`}></i>
-                    <p>{item.RName}</p>
-                  </Link>
-                </li>
-              )
+            {menuItems.map(
+              (item, index) =>
+                item.RName &&
+                item.RLink && (
+                  <li key={index} className="nav-item">
+                    <Link
+                      to={item.RLink}
+                      className={`nav-link ${item.active || ""}`}
+                    >
+                      <i className={`nav-icon ${item.icon}`}></i>
+                      <p>{item.RName}</p>
+                    </Link>
+                  </li>
+                )
             )}
           </ul>
         </nav>
