@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../components/Layout';
+import { ToastContainer, toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Layout from '../../../components/Layout';
 import ContentHeader from '../../../components/ContentHeader';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Edit() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const currentPath = location?.pathname || "";
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const userId = location.state?.id;
-  const token = localStorage.getItem("token");
-
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -24,15 +16,16 @@ export default function Edit() {
     profileImage: '',
     companyId: '',
   });
-
   const [companies, setCompanies] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  
   const [previewProfile, setPreviewProfile] = useState(null);
+  const location = useLocation();
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const userId = location.state?.id;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchCompanies();
-    
     if (userId) {
       fetchUserData();
     }
@@ -62,9 +55,7 @@ export default function Edit() {
           "Cache-Control": "no-cache",
         },
       });
-
       const user = response.data || {};
-
       setForm({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
@@ -74,20 +65,17 @@ export default function Edit() {
         profileImage: user.profileImage || '',
         companyId: user.companyId || '',
       });
-      
       if (user.profileImage) {
         setPreviewProfile(user.profileImage);
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
-      toast.error("Failed to fetch user details.");
+      toast.error(error.response?.data?.message);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoaded(true);
-
     const formData = new FormData();
     formData.append('id', userId);
     formData.append('firstName', form.firstName);
@@ -97,11 +85,9 @@ export default function Edit() {
     formData.append('password', form.password || '');
     formData.append('instituteName', form.instituteName);
     formData.append('companyId', form.companyId);
-
     if (form.profileImage && typeof form.profileImage !== 'string') {
       formData.append('profileImage', form.profileImage);
     }
-
     try {
       await axios.put(`${apiUrl}user/update`, formData, {
         headers: {
@@ -109,16 +95,8 @@ export default function Edit() {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      toast.success("User updated successfully!");
-      if (currentPath === "/admin/useredit") {
-        setTimeout(() => {
-          if (window.location.pathname === "/admin/useredit") {
-            navigate('/admin/userlist');
-          }
-        }, 3000);
-      }
-
+      toast.success('User updated successfully!');
+      fetchUserData();
     } catch (error) {
       toast.error(error.response?.data?.message);
     } finally {
@@ -142,7 +120,7 @@ export default function Edit() {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  {/* First Name */}
+
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="firstName">First Name</label> <span className="text-danger">*</span>
@@ -158,7 +136,6 @@ export default function Edit() {
                     </div>
                   </div>
 
-                  {/* Last Name */}
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="lastName">Last Name</label> <span className="text-danger">*</span>
@@ -174,7 +151,6 @@ export default function Edit() {
                     </div>
                   </div>
 
-                  {/* Username */}
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="userName">Username</label> <span className="text-danger">*</span>
@@ -190,7 +166,6 @@ export default function Edit() {
                     </div>
                   </div>
 
-                  {/* Email */}
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="email">Email</label> <span className="text-danger">*</span>
@@ -205,7 +180,7 @@ export default function Edit() {
                       />
                     </div>
                   </div>
-                  {/* Institute Name */}
+           
                   <div className="col-md-12 col-12">
                     <div className="form-group">
                       <label htmlFor="instituteName">Institute Name</label> <span className="text-danger">*</span>
@@ -221,7 +196,6 @@ export default function Edit() {
                     </div>
                   </div>
 
-                  {/* Company Dropdown */}
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="companyId">Company</label> <span className="text-danger">*</span>
@@ -242,7 +216,6 @@ export default function Edit() {
                     </div>
                   </div>
 
-                  {/* Profile Image */}
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="profileImage">Profile Image</label>
@@ -272,14 +245,17 @@ export default function Edit() {
                   </div>
                 </div>
 
-                {/* Footer */}
                 <div className="card-footer">
                   <div className="float-right">
                     <button type="button" className="btn btn-secondary mx-2"  onClick={() => window.history.back()}>
                       Cancel
                     </button>
                     <button  type="submit" className="btn btn-primary" disabled={loaded}>
-                      {loaded ? (<> Submiting... </>) : ('Submit')}
+                      {loaded ? (<> <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span> </>) : ('Submit')}
                     </button>
                   </div>
                 </div>
@@ -288,7 +264,7 @@ export default function Edit() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: 'auto' }} />
+      <ToastContainer  style={{ width: 'auto' }} />
     </Layout>
   );
 }

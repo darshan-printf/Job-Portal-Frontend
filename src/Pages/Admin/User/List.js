@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../components/Layout";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
+import Layout from "../../../components/Layout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FilePenLine, Trash2, UserCheck, UserX } from "lucide-react";
 
 export default function List() {
-  const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const token = localStorage.getItem("token");
-  const Env = process.env;
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [statusLoading, setStatusLoading] = useState({});
   const [deleteLoading, setDeleteLoading] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const token = localStorage.getItem("token");
+  const Env = process.env;
 
   useEffect(() => {
     fetchRecords();
@@ -45,27 +48,32 @@ export default function List() {
   };
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this record?"
-    );
-    if (!confirmed) return;
-
-    setDeleteLoading((prev) => ({ ...prev, [id]: true }));
-    
-    try {
-      await axios.delete(`${apiUrl}user/delete/${id}`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      // Update local state immediately for a responsive UI
-      setRecords(prevRecords => prevRecords.filter(record => record._id !== id));
-      toast.success("User deleted successfully");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Error deleting user");
-    } finally {
-      setDeleteLoading((prev) => ({ ...prev, [id]: false }));
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setDeleteLoading((prev) => ({ ...prev, [id]: true }));
+        try {
+          await axios.delete(`${apiUrl}user/delete/${id}`, {
+            headers: { Authorization: `${token}` },
+          });
+          setRecords((prevRecords) =>
+            prevRecords.filter((record) => record._id !== id)
+          );
+          Swal.fire("Deleted!", "User has been deleted.", "success");
+        } catch (error) {
+          Swal.fire("Error!", error.response?.data?.message, "error");
+        } finally {
+          setDeleteLoading((prev) => ({ ...prev, [id]: false }));
+        }
+      }
+    });
   };
 
   const handleToggleStatus = async (id, currentStatus) => {
@@ -81,13 +89,9 @@ export default function List() {
         }
       );
       toast.success(response.data.message);
-      
-      // Update local state immediately for a responsive UI
-      setRecords(prevRecords => 
-        prevRecords.map(record => 
-          record._id === id 
-            ? { ...record, isActive: !currentStatus } 
-            : record
+      setRecords((prevRecords) =>
+        prevRecords.map((record) =>
+          record._id === id ? { ...record, isActive: !currentStatus } : record
         )
       );
     } catch (error) {
@@ -101,14 +105,18 @@ export default function List() {
     {
       name: "No",
       selector: (row, index) =>
-        row.isSkeleton ? <Skeleton width={20} /> : index + 1,
+        row.isSkeleton ? (
+          <Skeleton width={60} />
+        ) : (
+          (currentPage - 1) * perPage + index + 1
+        ),
       width: "60px",
       center: "true",
     },
     {
       name: "Profile",
       width: "100px",
-       center: "true",
+      center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
@@ -179,7 +187,11 @@ export default function List() {
               type="button"
               className="btn btn-primary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
               style={{ width: "32px", height: "32px" }}
-              onClick={() =>navigate(`/admin/useredit?id=${row._id}`, { state: { id: row._id },})}
+              onClick={() =>
+                navigate(`/admin/useredit?id=${row._id}`, {
+                  state: { id: row._id },
+                })
+              }
               disabled={statusLoading[row._id] || deleteLoading[row._id]}
             >
               <FilePenLine size={16} />
@@ -203,7 +215,7 @@ export default function List() {
         ),
     },
   ];
-  
+
   const filteredRecords = records.filter(
     (record) =>
       `${record.firstName} ${record.lastName}`
@@ -215,7 +227,6 @@ export default function List() {
         .includes(searchQuery.toLowerCase())
   );
 
-  // Skeleton rows
   const skeletonData = Array(8)
     .fill({})
     .map((_, index) => ({
@@ -225,11 +236,11 @@ export default function List() {
 
   return (
     <Layout ac3="active">
-      <ContentHeader 
-        title="Manage User" 
-        breadcrumbs={[ 
-          { label: "Dashboard", to: "/admin/dashboard" }, 
-          { label: "Manage User" }, 
+      <ContentHeader
+        title="Manage User"
+        breadcrumbs={[
+          { label: "Dashboard", to: "/admin/dashboard" },
+          { label: "Manage User" },
         ]}
       />
       <section className="content">
@@ -283,6 +294,18 @@ export default function List() {
                       columns={columns}
                       data={filteredRecords}
                       pagination
+                      paginationPerPage={perPage}
+                      paginationRowsPerPageOptions={[10, 20, 30, 40]}
+                      onChangePage={(page) => setCurrentPage(page)}
+                      onChangeRowsPerPage={(newPerPage) =>
+                        setPerPage(newPerPage)
+                      }
+                      paginationComponentOptions={{
+                        rowsPerPageText: "Rows per page",
+                        rangeSeparatorText: "of",
+                        selectAllRowsItem: true,
+                        selectAllRowsItemText: "All",
+                      }}
                       className="custom-table"
                       noDataComponent="No data available"
                       highlightOnHover
