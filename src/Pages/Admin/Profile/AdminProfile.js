@@ -318,7 +318,6 @@ export default function AdminProfile() {
                                     role="status"
                                     aria-hidden="true"
                                   ></span>
-                                  Updating...
                                 </>
                               ) : (
                                 "Update Profile"
@@ -336,7 +335,7 @@ export default function AdminProfile() {
         </div>
       </section>
 
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }
