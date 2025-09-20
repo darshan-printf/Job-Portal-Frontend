@@ -7,20 +7,19 @@ import ContentHeader from '../../../components/ContentHeader';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Edit() {
-  const location = useLocation();
-  const currentPath = location?.pathname || "";
-  const navigate = useNavigate();
-  const { id } = location.state || {};
-  const apiUrl = process.env.REACT_APP_API_URL;
   const [form, setForm] = useState({
     name: '',
     code: '',
     selectedStateId: '',
   }) 
   const [states, setStates] = useState([]);
-  const [loaded, setLoaded] = useState(false); //  button  loading  efect deta  hold stat
+  const [loaded, setLoaded] = useState(false); 
+  const location = useLocation();
+  const currentPath = location?.pathname || "";
+  const navigate = useNavigate();
+  const { id } = location.state || {};
+  const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Fetch existing state data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,8 +44,6 @@ export default function Edit() {
 
   }, [id])
 
-
-  // Fetch all countries
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -62,15 +59,12 @@ export default function Edit() {
       }
     };
     fetchCountries();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-   
-
-  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoaded(true);
-
     const payload = {
       id,
       name: form.name,
@@ -103,10 +97,7 @@ export default function Edit() {
       toast.error(error.response?.data?.message || 'Update failed');
     }
   }
-
-
   return (
-
     <Layout ac4="active">
       <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: "Location", to: "/admin/location" }, { label: 'Update City' }]} />
       <section className="content">
@@ -178,7 +169,7 @@ export default function Edit() {
                       disabled={loaded}
                     >
                       {loaded ? (
-                        <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...</>
+                        <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> </>
                       ) : (
                         <>
                           Submit
@@ -192,7 +183,7 @@ export default function Edit() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   )
 }

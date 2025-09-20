@@ -11,13 +11,15 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function List() {
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-   const Env = process.env;
+  const Env = process.env;
 
   useEffect(() => {
     fetchRecords();
@@ -43,63 +45,68 @@ export default function List() {
   };
 
   // Function to handle deletion of a record
-   const handleDelete = async (id) => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this action!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "Cancel",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            await axios.delete(`${apiUrl}city/delete/${id}`, {
-              headers: {
-                Authorization: `${token}`,
-              },
-            });
-            fetchRecords();
-            Swal.fire("Deleted!", `City has been deleted.`, "success");
-          } catch (error) {
-            Swal.fire( "Error", error.response?.data?.message , "error");
-          }
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this action!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${apiUrl}city/delete/${id}`, {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+          fetchRecords();
+          Swal.fire("Deleted!", `City has been deleted.`, "success");
+        } catch (error) {
+          Swal.fire("Error", error.response?.data?.message, "error");
         }
-      });
-    };
+      }
+    });
+  };
 
   const columns = [
     {
       name: "No",
-      selector: (row, index) => row.isSkeleton ? <Skeleton width={30} /> : index + 1,
-      width: "50px",
+      selector: (row, index) =>
+        row.isSkeleton ? (
+          <Skeleton width={60} />
+        ) : (
+          (currentPage - 1) * perPage + index + 1
+        ),
+      width: "60px",
       center: "true",
     },
     {
-          name: "Flag",
-          cell: (row) => 
-            row.isSkeleton ? (
-              <Skeleton width={40} height={30} />
-            ) : (
-              <img 
-                src={row.flag|| Env.REACT_APP_PROJECT_ICON} 
-                alt={`${row.name} flag`} 
-                style={{ width: "30px", height: "20px", objectFit: "cover" }}
-              />
-            ),
-          width: "80px",
-          center: "true",
-        },
+      name: "Flag",
+      cell: (row) =>
+        row.isSkeleton ? (
+          <Skeleton width={40} height={30} />
+        ) : (
+          <img
+            src={row.flag || Env.REACT_APP_PROJECT_ICON}
+            alt={`${row.name} flag`}
+            style={{ width: "30px", height: "20px", objectFit: "cover" }}
+          />
+        ),
+      width: "80px",
+      center: "true",
+    },
     {
       name: "Name",
-      cell: (row) => row.isSkeleton ? <Skeleton width={120} /> : row.name,
+      cell: (row) => (row.isSkeleton ? <Skeleton width={120} /> : row.name),
       sortable: true,
     },
     {
       name: "Code",
-      cell: (row) => row.isSkeleton ? <Skeleton width={70} /> : row.code,
+      cell: (row) => (row.isSkeleton ? <Skeleton width={70} /> : row.code),
       sortable: true,
       width: "90px",
     },
@@ -107,7 +114,7 @@ export default function List() {
       name: "Actions",
       width: "110px",
       center: "true",
-      cell: (row) => 
+      cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={50} height={30} />
         ) : (
@@ -120,7 +127,7 @@ export default function List() {
                 navigate("/admin/cityedit", { state: { id: row._id } })
               }
             >
-             <FilePenLine size={16} />
+              <FilePenLine size={16} />
             </button>
 
             <button
@@ -129,7 +136,7 @@ export default function List() {
               style={{ width: "32px", height: "32px" }}
               onClick={() => handleDelete(row._id)}
             >
-             <Trash2 size={16} />
+              <Trash2 size={16} />
             </button>
           </div>
         ),
@@ -149,7 +156,7 @@ export default function List() {
     .map((item, index) => ({
       ...item,
       _id: `skeleton-${index}`,
-      isSkeleton: true
+      isSkeleton: true,
     }));
 
   return (
@@ -186,18 +193,28 @@ export default function List() {
               columns={columns}
               data={loading ? skeletonData : filteredRecords}
               pagination
+              paginationPerPage={perPage}
+              paginationRowsPerPageOptions={[10, 20, 30, 40]}
+              onChangePage={(page) => setCurrentPage(page)}
+              onChangeRowsPerPage={(newPerPage) => setPerPage(newPerPage)}
+              paginationComponentOptions={{
+                rowsPerPageText: "Rows per page",
+                rangeSeparatorText: "of",
+                selectAllRowsItem: true,
+                selectAllRowsItemText: "All",
+              }}
               className="custom-table"
               noDataComponent="No data available"
               highlightOnHover
               striped
               customStyles={{
-                headCells: { 
-                  style: { 
+                headCells: {
+                  style: {
                     justifyContent: "center",
                     fontWeight: "bold",
-                    fontSize: "14px"
-                  } 
-                }
+                    fontSize: "14px",
+                  },
+                },
               }}
               pointerOnHover
               responsive

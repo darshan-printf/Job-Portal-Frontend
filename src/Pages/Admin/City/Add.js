@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../../components/Layout";
 import axios from "axios";
@@ -12,9 +11,6 @@ export default function AddMember() {
   const [loaded, setLoaded] = useState(false);
   const [states, setStates] = useState([]);
   const [selectedStatesId, setSelectedStatesId] = useState("");
-  const location = useLocation();
-  const currentPath = location?.pathname || "";
-  const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
@@ -40,7 +36,6 @@ export default function AddMember() {
   const handleSubmit = (e) => {
     setLoaded(true);
     e.preventDefault();
-
     let data = JSON.stringify({
       name: name,
       code: designation,
@@ -63,15 +58,7 @@ export default function AddMember() {
         setLoaded(false);
         setName("");
         setDesignation("");
-        toast.success("City added successfully");
-
-        if (currentPath === "/admin/cityadd") {
-          setTimeout(() => {
-            if (window.location.pathname === "/admin/cityadd") {
-              navigate("/admin/location");
-            }
-          }, 3000);
-        }
+        toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response?.data?.message);
@@ -165,7 +152,6 @@ export default function AddMember() {
                             role="status"
                             aria-hidden="true"
                           ></span>{" "}
-                          Loading...
                         </>
                       ) : (
                         <>Submit</>
@@ -178,7 +164,7 @@ export default function AddMember() {
           </div>
         </div>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }
