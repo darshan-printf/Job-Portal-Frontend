@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Registration() {
-  const apiUrl = process.env.REACT_APP_API_URL;
   const [formdata, setFormdata] = useState({
     name: "",
     address: "",
@@ -17,23 +16,17 @@ export default function Registration() {
     CINNumber: "",
     type: "",
   });
-
   const [loaded, setLoaded] = useState(false);
   const Env = process.env;
-  // Handle input changes
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormdata({ ...formdata, [name]: value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Basic validation
-    if (!formdata.name || !formdata.email || !formdata.phone) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
     setLoaded(true);
     try {
       const data = new FormData();
@@ -46,7 +39,6 @@ export default function Registration() {
       data.append("PANNumber", formdata.PANNumber);
       data.append("CINNumber", formdata.CINNumber);
       data.append("type", formdata.type);
-
       const config = {
         method: "post",
         maxBodyLength: Infinity,
@@ -57,7 +49,6 @@ export default function Registration() {
         data: data,
       };
       const response = await axios.request(config);
-
       toast.success(response.data.message);
       setFormdata({
         name: "",
@@ -71,29 +62,20 @@ export default function Registration() {
         type: "",
       });
     } catch (error) {
-      console.error(error);
-      toast.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
+      toast.error( error.response?.data?.message  );
     } finally {
       setLoaded(false);
     }
   };
-
   return (
-    <>
       <div className="star-field">
-        <div className="layer"></div>
-        <div className="layer"></div>
-        <div className="layer"></div>
         <div className="login-page-bg bg" id="page-bg">
           <div className="card card-outline card-primary col-5 p-2">
             <div className="text-center">
               <img
                 className="profile-user-img-com img-fluid border border-0"
                 src={Env.REACT_APP_PROJECT_ICON}
-                alt="User profile picture"
+                alt="logo"
               />
               <h3>{Env.REACT_APP_PROJECT_NAME}</h3>
             </div>
@@ -144,6 +126,7 @@ export default function Registration() {
                       placeholder="Enter GST Number"
                       value={formdata.GSTNumber}
                       onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="col-md-4 col-12 mb-3">
@@ -154,6 +137,7 @@ export default function Registration() {
                       placeholder="Enter PAN Number"
                       value={formdata.PANNumber}
                       onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="col-md-4 col-12 mb-3">
@@ -164,6 +148,7 @@ export default function Registration() {
                       placeholder="Enter CIN Number"
                       value={formdata.CINNumber}
                       onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="col-md-6 col-12 mb-3">
@@ -174,6 +159,7 @@ export default function Registration() {
                       placeholder="Enter Website"
                       value={formdata.website}
                       onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="col-md-6 col-12 mb-3">
@@ -182,6 +168,7 @@ export default function Registration() {
                       name="type"
                       value={formdata.type}
                       onChange={handleInputChange}
+                      required
                     >
                       <option value="">Select Type</option>
                       <option value="PVT">PVT</option>
@@ -198,6 +185,7 @@ export default function Registration() {
                       placeholder="Enter Address"
                       value={formdata.address}
                       onChange={handleInputChange}
+                      required
                       rows="3"
                     />
                   </div>
@@ -209,14 +197,7 @@ export default function Registration() {
                       disabled={loaded}
                     >
                       {loaded ? (
-                        <>
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true"
-                          ></span>{" "}
-                          Please wait...
-                        </>
+                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       ) : (
                         <>Register</>
                       )}
@@ -235,8 +216,7 @@ export default function Registration() {
             </div>
           </div>
         </div>
+      <ToastContainer style={{width:"auto"}} />
       </div>
-      <ToastContainer />
-    </>
   );
 }
