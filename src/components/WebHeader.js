@@ -50,10 +50,6 @@ export default function WebHeader() {
           </ul>
           <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
-
-        <NavLink to="/admin/login" className="btn-getstarted">
-          Get Started
-        </NavLink>
       </div>
     </header>
   );
