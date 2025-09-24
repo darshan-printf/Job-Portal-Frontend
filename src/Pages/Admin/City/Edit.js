@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify';
+import Select from 'react-select';
 import Layout from '../../../components/Layout'
 import axios from 'axios';
 import ContentHeader from '../../../components/ContentHeader';
@@ -13,67 +14,107 @@ export default function Edit() {
     selectedStateId: '',
   }) 
   const [states, setStates] = useState([]);
-  const [loaded, setLoaded] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
   const currentPath = location?.pathname || "";
   const navigate = useNavigate();
   const { id } = location.state || {};
   const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Generate options for react-select
+  const stateOptions = states.map((state) => ({
+    value: state._id,
+    label: (
+      <div className="d-flex align-items-center">
+        <img
+          src={state.flag}
+          alt={state.name}
+          style={{ width: "20px", height: "15px", marginRight: "8px" }}
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
+        />
+        {state.name}
+      </div>
+    ),
+  }));
+
+  const selectedState = stateOptions.find(option => option.value === form.selectedStateId);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}city/get/${id}`, {
-          headers: {
-            'Authorization': ` ${localStorage.getItem('token')}`,
-            "Cache-Control": "no-cache",
-          },
+        setIsLoading(true);
+        const [cityResponse, statesResponse] = await Promise.all([
+          axios.get(`${apiUrl}city/get/${id}`, {
+            headers: {
+              'Authorization': ` ${localStorage.getItem('token')}`,
+              "Cache-Control": "no-cache",
+            },
+          }),
+          axios.get(`${apiUrl}state/get`, {
+            headers: {
+              authorization: `${localStorage.getItem('token')}`,
+              "Cache-Control": "no-cache",
+            },
+          })
+        ]);
+
+        const cityData = cityResponse.data;
+        setStates(statesResponse.data.data);
+        
+        setForm({
+          name: cityData.name || '',
+          code: cityData.code || '',
+          selectedStateId: cityData.state || '',
         });
-        const memberData = response.data;
-       setForm({
-        name: memberData.name,
-        code: memberData.code,
-        selectedStateId: memberData.state,
-       })
       } catch (error) {
-        console.error('Error fetching member data:', error);
+        console.error('Error fetching data:', error);
+        toast.error('Failed to load city data');
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchData();
+    if (id) {
+      fetchData();
+    }
+  }, [id, apiUrl]);
 
-  }, [id])
+  const handleStateChange = (selectedOption) => {
+    setForm(prev => ({
+      ...prev,
+      selectedStateId: selectedOption?.value || ""
+    }));
+  };
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}state/get`, {
-          headers: {
-            authorization: `${localStorage.getItem('token')}`,
-            "Cache-Control": "no-cache",
-          },
-        });
-        setStates(response.data.data); // Store API data in state
-      } catch (error) {
-        console.error("Error fetching states:", error);
-      }
-    };
-    fetchCountries();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoaded(true);
-    const payload = {
-      id,
-      name: form.name,
-      code: form.code,
-      stateId: form.selectedStateId,
-    };
+    
+    if (!form.selectedStateId) {
+      toast.error("Please select a state");
+      return;
+    }
 
-
+    setIsSubmitting(true);
+    
     try {
+      const payload = {
+        id,
+        name: form.name,
+        code: form.code,
+        stateId: form.selectedStateId,
+      };
+
       await axios.put(`${apiUrl}city/update`, payload, {
         headers: {
           "Authorization": `${localStorage.getItem('token')}`,
@@ -81,78 +122,121 @@ export default function Edit() {
         },
       });
 
-      setLoaded(false);
-      toast.success('city updated successfully');
+      toast.success('City updated successfully');
 
-      if (currentPath === "/admin/cityedit") {
-        setTimeout(() => {
-          if (window.location.pathname === "/admin/cityedit") {
-            navigate('/admin/location');
-          }
-        }, 3000);
-      }
+      // Navigate back after success
+      setTimeout(() => {
+        navigate('/admin/location');
+      }, 2000);
+      
     } catch (error) {
-      setLoaded(false);
-      console.error('Error updating member:', error);
+      console.error('Error updating city:', error);
       toast.error(error.response?.data?.message || 'Update failed');
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  if (isLoading) {
+    return (
+      <Layout ac4="active">
+        <ContentHeader 
+          title="Update City" 
+          breadcrumbs={[
+            { label: 'Dashboard', to: '/admin/dashboard' }, 
+            { label: "Location", to: "/admin/location" }, 
+            { label: 'Update City' }
+          ]} 
+        />
+        <section className="content">
+          <div className="container-fluid">
+            <div className="card card-primary card-outline">
+              <div className="card-body text-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+                <p className="mt-2">Loading city data...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Layout>
+    );
   }
+
   return (
     <Layout ac4="active">
-      <ContentHeader title="Update City" breadcrumbs={[{ label: 'Dashboard', to: '/admin/dashboard' }, { label: "Location", to: "/admin/location" }, { label: 'Update City' }]} />
+      <ContentHeader 
+        title="Update City" 
+        breadcrumbs={[
+          { label: 'Dashboard', to: '/admin/dashboard' }, 
+          { label: "Location", to: "/admin/location" }, 
+          { label: 'Update City' }
+        ]} 
+      />
       <section className="content">
         <div className="container-fluid">
           <div className="card card-primary card-outline">
             <div className="card-body">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <div className="row">
                   <div className='col-md-12'>
-                    <div class="form-group">
-                      <label for="exampleSelectRounded0">Select State:</label>
-                      <select class="custom-select rounded-0" 
-                        id="exampleSelectRounded0"
-                        value={form.selectedStateId}
-                        onChange={(e) => 
-                          setForm(prev => ({...prev, selectedStateId:e.target.value}))
-                        }
-                      >
-                        <option value="">Select a State</option>
-                        {states.map((state) => (
-                          <option key={state._id} value={state._id}>
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
                     <div className="form-group">
-                      <label htmlFor="memberName">Name</label> <span className="text-danger">*</span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="memberName"
-                        placeholder="Enter Member Name"
-                        value={form.name}
-                        onChange={(e) => 
-                          setForm(prev => ({...prev, name:e.target.value}))
-                        }
+                      <label htmlFor="stateSelect" className="required">
+                        Select State
+                      </label>
+                      <Select
+                        id="stateSelect"
+                        options={stateOptions}
+                        value={selectedState}
+                        onChange={handleStateChange}
+                        placeholder="Select a state"
+                        isSearchable
+                        isDisabled={isSubmitting}
+                        className="basic-select"
+                        classNamePrefix="select"
+                        aria-label="Select state"
                         required
                       />
                     </div>
                   </div>
+                  
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label htmlFor="designation">Code</label>
+                      <label htmlFor="cityName" className="required">
+                        City Name
+                      </label>
                       <input
                         type="text"
                         className="form-control"
-                        id="code"
-                        placeholder="Enter Code"
+                        id="cityName"
+                        name="name"
+                        placeholder="Enter city name"
+                        value={form.name}
+                        onChange={handleInputChange}
+                        required
+                        minLength={2}
+                        maxLength={100}
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="cityCode">
+                        City Code
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="cityCode"
+                        name="code"
+                        placeholder="Enter city code"
                         value={form.code}
-                        onChange={(e) => 
-                          setForm(prev => ({...prev, code:e.target.value}))
-                        }
+                        onChange={handleInputChange}
+                        maxLength={10}
+                        disabled={isSubmitting}
                       />
                     </div>
                   </div>
@@ -160,20 +244,30 @@ export default function Edit() {
 
                 <div className="card-footer">
                   <div className="float-right">
-                    <button type="button" className="btn btn-primary mx-2" onClick={() => window.history.back()}>
+                    <button 
+                      type="button" 
+                      className="btn btn-secondary mx-2" 
+                      onClick={() => navigate('/admin/location')}
+                      disabled={isSubmitting}
+                    >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      disabled={loaded}
+                      disabled={isSubmitting}
                     >
-                      {loaded ? (
-                        <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> </>
-                      ) : (
+                      {isSubmitting ? (
                         <>
-                          Submit
+                          <span 
+                            className="spinner-border spinner-border-sm" 
+                            role="status" 
+                            aria-hidden="true"
+                          ></span>
+                          <span className="ml-2">Updating...</span>
                         </>
+                      ) : (
+                        'Update City'
                       )}
                     </button>
                   </div>
@@ -183,7 +277,7 @@ export default function Edit() {
           </div>
         </div>
       </section>
-      <ToastContainer  style={{ width: "auto" }} />
+      <ToastContainer style={{ width: "auto" }} />
     </Layout>
   )
 }
