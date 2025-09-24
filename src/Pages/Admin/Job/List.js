@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FilePenLine, Trash2 } from "lucide-react";
+import { Shield, Star, Crown, Gem } from "lucide-react"; // icons
 import Layout from "../../../components/Layout";
 import ContentHeader from "../../../components/ContentHeader";
 import DataTable from "react-data-table-component";
@@ -67,14 +68,31 @@ export default function AddCompanys() {
           fetchRecords();
           Swal.fire("Deleted!", "Job has been deleted.", "success");
           setDeleteLoading((prev) => ({ ...prev, [id]: false }));
-          
         } catch (error) {
-
           setDeleteLoading((prev) => ({ ...prev, [id]: false }));
-          Swal.fire("Error",error.response?.data?.message ,"error");
+          Swal.fire("Error", error.response?.data?.message, "error");
         }
       }
     });
+  };
+  // package config
+  const packageConfig = {
+    Admin: {
+      color: "text-primary", // bootstrap blue
+      icon: <Shield size={18} />,
+    },
+    Silver: {
+      color: "text-secondary", // bootstrap grey
+      icon: <Star size={18} />,
+    },
+    Gold: {
+      color: "text-warning", // bootstrap yellow
+      icon: <Crown size={18} />,
+    },
+    Paletiniyam: {
+      color: "text-purple", // custom class (bootstrap में direct purple नहीं होता)
+      icon: <Gem size={18} />,
+    },
   };
 
   const columns = [
@@ -88,6 +106,8 @@ export default function AddCompanys() {
     {
       name: "Company",
       width: "200px",
+      selector: (row) => row?.company?.name || Env.REACT_APP_PROJECT_NAME,
+      sortable: true,
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton circle height={45} width={45} />
@@ -100,19 +120,36 @@ export default function AddCompanys() {
               width={25}
               className="mr-1 "
             />
-            <span className="d-block">{row?.company?.name || Env.REACT_APP_PROJECT_NAME }</span>
+            <span className="d-block">
+              {row?.company?.name || Env.REACT_APP_PROJECT_NAME}
+            </span>
           </div>
         ),
     },
 
     {
-      name: "Title",
+      name: "Job Title",
+      selector: (row) => row.title,
       sortable: true,
       cell: (row) =>
-        row.isSkeleton ? <Skeleton width={120} /> : `${row.title}`,
+        row.isSkeleton ? (
+          <Skeleton width={180} />
+        ) : (
+          <div className="d-flex align-items-center gap-2">
+            <span
+              className={`d-flex align-items-center mr-1 fw-semibold ${
+                packageConfig[row.package]?.color || "text-dark"
+              }`}
+            >
+              {packageConfig[row.package]?.icon}
+            </span>
+            <span className="fw-semibold text-dark">{row.title}</span>
+          </div>
+        ),
     },
     {
       name: "Experience",
+      selector: (row) => row.experience,
       sortable: true,
       width: "120px",
       cell: (row) =>
@@ -120,6 +157,7 @@ export default function AddCompanys() {
     },
     {
       name: "Salary",
+      selector: (row) => row.salary,
       sortable: true,
       width: "100px",
       cell: (row) =>
@@ -127,12 +165,14 @@ export default function AddCompanys() {
     },
     {
       name: "Type",
+      selector: (row) => row.type,
       sortable: true,
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.type),
       width: "80px",
     },
     {
       name: "Location",
+      selector: (row) => `${row.country}, ${row.state}, ${row.city}`,
       sortable: true,
       cell: (row) =>
         row.isSkeleton ? (
