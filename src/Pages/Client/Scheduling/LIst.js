@@ -4,7 +4,7 @@ import ContentHeader from '../../../components/ContentHeader'
 export default function SchedulingList() {
   return (
     <UserLayout ac4="active" >
-        <ContentHeader title="Job Posting" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Job List' }]} />
+        <ContentHeader title="Interview Schedule" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Interview Schedule' }]} />
 
 
     </UserLayout>

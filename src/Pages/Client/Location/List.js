@@ -4,7 +4,7 @@ import ContentHeader from '../../../components/ContentHeader'
 export default function LocationList() {
   return (
     <UserLayout ac6="active" >
-        <ContentHeader title="Location List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Location List' }]} />
+        <ContentHeader title="Location" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Location' }]} />
 
 
     </UserLayout>
