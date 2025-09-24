@@ -67,7 +67,7 @@ export default function List() {
           fetchRecords();
           Swal.fire("Deleted!", "Company has been deleted.", "success");
         } catch (error) {
-          Swal.fire( "Error",error.response?.data?.message ,"error");
+          Swal.fire("Error", error.response?.data?.message, "error");
         }
       }
     });
@@ -107,32 +107,32 @@ export default function List() {
       center: "true",
     },
     {
-      name: "Logo",
-      width: "100px",
-       center: "true",
+      name: "Name",
+      sortable: true,
+      
       cell: (row) =>
         row.isSkeleton ? (
-          <Skeleton circle height={45} width={45} />
+          <div className="flex d-flex items-center align-items-center gap-2">
+            <Skeleton circle height={45} width={45} /> <Skeleton width={120} />
+            
+          </div>
         ) : (
-          <img
-            src={row.logo || Env.REACT_APP_PROJECT_ICON}
-            alt="Profile"
-            height={45}
-            width={45}
-            className="p-1"
-          />
+          <div className="flex items-center gap-2">
+            <img
+              src={row.logo || Env.REACT_APP_PROJECT_ICON}
+              alt="Profile"
+              height={45}
+              width={45}
+              className="p-1 rounded-full"
+            />
+            <span>{row.name}</span>
+          </div>
         ),
     },
     {
-      name: "Name",
+      name: "Contact ",
       sortable: true,
-      cell: (row) =>
-        row.isSkeleton ? <Skeleton width={120} /> : `${row.name}`,
-    },
-    {
-      name: "Address",
-      sortable: true,
-      cell: (row) => (row.isSkeleton ? <Skeleton width={80} /> : row.address),
+      cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.phone),
     },
     {
       name: "Email",
@@ -304,7 +304,7 @@ export default function List() {
           </div>
         </div>
       </section>
-      <ToastContainer  style={{ width: "auto" }} />
+      <ToastContainer style={{ width: "auto" }} />
     </Layout>
   );
 }
