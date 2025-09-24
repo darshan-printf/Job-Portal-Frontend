@@ -9,12 +9,13 @@ export default function Layout({
     const menuItems = [
         { active: ac1, RName: "Dashboard", RLink: "/admin/userdashboard", icon: "fas fa-tachometer-alt" },
         { active: ac2, RName: "Job Posting", RLink: "/admin/joblist", icon: "fas fa-briefcase" },
-        { active: ac3, RName: "Candidate List", RLink: "/admin/candidatelist", icon: "fas fa-users" },
-        { active: ac4, RName: "Interview Schedule", RLink: "/admin/scheduling", icon: "fas fa-calendar-alt" },
-        { active: ac5, RName: "Offer Letter", RLink: "/admin/offerletter", icon: "fas fa-file-signature" },
-        { active: ac6, RName: "Location", RLink: "/admin/location", icon: "fas fa-map-marker-alt" },
-      
-        { active: ac8, RName: "Profile", RLink: "/admin/profile", icon: "fas fa-user" },
+        { active: ac6, RName: "Candidate List", RLink: "/admin/candidatelist", icon: "fas fa-users" },
+        { active: ac7, RName: "Interview Schedule", RLink: "/admin/scheduling", icon: "fas fa-calendar-alt" },
+        { active: ac8, RName: "Offer Letter", RLink: "/admin/offerletter", icon: "fas fa-file-signature" },
+        { active: ac3, RName: "Location", RLink: "/admin/location", icon: "fas fa-map-marker-alt" },
+        { active: ac5, RName: "Reports", RLink: "/admin/jobposition", icon: "fas fa-briefcase" },
+        { active: ac4, RName: "Company & Package", RLink: "/admin/candidatelist", icon: "fas fa-users" },
+        { active: ac9, RName: "Profile", RLink: "/admin/profile", icon: "fas fa-user" },
         { active: ac10, RName: "Logout", RLink: "/admin/login", icon: "fas fa-sign-out-alt" , onClick: () => {
       // call logout  clear local storage
       localStorage.clear();
