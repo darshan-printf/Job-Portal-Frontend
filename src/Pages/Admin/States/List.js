@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { FilePenLine, Trash2 } from "lucide-react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import ContentHeader from "../../../components/ContentHeader";
 import Skeleton from "react-loading-skeleton";
 import Swal from "sweetalert2";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -159,8 +158,6 @@ export default function ListMember() {
     }));
 
   return (
-    <>
-      <ContentHeader title="State List" />
       <div className="col-12">
         <div className="card card-primary card-outline">
           <div className="card-header">
@@ -221,6 +218,5 @@ export default function ListMember() {
           </div>
         </div>
       </div>
-    </>
   );
 }
