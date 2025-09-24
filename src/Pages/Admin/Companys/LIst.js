@@ -131,6 +131,7 @@ export default function List() {
     },
     {
       name: "Contact ",
+      width: "120px",
       sortable: true,
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.phone),
     },
