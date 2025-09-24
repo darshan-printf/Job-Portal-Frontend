@@ -46,7 +46,6 @@ import TeamList from "../Pages/Admin/Team/List";
 
 // Admin Pages
 import ClientDashboard from "../Pages/Client/Dashboard";
-import Joblist  from "../Pages/Client/Job/List";
 
 // Public Pages
 import Home from "../Pages/Web/Home";
@@ -101,7 +100,7 @@ export default function App() {
             
             {/* User protected routes */}
             <Route   path="userdashboard"      element={<ProtectedRoute        element={<ClientDashboard />}   allowedRoles={['user']}    />} />
-            <Route   path="ik"                 element={<ProtectedRoute        element={<Joblist />}           allowedRoles={['user']}    />} />
+            
           </Route>
           
           {/* Web layout and routes */}
