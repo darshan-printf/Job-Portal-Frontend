@@ -5,10 +5,10 @@ import ContentHeader from '../../components/ContentHeader'
 import CountUp from "react-countup";
 export default function Dashboard() {
   const stats = [
-    { count: 150, label: "Job Posting", icon: "fas fa-briefcase", bg: "bg-secondary" },
-    { count: 400, label: "Candidate List", icon: "fas fa-user", bg: "bg-primary" },
-    { count: 44, label: "Interview Schedule", icon: "fas fa-calendar-alt", bg: "bg-info" },
-    { count: 65, label: "offer Letter", icon: "fas fa-file-signature", bg: "bg-success" },
+    { count: 150, label: "Job Posting", icon: "fas fa-briefcase", bg: "bg-secondary" ,to:'/admin/jobpostlist'},
+    { count: 400, label: "Candidate List", icon: "fas fa-user", bg: "bg-primary" ,to:'/admin/candidatelist'},
+    { count: 44, label: "Interview Schedule", icon: "fas fa-calendar-alt", bg: "bg-info" ,to:'/admin/schedulinglist'},
+    { count: 65, label: "offer Letter", icon: "fas fa-file-signature", bg: "bg-success" ,to:'/admin/offerletterlist'},
   ];
   return (
     <UserLayout ac1="active">
@@ -17,6 +17,7 @@ export default function Dashboard() {
         <div className="row">
           {stats.map((item, i) => (
             <div key={i} className="col-lg-3 col-6">
+              <Link to={item.to} className="text-dark">
               <div className={`small-box ${item.bg}`}>
                 <div className="inner">
                   <h3> <CountUp end={item.count} duration={2} /></h3>
@@ -25,10 +26,11 @@ export default function Dashboard() {
                 <div className="icon">
                   <i className={item.icon}></i>
                 </div>
-                <Link className="small-box-footer">
+                <Link to={item.to} className="small-box-footer">
                   More info <i className="fas fa-arrow-circle-right"></i>
                 </Link>
               </div>
+              </Link>
             </div>
           ))}
         </div>
