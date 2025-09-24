@@ -39,7 +39,7 @@ export default function Sidebar({ menuItems }) {
           </div>
           <div className="info">
             <Link to="/" className="d-block">
-              {Env.REACT_APP_DEVLOPER_NAME}
+               Hi.. {localStorage.getItem("firstName") || Env.REACT_APP_DEVLOPER_NAME}
             </Link>
           </div>
         </div>
