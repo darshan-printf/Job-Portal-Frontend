@@ -109,12 +109,10 @@ export default function App() {
             <Route   path="team/list"          element={<ProtectedRoute    element={<TeamList />}          allowedRoles={['admin']}   />} />
             
             {/* User protected routes */}
-            <Route   path="userdashboard"      element={<ProtectedRoute    element={<ClientDashboard />}   allowedRoles={['user']}    />} />
-
+            <Route   path="userdashboard"      element={<ProtectedRoute    element={<ClientDashboard />}    allowedRoles={['user']}    />} />
             <Route   path="jobpostlist"        element={<ProtectedRoute    element={<JobPostList />}        allowedRoles={['user']}    />} />
             <Route   path="jobpostadd"         element={<ProtectedRoute    element={<JobPostAdd />}         allowedRoles={['user']}    />} />
             <Route   path="jobpostedit"        element={<ProtectedRoute    element={<JobPostEdit />}        allowedRoles={['user']}    />} />
-
             <Route   path="candidatelist"      element={<ProtectedRoute    element={<CandidateList />}      allowedRoles={['user']}    />} />
             <Route   path="schedulinglist"     element={<ProtectedRoute    element={<SchedulingList />}     allowedRoles={['user']}    />} />
             <Route   path="offerletterlist"    element={<ProtectedRoute    element={<OfferLetterList />}    allowedRoles={['user']}    />} />
