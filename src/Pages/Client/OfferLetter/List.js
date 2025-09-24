@@ -1,10 +1,10 @@
 import React from 'react'
 import UserLayout from '../../../components/UserLayout'
 import ContentHeader from '../../../components/ContentHeader'
-export default function List() {
+export default function OfferLetterList() {
   return (
-    <UserLayout ac3="active" >
-        <ContentHeader title="Job Posting" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Job List' }]} />
+    <UserLayout ac4="active" >
+        <ContentHeader title="Offer Letter List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Offer Letter List' }]} />
 
 
     </UserLayout>
