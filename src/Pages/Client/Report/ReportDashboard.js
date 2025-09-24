@@ -4,7 +4,7 @@ import ContentHeader from '../../../components/ContentHeader'
 
 export default function ReportDashboard() {
   return (
-    <UserLayout ac3="active" >
+    <UserLayout ac7="active" >
         <ContentHeader title="Report Dashboard" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Report Dashboard' }]} />
 
 
