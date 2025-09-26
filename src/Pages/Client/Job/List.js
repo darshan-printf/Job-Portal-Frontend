@@ -153,7 +153,7 @@ export default function List() {
               className="btn btn-primary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
               style={{ width: "32px", height: "32px" }}
               onClick={() =>
-                navigate(`/admin/jobedit?id=${row._id}`, {
+                navigate(`/admin/jobpostedit?id=${row._id}`, {
                   state: { id: row._id },
                 })
               }
@@ -225,7 +225,7 @@ export default function List() {
                     </div>
                     <div className="bd-highlight">
                       <button
-                        onClick={() => navigate("/admin/jobadd")}
+                        onClick={() => navigate("/admin/jobpostadd")}
                         type="button"
                         className="btn btn-block btn-primary"
                       >
