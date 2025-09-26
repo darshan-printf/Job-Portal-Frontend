@@ -204,7 +204,7 @@ export default function Edit({ match }) {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-center" autoClose={3000} />
+            <ToastContainer  autoClose={3000} />
         </Layout>
     );
 }

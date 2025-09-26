@@ -9,7 +9,7 @@ export default function AddCompanys() {
     <Layout ac6="active">
       <ContentHeader title="Reports "breadcrumbs={[{ label: "Dashboard", to: "/admin/dashboard" }, { label: "Reports " },]}/>
       <section className="content mb-1">Page is under development</section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

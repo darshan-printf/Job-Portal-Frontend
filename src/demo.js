@@ -14,7 +14,7 @@ export default function AddCompanys() {
           { label: "Add New Company " },
         ]}
       />
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }

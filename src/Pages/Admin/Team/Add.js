@@ -133,7 +133,7 @@ export default function Add() {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-center" style={{ width: "auto" }} />
+            <ToastContainer style={{ width: "auto" }} />
         </Layout>
     );
 }

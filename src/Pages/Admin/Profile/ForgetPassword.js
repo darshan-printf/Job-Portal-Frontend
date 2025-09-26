@@ -186,7 +186,7 @@ export default function ForgetPassWord() {
         </div>
       </section>
 
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer style={{ width: "auto" }} />
     </Layout>
   );
 }

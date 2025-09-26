@@ -101,7 +101,7 @@ export default function Dashboard() {
           </SortableContext>
         </DndContext>
       </section>
-      <ToastContainer position="top-center" style={{ width: "auto" }} />
+      <ToastContainer  style={{ width: "auto" }} />
     </Layout>
   );
 }
