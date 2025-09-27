@@ -4,6 +4,7 @@ import UserLayout from "../../../components/UserLayout";
 import ContentHeader from "../../../components/ContentHeader";
 
 import { Link } from "react-router-dom";
+import CountUp from "react-countup";
 
 export default function CompanyAndPackage() {
   const [companyData, setCompanyData] = useState({});
@@ -17,7 +18,11 @@ export default function CompanyAndPackage() {
   const fetchCompanyData = async () => {
     try {
       const response = await axios.get(`${apiUrl}company/getCompanyByUser`, {
-        headers: { Authorization: token },
+        headers: {
+          Authorization: token,
+          "Cache-Control": "no-cache",
+          // (for older browsers / proxies)
+        },
       });
       setCompanyData(response.data.data);
     } catch (error) {
@@ -25,6 +30,68 @@ export default function CompanyAndPackage() {
     }
   };
 
+  const stats = [
+    {
+      label: "Silver Package",
+      info: [
+        { label: "Up to 25,000 to 100,000", status: true },
+        { label: "offer Letter", status: true },
+        { label: "Professional Development", status: true },
+        { label: "Experience Letter", status: true },
+        { label: "Wellness Programs", status: true },
+        { label: "Bonus", status: false },
+        { label: "Health Insurance", status: false },
+        { label: "Paid Time Off", status: false },
+        { label: "Retirement Plans", status: false },
+        { label: "Remote Work Options", status: false },
+        { label: "flexible hours", status: false },
+        { label: "Employee Assistance Programs", status: false },
+      ],
+      icon: "fas fa-briefcase",
+      bg: "bg-dark",
+      
+    },
+    {
+      label: "Gold Package",
+     info: [
+        { label: "Up to 1,00,000 to 5,00,000", status: true },
+        { label: "offer Letter", status: true },
+        { label: "Experience Letter", status: true },
+        { label: "Bonus", status: true },
+        { label: "Health Insurance", status: true },
+        { label: "Paid Time Off", status: true },
+        { label: "Professional Development", status: true },
+        { label: "Wellness Programs", status: true },
+        { label: "flexible hours", status: false },
+        { label: "Retirement Plans", status: false },
+        { label: "Remote Work Options", status: false },
+        { label: "Employee Assistance Programs", status: false },
+      ],
+      icon: "fas fa-briefcase",
+      bg: "bg-dark",
+      
+    },
+    {
+      label: "Platinum Package",
+      info: [
+        { label: "Up to 5,00,000 to 25,00,000", status: true },
+        { label: "flexible hours", status: true },
+        { label: "offer Letter", status: true },
+        { label: "Experience Letter", status: true },
+        { label: "Bonus", status: true },
+        { label: "Health Insurance", status: true },
+        { label: "Paid Time Off", status: true },
+        { label: "Retirement Plans", status: true },
+        { label: "Remote Work Options", status: true },
+        { label: "Professional Development", status: true },
+        { label: "Employee Assistance Programs", status: true },
+        { label: "Wellness Programs", status: true },
+      ],
+      icon: "fas fa-briefcase",
+      bg: "bg-dark",
+    
+    },
+  ];
   return (
     <UserLayout ac8="active">
       <ContentHeader
@@ -51,9 +118,10 @@ export default function CompanyAndPackage() {
                   <h3 className="profile-username text-center">
                     {companyData.name}
                   </h3>
-                  <p className="text-muted text-center">{companyData.name} {companyData.type}</p>
+                  <p className="text-muted text-center">
+                    {companyData.name} {companyData.type}
+                  </p>
                   <ul className="list-group list-group-unbordered mb-3">
-                    
                     <li className="list-group-item">
                       <b>GST</b>{" "}
                       <Link className="float-right">
@@ -85,15 +153,13 @@ export default function CompanyAndPackage() {
                   <strong>
                     <i className="fas fa-envelope  mr-1"></i>Email
                   </strong>
-                  <p className="text-muted">
-                   {companyData.email}
-                  </p>
+                  <p className="text-muted">{companyData.email}</p>
                   <hr />
                   <strong>
                     <i className="fas fa-globe mr-1"></i>Website
                   </strong>
-                  <p className="text-muted"> 
-                    <Link >{companyData.website}</Link>
+                  <p className="text-muted">
+                    <Link>{companyData.website}</Link>
                   </p>
                   <hr />
                   <strong>
@@ -105,9 +171,7 @@ export default function CompanyAndPackage() {
                     <i className="fas fa-mobile-alt  mr-1"></i>Mobile
                   </strong>
 
-                  <p className="text-muted">
-                    {companyData.phone}
-                  </p>
+                  <p className="text-muted">{companyData.phone}</p>
                 </div>
               </div>
             </div>
@@ -121,7 +185,7 @@ export default function CompanyAndPackage() {
                         href="#activity"
                         data-toggle="tab"
                       >
-                        Activity
+                        Company Info
                       </a>
                     </li>
                     <li className="nav-item">
@@ -130,16 +194,7 @@ export default function CompanyAndPackage() {
                         href="#timeline"
                         data-toggle="tab"
                       >
-                        Timeline
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        href="#settings"
-                        data-toggle="tab"
-                      >
-                        Settings
+                        Package
                       </a>
                     </li>
                   </ul>
@@ -155,22 +210,26 @@ export default function CompanyAndPackage() {
                             alt="User"
                           />
                           <span className="username">
-                            <Link >{companyData.name}</Link>
-                            <Link  className="float-right btn-tool">
+                            <Link>{companyData.name}</Link>
+                            <Link className="float-right btn-tool">
                               <i className="fas fa-times"></i>
                             </Link>
                           </span>
                           <span className="description">
-                            Sent you a message 
+                            Sent you a message
                           </span>
                         </div>
                         <p>
-                          Lorem ipsum represents a long-held tradition for
-                          designers, typographers and the like. Some people hate
-                          it and argue for its demise, but others ignore the
-                          hate as they create awesome tools to help create
-                          filler text for everyone from bacon lovers to Charlie
-                          Sheen fans.
+                          {companyData.name} {companyData.type} is to inform you
+                          that our company has officially started using TalentOS
+                          software for the hiring and recruitment process. We
+                          kindly request you to carefully add and update all
+                          candidate details in TalentOS so that the recruitment
+                          process remains smooth, accurate, and well-documented.
+                          Your cooperation will help us maintain better
+                          efficiency and transparency in our hiring system. For
+                          any queries or issues while using TalentOS, please
+                          reach out to the HR department.
                         </p>
                       </div>
 
@@ -182,22 +241,20 @@ export default function CompanyAndPackage() {
                             alt="User"
                           />
                           <span className="username">
-                            <Link >Adam Jones</Link>
-                            <Link  className="float-right btn-tool">
+                            <Link>Adam Jones</Link>
+                            <Link className="float-right btn-tool">
                               <i className="fas fa-times"></i>
                             </Link>
                           </span>
-                          <span className="description">
-                            Posted 5 photos 
-                          </span>
+                          <span className="description">Information Post</span>
                         </div>
 
                         <div className="row mb-3">
                           <div className="col-sm-6">
                             <img
                               className="img-fluid"
-                              src="https://img.freepik.com/free-photo/beautiful-domestic-cat-laying-fence_181624-43207.jpg?t=st=1758883132~exp=1758886732~hmac=cdc7fb938da13cb28f8a2869a36bd5daa4152a49608cd3deb2cba89c6c333ad1&w=1060"
-                              alt="Photo"
+                              src="/Admin/img/info2.png"
+                              alt="info1"
                             />
                           </div>
 
@@ -206,26 +263,26 @@ export default function CompanyAndPackage() {
                               <div className="col-sm-6">
                                 <img
                                   className="img-fluid mb-3"
-                                  src="https://img.freepik.com/free-photo/beautiful-domestic-cat-laying-fence_181624-43207.jpg?t=st=1758883132~exp=1758886732~hmac=cdc7fb938da13cb28f8a2869a36bd5daa4152a49608cd3deb2cba89c6c333ad1&w=1060"
-                                  alt="Photo"
+                                  src="/Admin/img/info2.png"
+                                  alt="info"
                                 />
                                 <img
                                   className="img-fluid"
-                                  src="https://img.freepik.com/free-photo/beautiful-domestic-cat-laying-fence_181624-43207.jpg?t=st=1758883132~exp=1758886732~hmac=cdc7fb938da13cb28f8a2869a36bd5daa4152a49608cd3deb2cba89c6c333ad1&w=1060beautiful-domestic-cat-laying-fence_181624-43207.jpg?t=st=1758883132~exp=1758886732~hmac=cdc7fb938da13cb28f8a2869a36bd5daa4152a49608cd3deb2cba89c6c333ad1&w=1060"
-                                  alt="Photo"
+                                  src="/Admin/img/info2.png"
+                                  alt="info"
                                 />
                               </div>
 
                               <div className="col-sm-6">
                                 <img
                                   className="img-fluid mb-3"
-                                  src="https://img.freepik.com/free-photo/beautiful-domestic-cat-laying-fence_181624-43207.jpg?t=st=1758883132~exp=1758886732~hmac=cdc7fb938da13cb28f8a2869a36bd5daa4152a49608cd3deb2cba89c6c333ad1&w=1060"
-                                  alt="Photo"
+                                  src="/Admin/img/info1.png"
+                                  alt="info"
                                 />
                                 <img
                                   className="img-fluid"
-                                  src="https://img.freepik.com/free-photo/beautiful-domestic-cat-laying-fence_181624-43207.jpg?t=st=1758883132~exp=1758886732~hmac=cdc7fb938da13cb28f8a2869a36bd5daa4152a49608cd3deb2cba89c6c333ad1&w=1060"
-                                  alt="Photo"
+                                  src="/Admin/img/info1.png"
+                                  alt="info"
                                 />
                               </div>
                             </div>
@@ -235,226 +292,32 @@ export default function CompanyAndPackage() {
                     </div>
 
                     <div className="tab-pane" id="timeline">
-                      <div className="timeline timeline-inverse">
-                        <div className="time-label">
-                          <span className="bg-danger">10 Feb. 2014</span>
-                        </div>
-
-                        <div>
-                          <i className="fas fa-envelope bg-primary"></i>
-
-                          <div className="timeline-item">
-                            <span className="time">
-                              <i className="far fa-clock"></i> 12:05
-                            </span>
-
-                            <h3 className="timeline-header">
-                              <a href="#">Support Team</a> sent you an email
-                            </h3>
-
-                            <div className="timeline-body">
-                              Etsy doostang zoodles disqus groupon greplin oooj
-                              voxy zoodles, weebly ning heekya handango imeem
-                              plugg dopplr jibjab, movity jajah plickers sifteo
-                              edmodo ifttt zimbra. Babblely odeo kaboodle quora
-                              plaxo ideeli hulu weebly balihoo...
+                      <div className=" timeline-inverse ">
+                        <div className="row">
+                          {stats.map((item, i) => (
+                            <div key={i} className="col-lg-4 col-4">
+                              <Link  className="text-dark">
+                                <div className={`small-box ${item.bg}`}>
+                                  <div className="inner">
+                                    <h4> {item.label}</h4>
+                                    <hr/>
+                                    <p>
+                                      {item.info.map((infoItem, idx) => (
+                                        <li key={idx}>
+                                         {infoItem.status ? <i className="fas fa-check text-success"></i> : <i className="fas fa-times text-danger"></i>}  {infoItem.label} 
+                                        </li>
+                                      ))}
+                                    </p>
+                                  </div>
+                                  <div className="icon">
+                                    <i className={item.icon}></i>
+                                  </div>
+                                </div>
+                              </Link>
                             </div>
-                            <div className="timeline-footer">
-                              <a href="#" className="btn btn-primary btn-sm">
-                                Read more
-                              </a>
-                              <a href="#" className="btn btn-danger btn-sm">
-                                Delete
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div>
-                          <i className="fas fa-user bg-info"></i>
-
-                          <div className="timeline-item">
-                            <span className="time">
-                              <i className="far fa-clock"></i> 5 mins ago
-                            </span>
-
-                            <h3 className="timeline-header border-0">
-                              <a href="#">Sarah Young</a> accepted your friend
-                              request
-                            </h3>
-                          </div>
-                        </div>
-
-                        <div>
-                          <i className="fas fa-comments bg-warning"></i>
-
-                          <div className="timeline-item">
-                            <span className="time">
-                              <i className="far fa-clock"></i> 27 mins ago
-                            </span>
-
-                            <h3 className="timeline-header">
-                              <a href="#">Jay White</a> commented on your post
-                            </h3>
-
-                            <div className="timeline-body">
-                              Take me to your leader! Switzerland is small and
-                              neutral! We are more like Germany, ambitious and
-                              misunderstood!
-                            </div>
-                            <div className="timeline-footer">
-                              <a
-                                href="#"
-                                className="btn btn-warning btn-flat btn-sm"
-                              >
-                                View comment
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="time-label">
-                          <span className="bg-success">3 Jan. 2014</span>
-                        </div>
-
-                        <div>
-                          <i className="fas fa-camera bg-purple"></i>
-
-                          <div className="timeline-item">
-                            <span className="time">
-                              <i className="far fa-clock"></i> 2 days ago
-                            </span>
-
-                            <h3 className="timeline-header">
-                              <a href="#">Mina Lee</a> uploaded new photos
-                            </h3>
-
-                            <div className="timeline-body">
-                              <img
-                                src="http://placehold.it/150x100"
-                                alt="..."
-                              />
-                              <img
-                                src="http://placehold.it/150x100"
-                                alt="..."
-                              />
-                              <img
-                                src="http://placehold.it/150x100"
-                                alt="..."
-                              />
-                              <img
-                                src="http://placehold.it/150x100"
-                                alt="..."
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div>
-                          <i className="far fa-clock bg-gray"></i>
+                          ))}
                         </div>
                       </div>
-                    </div>
-
-                    <div className="tab-pane" id="settings">
-                      <form className="form-horizontal">
-                        <div className="form-group row">
-                          <label
-                            for="inputName"
-                            className="col-sm-2 col-form-label"
-                          >
-                            Name
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="inputName"
-                              placeholder="Name"
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label
-                            for="inputEmail"
-                            className="col-sm-2 col-form-label"
-                          >
-                            Email
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="inputEmail"
-                              placeholder="Email"
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label
-                            for="inputName2"
-                            className="col-sm-2 col-form-label"
-                          >
-                            Name
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="inputName2"
-                              placeholder="Name"
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label
-                            for="inputExperience"
-                            className="col-sm-2 col-form-label"
-                          >
-                            Experience
-                          </label>
-                          <div className="col-sm-10">
-                            <textarea
-                              className="form-control"
-                              id="inputExperience"
-                              placeholder="Experience"
-                            ></textarea>
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label
-                            for="inputSkills"
-                            className="col-sm-2 col-form-label"
-                          >
-                            Skills
-                          </label>
-                          <div className="col-sm-10">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="inputSkills"
-                              placeholder="Skills"
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <div className="offset-sm-2 col-sm-10">
-                            <div className="checkbox">
-                              <label>
-                                <input type="checkbox" /> I agree to the{" "}
-                                <a href="#">terms and conditions</a>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <div className="offset-sm-2 col-sm-10">
-                            <button type="submit" className="btn btn-danger">
-                              Submit
-                            </button>
-                          </div>
-                        </div>
-                      </form>
                     </div>
                   </div>
                 </div>
