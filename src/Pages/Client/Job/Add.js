@@ -24,6 +24,7 @@ export default function Add() {
     bondDescription: "",
     noticePeriod: "",
     benifits: "",
+    package: "",
   });
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({
@@ -48,6 +49,11 @@ export default function Add() {
   const flexibleWorkingHoursOptions = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
+  ];
+  const packageOptions = [
+    { value: "Silver", label: "Silver" },
+    { value: "Gold", label: "Gold" },
+    { value: "Paletiniyam", label: "Paletiniyam" },
   ];
 
   const fetchCountries = async () => {
@@ -456,6 +462,7 @@ export default function Add() {
                       />
                     </div>
                   </div>
+                  
                   <div className="col-md-4 col-12">
                     <div className="form-group">
                       <label htmlFor="workingHours">Working Hours</label>
@@ -496,7 +503,7 @@ export default function Add() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6 col-12">
+                  <div className="col-md-4 col-12">
                     <div className="form-group">
                       <label htmlFor="bondTime">Bond Time</label>
                       <input
@@ -509,7 +516,7 @@ export default function Add() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6 col-12">
+                  <div className="col-md-4 col-12">
                     <div className="form-group">
                       <label htmlFor="benefits">Benefits</label>
                       <input
@@ -519,6 +526,21 @@ export default function Add() {
                         placeholder="e.g., Health insurance, Paid time off"
                         value={formData.benefits}
                         onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-12">
+                    <div className="form-group">
+                      <label htmlFor="package">Package</label>
+                      <Select
+                        id="package"
+                        options={packageOptions}
+                        value={getCurrentValue("package", packageOptions)}
+                        onChange={(selected) =>
+                          handleSelectChange(selected, "package")
+                        }
+                        placeholder="Select Package"
+                        isSearchable
                       />
                     </div>
                   </div>

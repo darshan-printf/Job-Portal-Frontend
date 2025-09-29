@@ -27,6 +27,7 @@ export default function Edit() {
     bondDescription: "",
     noticePeriod: "",
     benefits: "",
+    package: "",
   });
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({
@@ -54,6 +55,13 @@ export default function Edit() {
   const flexibleWorkingHoursOptions = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
+  ];
+
+  // Package options
+  const packageOptions = [
+    { value: "Silver", label: "Silver" },
+    { value: "Gold", label: "Gold" },
+    { value: "Paletiniyam", label: "Paletiniyam" },
   ];
 
   // Fetch job data from API
@@ -89,6 +97,7 @@ export default function Edit() {
         bondDescription: jobData.bondDescription || "",
         noticePeriod: jobData.noticePeriod || "",
         benefits: jobData.benefits || "",
+        package: jobData.package || "",
       });
 
       // Set selected country and state IDs for filtering
@@ -469,6 +478,7 @@ export default function Edit() {
                       />
                     </div>
                   </div>
+                  
                   <div className="col-md-4 col-12">
                     <div className="form-group">
                       <label htmlFor="country">Country</label>
@@ -556,7 +566,7 @@ export default function Edit() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6 col-12">
+                  <div className="col-md-4 col-12">
                     <div className="form-group">
                       <label htmlFor="bondTime">Bond Time</label>
                       <input
@@ -569,7 +579,7 @@ export default function Edit() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6 col-12">
+                  <div className="col-md-4 col-12">
                     <div className="form-group">
                       <label htmlFor="benefits">Benefits</label>
                       <input
@@ -579,6 +589,21 @@ export default function Edit() {
                         placeholder="e.g., Health insurance, Paid time off"
                         value={formData.benefits}
                         onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-12">
+                    <div className="form-group">
+                      <label htmlFor="package">Package</label>
+                      <Select
+                        id="package"
+                        options={packageOptions}
+                        value={getCurrentValue("package", packageOptions)}
+                        onChange={(selected) =>
+                          handleSelectChange(selected, "package")
+                        }
+                        placeholder="Select Package"
+                        isSearchable
                       />
                     </div>
                   </div>
