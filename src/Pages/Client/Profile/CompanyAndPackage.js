@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UserLayout from "../../../components/UserLayout";
 import ContentHeader from "../../../components/ContentHeader";
-
 import { Link } from "react-router-dom";
-import CountUp from "react-countup";
 
 export default function CompanyAndPackage() {
   const [companyData, setCompanyData] = useState({});
@@ -51,11 +49,10 @@ export default function CompanyAndPackage() {
       ],
       icon: "fas fa-briefcase",
       bg: "bg-dark",
-      
     },
     {
       label: "Gold Package",
-     info: [
+      info: [
         { label: "Up to 1,00,000 to 5,00,000", status: true },
         { label: "offer Letter", status: true },
         { label: "Experience Letter", status: true },
@@ -71,7 +68,6 @@ export default function CompanyAndPackage() {
       ],
       icon: "fas fa-briefcase",
       bg: "bg-dark",
-      
     },
     {
       label: "Platinum Package",
@@ -91,7 +87,6 @@ export default function CompanyAndPackage() {
       ],
       icon: "fas fa-briefcase",
       bg: "bg-dark",
-    
     },
   ];
   return (
@@ -113,7 +108,7 @@ export default function CompanyAndPackage() {
                   <div className="text-center ">
                     <img
                       className="profile-user-img img-fluid border-0 "
-                      src={companyData.logo}
+                      src={companyData.logo || Env.REACT_APP_PROJECT_ICON}
                       alt="User"
                     />
                   </div>
@@ -208,7 +203,7 @@ export default function CompanyAndPackage() {
                         <div className="user-block">
                           <img
                             className="img-circle img-bordered-sm"
-                            src={Env.REACT_APP_PROJECT_ICON}
+                            src={companyData.logo || Env.REACT_APP_PROJECT_ICON }
                             alt="User"
                           />
                           <span className="username">
@@ -239,7 +234,7 @@ export default function CompanyAndPackage() {
                         <div className="user-block">
                           <img
                             className="img-circle img-bordered-sm"
-                            src={Env.REACT_APP_PROJECT_ICON}
+                            src={companyData.logo || Env.REACT_APP_PROJECT_ICON}
                             alt="User"
                           />
                           <span className="username">
@@ -298,15 +293,20 @@ export default function CompanyAndPackage() {
                         <div className="row">
                           {stats.map((item, i) => (
                             <div key={i} className="col-lg-4 col-4">
-                              <Link  className="text-dark">
+                              <Link className="text-dark">
                                 <div className={`small-box ${item.bg}`}>
                                   <div className="inner">
                                     <h4> {item.label}</h4>
-                                    <hr/>
+                                    <hr />
                                     <p>
                                       {item.info.map((infoItem, idx) => (
                                         <li key={idx}>
-                                         {infoItem.status ? <i className="fas fa-check text-success"></i> : <i className="fas fa-times text-danger"></i>}  {infoItem.label} 
+                                          {infoItem.status ? (
+                                            <i className="fas fa-check text-success"></i>
+                                          ) : (
+                                            <i className="fas fa-times text-danger"></i>
+                                          )}{" "}
+                                          {infoItem.label}
                                         </li>
                                       ))}
                                     </p>
