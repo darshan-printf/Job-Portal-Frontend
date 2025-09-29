@@ -128,7 +128,7 @@ export default function Dashboard() {
     },
     {
       name: "Logo",
-      width: "100px",
+      width: "150px",
       center: "true",
       cell: (row) =>
         row.isSkeleton ? (
@@ -137,8 +137,8 @@ export default function Dashboard() {
           <img
             src={row.logo || Env.REACT_APP_PROJECT_ICON}
             alt="Profile"
-            height={45}
-            width={45}
+            height={40}
+            width={"auto"}
             className="p-1"
           />
         ),

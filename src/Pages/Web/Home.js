@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import WebLayout from "../../components/WebLayout";
 import { Link } from "react-router-dom";
-
-
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
   const Env = process.env;
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${Env.REACT_APP_API_URL}company/getAllCompaniesPublic`,
+      headers: {},
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        if (response.data.success) {
+          setCompanies(response.data.data);
+        }
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+        
+      });
+      // eslint-disable-next-line
+  }, []);
   return (
     <WebLayout>
       {/* Hero Section */}
@@ -12,9 +36,16 @@ export default function Home() {
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
-              <h1>Welcome To <span className="text-primary">{Env.REACT_APP_PROJECT_NAME}</span>  Develop Anything.</h1>
+              <h1>
+                Welcome To{" "}
+                <span className="text-primary">
+                  {Env.REACT_APP_PROJECT_NAME}
+                </span>{" "}
+                Develop Anything.
+              </h1>
               <p>
-                Post a job in minutes and start receiving qualified resumes as soon as today
+                Post a job in minutes and start receiving qualified resumes as
+                soon as today
               </p>
               <div className="d-flex">
                 <Link to="/admin/login" className=" btn-get-started">
@@ -40,57 +71,25 @@ export default function Home() {
       <section id="clients" className="clients section light-background">
         <div className="container" data-aos="fade-up">
           <div className="row gy-4">
-            <div className="col-xl-2 col-md-3 col-6 client-logo">
-              <img
-                src="Web/img/clients/client-1.png"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            {/* End Client Item */}
-            <div className="col-xl-2 col-md-3 col-6 client-logo">
-              <img
-                src="Web/img/clients/client-2.png"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            {/* End Client Item */}
-            <div className="col-xl-2 col-md-3 col-6 client-logo">
-              <img
-                src="Web/img/clients/client-3.png"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            {/* End Client Item */}
-            <div className="col-xl-2 col-md-3 col-6 client-logo">
-              <img
-                src="Web/img/clients/client-4.png"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            {/* End Client Item */}
-            <div className="col-xl-2 col-md-3 col-6 client-logo">
-              <img
-                src="Web/img/clients/client-5.png"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            {/* End Client Item */}
-            <div className="col-xl-2 col-md-3 col-6 client-logo">
-              <img
-                src="Web/img/clients/client-6.png"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            {/* End Client Item */}
+            {companies.map((company, index) => (
+              <div key={index} className="col-xl-2 col-md-3 col-6 client-logo">
+                <a
+                  href={company.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={company.logo}
+                    className="img-fluid"
+                    alt={company.name}
+                  />
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+
       {/* Features Section */}
       <section id="features" className="features section">
         {/* Section Title */}
@@ -105,42 +104,89 @@ export default function Home() {
         <div className="container">
           <div className="row gy-4">
             {[
-              { icon: "briefcase", color: "#ffbb2c", title: "Job Posting Management" },
-              { icon: "person-lines-fill", color: "#5578ff", title: "Candidate Profile Management" },
-              { icon: "clipboard-data", color: "#e80368", title: "Application Tracking System (ATS)" },
-              { icon: "file-earmark-person", color: "#e361ff", title: "Resume Upload & Parsing" },
-              { icon: "calendar-event", color: "#47aeff", title: "Interview Scheduling" },
-              { icon: "shield-lock", color: "#ffa76e", title: "Role-Based Access Control" },
-              { icon: "envelope-paper", color: "#11dbcf", title: "Automated Email Notifications" },
-              { icon: "search", color: "#4233ff", title: "Search & Filter Candidates" },
-              { icon: "file-earmark-text", color: "#b2904f", title: "Offer Letter Generation" },
-              { icon: "bar-chart-line", color: "#b20969", title: "Analytics Dashboard" },
-              { icon: "globe", color: "#ff5828", title: "Careers Page Integration" },
-              { icon: "clock-history", color: "#29cc61", title: "Candidate Status History" },
-            ]
-              .map((feature, index) => (
-                <div
-                  className="col-lg-3 col-md-4"
-                  data-aos="fade-up"
-                  data-aos-delay={100 * (index + 1)}
-                  key={index}
-                >
-                  <div className="features-item">
-                    <i
-                      className={`bi bi-${feature.icon}`}
-                      style={{ color: feature.color }}
-                    />
-                    <h3>
-                      <span
-                        className="stretched-link"
-                        style={{ pointerEvents: "none", cursor: "default" }}
-                      >
-                        {feature.title}
-                      </span>
-                    </h3>
-                  </div>
+              {
+                icon: "briefcase",
+                color: "#ffbb2c",
+                title: "Job Posting Management",
+              },
+              {
+                icon: "person-lines-fill",
+                color: "#5578ff",
+                title: "Candidate Profile Management",
+              },
+              {
+                icon: "clipboard-data",
+                color: "#e80368",
+                title: "Application Tracking System (ATS)",
+              },
+              {
+                icon: "file-earmark-person",
+                color: "#e361ff",
+                title: "Resume Upload & Parsing",
+              },
+              {
+                icon: "calendar-event",
+                color: "#47aeff",
+                title: "Interview Scheduling",
+              },
+              {
+                icon: "shield-lock",
+                color: "#ffa76e",
+                title: "Role-Based Access Control",
+              },
+              {
+                icon: "envelope-paper",
+                color: "#11dbcf",
+                title: "Automated Email Notifications",
+              },
+              {
+                icon: "search",
+                color: "#4233ff",
+                title: "Search & Filter Candidates",
+              },
+              {
+                icon: "file-earmark-text",
+                color: "#b2904f",
+                title: "Offer Letter Generation",
+              },
+              {
+                icon: "bar-chart-line",
+                color: "#b20969",
+                title: "Analytics Dashboard",
+              },
+              {
+                icon: "globe",
+                color: "#ff5828",
+                title: "Careers Page Integration",
+              },
+              {
+                icon: "clock-history",
+                color: "#29cc61",
+                title: "Candidate Status History",
+              },
+            ].map((feature, index) => (
+              <div
+                className="col-lg-3 col-md-4"
+                data-aos="fade-up"
+                data-aos-delay={100 * (index + 1)}
+                key={index}
+              >
+                <div className="features-item">
+                  <i
+                    className={`bi bi-${feature.icon}`}
+                    style={{ color: feature.color }}
+                  />
+                  <h3>
+                    <span
+                      className="stretched-link"
+                      style={{ pointerEvents: "none", cursor: "default" }}
+                    >
+                      {feature.title}
+                    </span>
+                  </h3>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -262,6 +308,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+       <ToastContainer style={{width: 'auto'}} />
     </WebLayout>
   );
 }

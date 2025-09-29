@@ -10,6 +10,8 @@ export default function CompanyAndPackage() {
   const [companyData, setCompanyData] = useState({});
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
+  const Env = process.env;
+
   useEffect(() => {
     fetchCompanyData();
     // eslint-disable-next-line
@@ -108,9 +110,9 @@ export default function CompanyAndPackage() {
             <div className="col-md-3">
               <div className="card card-primary card-outline">
                 <div className="card-body box-profile">
-                  <div className="text-center">
+                  <div className="text-center ">
                     <img
-                      className="profile-user-img img-fluid img-circle"
+                      className="profile-user-img img-fluid border-0 "
                       src={companyData.logo}
                       alt="User"
                     />
@@ -206,7 +208,7 @@ export default function CompanyAndPackage() {
                         <div className="user-block">
                           <img
                             className="img-circle img-bordered-sm"
-                            src={companyData.logo}
+                            src={Env.REACT_APP_PROJECT_ICON}
                             alt="User"
                           />
                           <span className="username">
@@ -237,7 +239,7 @@ export default function CompanyAndPackage() {
                         <div className="user-block">
                           <img
                             className="img-circle img-bordered-sm"
-                            src={companyData.logo}
+                            src={Env.REACT_APP_PROJECT_ICON}
                             alt="User"
                           />
                           <span className="username">

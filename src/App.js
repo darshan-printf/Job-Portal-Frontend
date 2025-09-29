@@ -18,6 +18,7 @@ export default function App() {
 
   // Set page title
   document.title = Env.REACT_APP_PROJECT_NAME; // <-- Change this to your desired title
+  // eslint-disable-next-line
 }, []);
 
 

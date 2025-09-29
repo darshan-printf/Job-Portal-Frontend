@@ -107,49 +107,57 @@ export default function List() {
       center: "true",
     },
     {
-      name: "Name",
+      name: "Logo",
       sortable: true,
-      
+      center: "true",
+      width: "120px",
+
       cell: (row) =>
         row.isSkeleton ? (
           <div className="flex d-flex items-center align-items-center gap-2">
-            <Skeleton circle height={45} width={45} /> <Skeleton width={120} />
-            
+            <Skeleton circle height={45} width={45} />
           </div>
         ) : (
           <div className="flex items-center gap-2">
             <img
               src={row.logo || Env.REACT_APP_PROJECT_ICON}
               alt="Profile"
-              height={45}
-              width={45}
+              height={40}
+              width={"auto"}
               className="p-1 rounded-full"
             />
-            <span>{row.name}</span>
           </div>
         ),
     },
     {
+      name: "name",
+      selector: (row) => row.name,
+      sortable: true,
+      cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.name),
+    },
+    {
       name: "Contact ",
-      width: "120px",
+      width: "100px",
       sortable: true,
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.phone),
     },
     {
       name: "Email",
+      selector: (row) => row.email,
       sortable: true,
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.email),
     },
     {
       name: "GST Number",
-      width: "120px",
+      width: "100px",
       cell: (row) =>
         row.isSkeleton ? <Skeleton width={100} /> : row.GSTNumber,
     },
     {
       name: "Type",
+      selector: (row) => row.type,
       sortable: true,
-      width: "80px",
+      width: "60px",
       center: "true",
       cell: (row) => (row.isSkeleton ? <Skeleton width={60} /> : row.type),
     },
