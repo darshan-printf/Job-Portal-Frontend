@@ -86,7 +86,7 @@ export default function List() {
           <img
             src={row.image || Env.REACT_APP_PROJECT_ICON}
             alt="Profile"
-            height={45}
+            height={55}
             width={45}
             className="p-1"
           />
