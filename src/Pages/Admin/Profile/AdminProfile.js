@@ -160,20 +160,20 @@ export default function AdminProfile() {
                   <ul className="list-group list-group-unbordered mb-5">
                     <li className="list-group-item">
                       <b>Username</b>
-                      <span className="float-right text-primary">
+                      <span className="float-right text-primary ">
                         {adminData.username}
                       </span>
                     </li>
                     <li className="list-group-item">
-                      <b>Email</b>
-                      <span className="float-right text-info">
-                        {adminData.email}
+                      <b>First Name </b>
+                      <span className="float-right">
+                        {adminData.firstName}
                       </span>
                     </li>
                     <li className="list-group-item">
-                      <b>Status</b>
-                      <span className="float-right text-success">
-                        {adminData.isActive ? "Active" : "Inactive"}
+                      <b>Last Name</b>
+                      <span className="float-right ">
+                        {adminData.lastName}
                       </span>
                     </li>
                   </ul>
