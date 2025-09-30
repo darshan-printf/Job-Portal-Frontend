@@ -307,11 +307,11 @@ export default function AdminProfile() {
                           </div>
                         </div>
 
-                        <div className="form-group row">
+                        <div className="form-group row text-right">
                           <div className="offset-sm-2 col-sm-10">
                             <button
                               type="submit"
-                              className="btn btn-danger mb-0"
+                              className="btn btn-primary mb-0"
                               disabled={updating}
                             >
                               {updating ? (
@@ -323,7 +323,7 @@ export default function AdminProfile() {
                                   ></span>
                                 </>
                               ) : (
-                                "Update Profile"
+                                "Update"
                               )}
                             </button>
                           </div>
