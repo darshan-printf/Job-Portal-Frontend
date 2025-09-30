@@ -130,7 +130,7 @@ export default function List() {
         ),
     },
     {
-      name: "name",
+      name: "Name",
       selector: (row) => row.name,
       sortable: true,
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.name),
