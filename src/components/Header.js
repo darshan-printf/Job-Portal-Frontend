@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 export default function Header() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const navigate = useNavigate();
-  const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      // Enter fullscreen
-      document.documentElement.requestFullscreen();
-      setIsFullScreen(true);
-    } else {
-      // Exit fullscreen
-      document.exitFullscreen();
-      setIsFullScreen(false);
-    }
-  };
-
+ 
   // Agar user ESC daba de toh bhi state update ho jaye
   useEffect(() => {
     const handleChange = () => {
@@ -25,6 +13,7 @@ export default function Header() {
     document.addEventListener("fullscreenchange", handleChange);
     return () => document.removeEventListener("fullscreenchange", handleChange);
   }, []);
+
   const logout = () => {
     localStorage.clear();
     navigate("/admin/login");
@@ -44,21 +33,7 @@ export default function Header() {
         </li>
       </ul>
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item dropdown">
-          <Link
-            className="nav-link"
-            onClick={(e) => {
-              e.preventDefault();
-              toggleFullScreen();
-            }}
-          >
-            {isFullScreen ? (
-              <i className="fas fa-compress"></i> // fullscreen on → compress
-            ) : (
-              <i className="fas fa-expand"></i> // fullscreen off → expand
-            )}
-          </Link>
-        </li>
+        
         <li className="nav-item dropdown">
           <Link
             className="nav-link"
