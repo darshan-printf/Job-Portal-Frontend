@@ -76,7 +76,12 @@ export default function CandidateList() {
 
   const closeModal = () => {
     setModalOpen(false);
+    fetchRecords();
     setSelectedCandidate(null);
+  };
+  const saveCahnage = () => {
+    fetchRecords();
+
   };
 
   const columns = [
@@ -277,6 +282,7 @@ export default function CandidateList() {
         onClose={closeModal}
         candidate={selectedCandidate}
         packageConfig={packageConfig}
+        onSave={saveCahnage}
       />
 
       <ToastContainer style={{ width: "auto" }} />

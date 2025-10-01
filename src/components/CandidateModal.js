@@ -4,7 +4,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-const CandidateModal = ({ isOpen, onClose, candidate, packageConfig }) => {
+const CandidateModal = ({ isOpen, onClose, candidate, onSave }) => {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const Env = process.env;
@@ -50,6 +50,7 @@ const CandidateModal = ({ isOpen, onClose, candidate, packageConfig }) => {
     
       toast.success(response.data.message);
       onClose();
+      onSave();
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -138,7 +139,7 @@ const CandidateModal = ({ isOpen, onClose, candidate, packageConfig }) => {
             </div>
           </div>
 
-          <div className="modal-footer justify-content-between">
+          <div className="modal-footer justify-content-end">
             <button
               type="button"
               className="btn btn-default"
@@ -157,10 +158,10 @@ const CandidateModal = ({ isOpen, onClose, candidate, packageConfig }) => {
               {isLoading ? (
                 <>
                   <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                  Saving...
+                
                 </>
               ) : (
-                "Save changes"
+                "Save"
               )}
             </button>
           </div>
