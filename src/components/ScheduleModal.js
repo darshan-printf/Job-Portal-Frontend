@@ -17,11 +17,11 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
 
   // Status options for the select dropdown
   const statusOptions = [
-    { value: 'pending', label: 'Pending' },
     { value: 'scheduled', label: 'Scheduled' },
-    { value: 'interviewed', label: 'Interviewed' },
-    { value: 'hired', label: 'Hired' },
-    { value: 'rejected', label: 'Rejected' }
+    { value: 'completed', label: 'Completed' },
+    { value: 'cancelled', label: 'Cancelled' },
+    { value: 'rejected', label: 'Rejected' },
+    { value: 'accepted', label: 'Accepted' }    
   ];
 
   useEffect(() => {
@@ -29,6 +29,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
       fetchJobDetails();
       fetchCandidateDetails();
     }
+    // eslint-disable-next-line
   }, [isOpen, schedule]);
 
   const fetchJobDetails = async () => {
@@ -107,7 +108,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
           <div className="modal-header bg-primary text-white">
             <h4 className="modal-title">
               <i className="fas fa-calendar-alt mr-2"></i>
-              Schedule Details ({moment(jobDetails.createdAt).format("DD-MM-YYYY")})
+              Schedule Details ({moment(jobDetails?.createdAt).format("DD-MM-YYYY")})
             </h4>
             <button
               type="button"
