@@ -90,7 +90,7 @@ export default function CandidateList() {
       selector: (row, index) =>
         row.isSkeleton ? <Skeleton width={20} /> : index + 1,
       width: "60px",
-      center: true,
+      center: "true",
     },
     {
       name: "Status",
@@ -167,7 +167,7 @@ export default function CandidateList() {
     {
       name: "Details",
       width: "100px",
-      center: true,
+     center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={60} height={30} />
@@ -175,6 +175,7 @@ export default function CandidateList() {
           <div className="d-flex">
             <button
               type="button"
+              disabled={row.status !== "pending"}
               className="btn btn-secondary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
               style={{ width: "32px", height: "32px" }}
               onClick={() => handlePdfClick(row)}

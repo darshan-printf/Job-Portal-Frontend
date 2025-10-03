@@ -119,17 +119,17 @@ export default function CompanyAndPackage() {
 
           </div>
 
-          <div class="row">
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
+          <div className="row">
+          <div className="col-md-4">
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">
                   <Star className="mr-1"/>
                   Silver
                 </h3>
               </div>
-              <div class="card-body">
-                <ul class="list-unstyled">
+              <div className="card-body">
+                <ul className="list-unstyled">    
                   <li>
                     <ul>
                       <li>Phasellus iaculis neque</li>
@@ -141,16 +141,16 @@ export default function CompanyAndPackage() {
             </div>
           </div>
 
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
+          <div className="col-md-4">
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">
                   <Crown className="mr-1"/>
                   Gold
                 </h3>
               </div>
-              <div class="card-body">
-                <ul class="list-unstyled">
+              <div className="card-body">
+                <ul className="list-unstyled">
                   <li>
                     <ul>
                       <li>Phasellus iaculis neque</li>
@@ -162,16 +162,16 @@ export default function CompanyAndPackage() {
             </div>
           </div>
 
-          <div class="col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
+          <div className="col-md-4">
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">
                   <Gem className="mr-1"/>
                   Paletiniyam
                 </h3>
               </div>
-              <div class="card-body">
-                <ul class="list-unstyled">
+              <div className="card-body">
+                <ul className="list-unstyled">
                   <li>
                     <ul>
                       <li>Phasellus iaculis neque</li>
