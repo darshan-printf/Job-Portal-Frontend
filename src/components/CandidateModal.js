@@ -158,7 +158,7 @@ const CandidateModal = ({ isOpen, onClose, candidate, onSave }) => {
             >
               {isLoading ? (
                 <>
-                  <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 
                 </>
               ) : (

@@ -190,8 +190,7 @@ export default function Edit({ match }) {
                                         >
                                             {submitting ? (
                                                 <>
-                                                    <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                                                    Updating...
+                                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                 </>
                                             ) : (
                                                 "Update Team Member"

@@ -259,12 +259,7 @@ export default function Edit() {
                     >
                       {isSubmitting ? (
                         <>
-                          <span 
-                            className="spinner-border spinner-border-sm" 
-                            role="status" 
-                            aria-hidden="true"
-                          ></span>
-                          <span className="ml-2">Updating...</span>
+                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" ></span>
                         </>
                       ) : (
                         'Update City'

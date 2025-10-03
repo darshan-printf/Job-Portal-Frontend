@@ -164,11 +164,10 @@ export default function ForgetPassWord() {
                               {updating ? (
                                 <>
                                   <span
-                                    className="spinner-border spinner-border-sm mr-2"
+                                    className="spinner-border spinner-border-sm "
                                     role="status"
                                     aria-hidden="true"
                                   ></span>
-                                  Updating...
                                 </>
                               ) : (
                                 "Update Password"
