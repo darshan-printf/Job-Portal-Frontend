@@ -71,7 +71,7 @@ export default function SchedulingList() {
       selector: (row, index) =>
         row.isSkeleton ? <Skeleton width={20} /> : index + 1,
       width: "60px",
-     center: "true",
+      center: "true",
     },
 
     {
@@ -122,7 +122,7 @@ export default function SchedulingList() {
     },
     {
       name: "Details",
-      width: "100px",
+      width: "150px",
       center: "true",
       cell: (row) =>
         row.isSkeleton ? (
@@ -131,11 +131,11 @@ export default function SchedulingList() {
           <div className="d-flex">
             <button
               type="button"
-              className="btn btn-secondary btn-xs d-flex align-items-center justify-content-center rounded-circle mr-1"
-              style={{ width: "32px", height: "32px" }}
+              className="btn btn-block btn-secondary btn-xs "
+              onClick={() => navigate(`/schedulingform?id=${row._id}`)}
               title="View Candidate Details"
             >
-              <PiClockCounterClockwiseDuotone size={16} />
+              Schedule
             </button>
           </div>
         ),
