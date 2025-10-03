@@ -9,6 +9,7 @@ const CandidateModal = ({ isOpen, onClose, candidate, onSave }) => {
   const [isLoading, setIsLoading] = useState(false);
   const Env = process.env;
   const token = localStorage.getItem("token");
+ 
   
   if (!isOpen) return null;
 
@@ -86,7 +87,7 @@ const CandidateModal = ({ isOpen, onClose, candidate, onSave }) => {
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-header">
-            <h4 className="modal-title">Candidate Details</h4>
+            <h4 className="modal-title"> Details of {candidate?.name} ({candidate?.jobId?.title})</h4>
             <button
               type="button"
               className="close"
@@ -106,7 +107,7 @@ const CandidateModal = ({ isOpen, onClose, candidate, onSave }) => {
               <Select
                 id="statusSelect"
                 options={statusOptions}
-                value={selectedStatus }
+                value={selectedStatus || { value: candidate.status, label: candidate.status }}
                 onChange={handleStatusChange}
                 isDisabled={isLoading}
                 placeholder="Select candidate status..."
