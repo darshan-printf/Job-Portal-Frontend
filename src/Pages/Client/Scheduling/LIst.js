@@ -4,14 +4,12 @@ import ContentHeader from "../../../components/ContentHeader";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Shield, Star, Crown, Gem } from "lucide-react";
-import { FaRegFilePdf } from "react-icons/fa";
-import { FaUserClock, FaUserCheck, FaUserTimes } from "react-icons/fa";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
-import { PiClockCounterClockwiseDuotone } from "react-icons/pi";
+import ScheduleModal from "../../../components/ScheduleModal"; // Import the modal component
 
 export default function SchedulingList() {
   const navigate = useNavigate();
@@ -20,6 +18,7 @@ export default function SchedulingList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null); // State to store the selected record
 
   useEffect(() => {
     fetchRecords();
@@ -132,7 +131,7 @@ export default function SchedulingList() {
             <button
               type="button"
               className="btn btn-block btn-secondary btn-xs "
-              onClick={() => navigate(`/schedulingform?id=${row._id}`)}
+              onClick={() => openModal(row)}
               title="View Candidate Details"
             >
               Schedule
@@ -140,8 +139,22 @@ export default function SchedulingList() {
           </div>
         ),
     },
+
   ];
 
+  const openModal = (row) => {
+    setSelectedRecord(row);
+  };
+  const closeModal = () => {
+    setSelectedRecord(null);
+  };
+  const saveChange = () => {
+    fetchRecords();
+  };
+
+
+
+   
   const filteredRecords = records.filter((record) =>
     `${record.name || ""} ${record.email || ""} ${record.phone || ""} ${
       record.jobId?.title || ""
@@ -230,6 +243,13 @@ export default function SchedulingList() {
           </div>
         </div>
       </section>
+      <ScheduleModal
+        isOpen={selectedRecord !== null}
+        onClose={closeModal}
+        schedule={selectedRecord}
+        packageConfig={packageConfig}
+        onSave={saveChange}
+      />
       <ToastContainer style={{ width: "auto" }} />
     </UserLayout>
   );
