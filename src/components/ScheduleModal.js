@@ -37,7 +37,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
     try {
       const config = {
         method: 'get',
-        url: `${Env.REACT_APP_API_URL}job/get/68db6bfc47227e8ff1071b0a`,
+        url: `${Env.REACT_APP_API_URL}job/get/${schedule?.jobId?._id}`,
         headers: { 
           'authorization': token,
           "Cache-Control": "no-cache",
