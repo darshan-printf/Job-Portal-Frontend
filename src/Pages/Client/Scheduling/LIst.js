@@ -28,7 +28,7 @@ export default function SchedulingList() {
   const fetchRecords = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${apiUrl}candidate/scheduled`, {
+      const response = await axios.get(`${apiUrl}schedule/getschedule`, {
         headers: {
           Authorization: `${token}`,
           "Cache-Control": "no-cache",
@@ -36,7 +36,7 @@ export default function SchedulingList() {
       });
       setLoading(false);
 
-      const data = response.data?.candidates || [];
+      const data = response.data?.schedules || [];
       setRecords(data);
     } catch (error) {
       setLoading(false);
@@ -75,7 +75,7 @@ export default function SchedulingList() {
 
     {
       name: "Job Title",
-      selector: (row) => row?.jobId?.title || "",
+      selector: (row) => row?.jobTitle|| "",
       sortable: true,
       cell: (row) =>
         row.isSkeleton ? (
@@ -83,40 +83,40 @@ export default function SchedulingList() {
         ) : (
           <div className="d-flex align-items-center gap-2">
             <span
-              className={`d-flex align-items-center mr-1 fw-semibold ${packageConfig[row.jobId?.package || ""]?.color || "text-dark"
+              className={`d-flex align-items-center mr-1 fw-semibold ${packageConfig[row.jobTitle || ""]?.color || "text-dark"
                 }`}
             >
-              {packageConfig[row.jobId?.package || ""]?.icon}
+              {packageConfig[row.package || ""]?.icon}
             </span>
             <span className="fw-semibold text-dark">
-              {row?.jobId?.title || ""}
+              {row?.jobTitle || ""}
             </span>
           </div>
         ),
     },
     {
       name: "Name",
-      selector: (row) => row.name,
+      selector: (row) => row.candidateName,
       sortable: true,
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={180} />
         ) : (
-          <div className="fw-semibold text-dark">{row.name}</div>
+          <div className="fw-semibold text-dark">{row.candidateName}</div>
         ),
     },
     {
       name: "Email",
-      selector: (row) => row.email,
+      selector: (row) => row.candidateEmail,
       sortable: true,
-      cell: (row) => (row.isSkeleton ? <Skeleton width={200} /> : row.email),
+      cell: (row) => (row.isSkeleton ? <Skeleton width={200} /> : row.candidateEmail),
     },
     {
       name: "Phone",
-      selector: (row) => row.phone,
+      selector: (row) => row.candidatePhone,
       sortable: true,
       width: "120px",
-      cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.phone),
+      cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.candidatePhone),
     },
     {
       name: "Details",

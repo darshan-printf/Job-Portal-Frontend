@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Select from 'react-select';
+import Select from "react-select";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
@@ -17,11 +17,11 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
 
   // Status options for the select dropdown
   const statusOptions = [
-    { value: 'scheduled', label: 'Scheduled' },
-    { value: 'completed', label: 'Completed' },
-    { value: 'cancelled', label: 'Cancelled' },
-    { value: 'rejected', label: 'Rejected' },
-    { value: 'accepted', label: 'Accepted' }    
+    { value: "scheduled", label: "Scheduled" },
+    { value: "completed", label: "Completed" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "rejected", label: "Rejected" },
+    { value: "accepted", label: "Accepted" },
   ];
 
   useEffect(() => {
@@ -36,12 +36,12 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
     setJobLoading(true);
     try {
       const config = {
-        method: 'get',
-        url: `${Env.REACT_APP_API_URL}job/get/${schedule?.jobId?._id}`,
-        headers: { 
-          'authorization': token,
+        method: "get",
+        url: `${Env.REACT_APP_API_URL}job/get/${schedule?.jobId}`,
+        headers: {
+          authorization: token,
           "Cache-Control": "no-cache",
-        }
+        },
       };
       const response = await axios.request(config);
       setJobDetails(response.data);
@@ -57,12 +57,12 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
     setCandidateLoading(true);
     try {
       const config = {
-        method: 'get',
-        url: `${Env.REACT_APP_API_URL}candidate/get/${schedule._id}`,
-        headers: { 
-          'authorization': token,
+        method: "get",
+        url: `${Env.REACT_APP_API_URL}candidate/get/${schedule.candidateId}`,
+        headers: {
+          authorization: token,
           "Cache-Control": "no-cache",
-        }
+        },
       };
       const response = await axios.request(config);
       setCandidateDetails(response.data.candidate);
@@ -79,7 +79,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
       toast.warning("Please select a status");
       return;
     }
-    
+
     setIsLoading(true);
     try {
       await onSave(selectedStatus);
@@ -98,7 +98,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
   return (
     <div
       className="modal fade show d-block"
-      style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
       tabIndex="1"
       role="dialog"
     >
@@ -108,7 +108,8 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
           <div className="modal-header bg-primary text-white">
             <h4 className="modal-title">
               <i className="fas fa-calendar-alt mr-2"></i>
-              Schedule Details ({moment(jobDetails?.createdAt).format("DD-MM-YYYY")})
+              Schedule Details (
+              {moment(jobDetails?.createdAt).format("DD-MM-YYYY")})
             </h4>
             <button
               type="button"
@@ -120,9 +121,12 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          
+
           {/* Modal Body */}
-          <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+          <div
+            className="modal-body"
+            style={{ maxHeight: "70vh", overflowY: "auto" }}
+          >
             {/* Loading States */}
             {(jobLoading || candidateLoading) && (
               <div className="text-center py-4">
@@ -147,21 +151,33 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     <div className="col-md-6 mb-3">
                       <p className="mb-2">
                         <strong className="text-dark">Name:</strong>
-                        <span className="ml-2 text-dark">{candidateDetails.name}</span>
+                        <span className="ml-2 text-dark">
+                          {candidateDetails.name}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Email:</strong>
-                        <span className="ml-2 text-dark">{candidateDetails.email}</span>
+                        <span className="ml-2 text-dark">
+                          {candidateDetails.email}
+                        </span>
                       </p>
                     </div>
                     <div className="col-md-6 mb-3">
                       <p className="mb-2">
                         <strong className="text-dark">Phone:</strong>
-                        <span className="ml-2 text-dark">{candidateDetails.phone}</span>
+                        <span className="ml-2 text-dark">
+                          {candidateDetails.phone}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Current Status:</strong>
-                        <span className={`badge ${candidateDetails.status === 'scheduled' ? 'badge-success' : 'badge-warning'} ml-2`}>
+                        <span
+                          className={`badge ${
+                            candidateDetails.status === "scheduled"
+                              ? "badge-success"
+                              : "badge-warning"
+                          } ml-2`}
+                        >
                           {candidateDetails.status}
                         </span>
                       </p>
@@ -169,9 +185,9 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                   </div>
                   {candidateDetails.resume && (
                     <div className="mt-3 justify-content-end d-flex">
-                      <a 
-                        href={`${candidateDetails.resume}`} 
-                        target="_blank" 
+                      <a
+                        href={`${candidateDetails.resume}`}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-sm btn-outline-primary ml-3"
                       >
@@ -198,47 +214,69 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     <div className="col-md-6 mb-3">
                       <p className="mb-2">
                         <strong className="text-dark">Title:</strong>
-                        <span className="ml-2 text-dark">{jobDetails.title}</span>
+                        <span className="ml-2 text-dark">
+                          {jobDetails.title}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Field:</strong>
-                        <span className="ml-2 text-dark">{jobDetails.field}</span>
+                        <span className="ml-2 text-dark">
+                          {jobDetails.field}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Type:</strong>
-                        <span className="badge badge-info ml-2">{jobDetails.type}</span>
+                        <span className="badge badge-info ml-2">
+                          {jobDetails.type}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Experience:</strong>
-                        <span className="ml-2 text-dark">{jobDetails.experience}</span>
+                        <span className="ml-2 text-dark">
+                          {jobDetails.experience}
+                        </span>
                       </p>
                     </div>
                     <div className="col-md-6 mb-3">
                       <p className="mb-2">
                         <strong className="text-dark">Salary:</strong>
-                        <span className="ml-2 text-dark">₹{jobDetails.salary?.toLocaleString()}</span>
+                        <span className="ml-2 text-dark">
+                          ₹{jobDetails.salary?.toLocaleString()}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Shift:</strong>
-                        <span className="ml-2 text-dark">{jobDetails.shift}</span>
+                        <span className="ml-2 text-dark">
+                          {jobDetails.shift}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Notice Period:</strong>
-                        <span className="ml-2 text-dark">{jobDetails.noticePeriod}</span>
+                        <span className="ml-2 text-dark">
+                          {jobDetails.noticePeriod}
+                        </span>
                       </p>
                       <p className="mb-2">
                         <strong className="text-dark">Package:</strong>
-                        <span className={`badge ${jobDetails.package === 'Silver' ? 'badge-secondary' : 'badge-warning'} ml-2`}>
+                        <span
+                          className={`badge ${
+                            jobDetails.package === "Silver"
+                              ? "badge-secondary"
+                              : "badge-warning"
+                          } ml-2`}
+                        >
                           {jobDetails.package}
                         </span>
                       </p>
                     </div>
                   </div>
-                  
+
                   {jobDetails.description && (
                     <div className="mt-3 mb-3">
                       <strong className="text-dark">Description:</strong>
-                      <p className="mt-1 text-muted bg-light p-3 rounded">{jobDetails.description}</p>
+                      <p className="mt-1 text-muted bg-light p-3 rounded">
+                        {jobDetails.description}
+                      </p>
                     </div>
                   )}
 
@@ -246,19 +284,28 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     <div className="mt-3 mb-3">
                       <strong className="text-dark">Benefits:</strong>
                       <div className="mt-2">
-                        {jobDetails.benefits.split(', ').map((benefit, index) => (
-                          <span key={index} className="badge badge-success mr-2 mb-2 p-2">
-                            {benefit}
-                          </span>
-                        ))}
+                        {jobDetails.benefits
+                          .split(", ")
+                          .map((benefit, index) => (
+                            <span
+                              key={index}
+                              className="badge badge-success mr-2 mb-2 p-2"
+                            >
+                              {benefit}
+                            </span>
+                          ))}
                       </div>
                     </div>
                   )}
 
                   {jobDetails.bondDescription && (
                     <div className="mt-3 mb-3">
-                      <strong className="text-dark">Bond Information ({jobDetails.bondTime}):</strong>
-                      <p className="mt-1 text-muted bg-light p-3 rounded">{jobDetails.bondDescription}</p>
+                      <strong className="text-dark">
+                        Bond Information ({jobDetails.bondTime}):
+                      </strong>
+                      <p className="mt-1 text-muted bg-light p-3 rounded">
+                        {jobDetails.bondDescription}
+                      </p>
                     </div>
                   )}
 
@@ -266,15 +313,23 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     <div className="col-md-6">
                       <p className="mb-2">
                         <strong className="text-dark">Flexible Hours:</strong>
-                        <span className={`badge ${jobDetails.flexibleWorkingHours ? 'badge-success' : 'badge-secondary'} ml-2`}>
-                          {jobDetails.flexibleWorkingHours ? 'Yes' : 'No'}
+                        <span
+                          className={`badge ${
+                            jobDetails.flexibleWorkingHours
+                              ? "badge-success"
+                              : "badge-secondary"
+                          } ml-2`}
+                        >
+                          {jobDetails.flexibleWorkingHours ? "Yes" : "No"}
                         </span>
                       </p>
                     </div>
                     <div className="col-md-6">
                       <p className="mb-2">
                         <strong className="text-dark">Working Hours:</strong>
-                        <span className="ml-2 text-dark">{jobDetails.workingHours}</span>
+                        <span className="ml-2 text-dark">
+                          {jobDetails.workingHours}
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -292,7 +347,10 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
               </div>
               <div className="card-body">
                 <div className="form-group mb-0">
-                  <label htmlFor="status-select" className="font-weight-bold text-dark">
+                  <label
+                    htmlFor="status-select"
+                    className="font-weight-bold text-dark"
+                  >
                     Select New Status
                   </label>
                   <Select
@@ -305,7 +363,10 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     className="mt-2"
                   />
                   <small className="form-text text-muted mt-2">
-                    Current status: <strong className="text-dark">{candidateDetails?.status || 'N/A'}</strong>
+                    Current status:{" "}
+                    <strong className="text-dark">
+                      {candidateDetails?.status || "N/A"}
+                    </strong>
                   </small>
                 </div>
               </div>
@@ -323,15 +384,20 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
               <i className="fas fa-times mr-2"></i>
               Close
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="btn btn-primary"
               onClick={handleSave}
-              disabled={isLoading || !selectedStatus || jobLoading || candidateLoading}
+              disabled={
+                isLoading || !selectedStatus || jobLoading || candidateLoading
+              }
             >
               {isLoading ? (
                 <>
-                  <span className="spinner-border spinner-border-sm mr-2" role="status"></span>
+                  <span
+                    className="spinner-border spinner-border-sm mr-2"
+                    role="status"
+                  ></span>
                   Saving...
                 </>
               ) : (
@@ -344,8 +410,6 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
           </div>
         </div>
       </div>
-
-     
     </div>
   );
 };
