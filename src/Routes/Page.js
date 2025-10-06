@@ -56,7 +56,6 @@ import ReportDashboard from "../Pages/Client/Report/ReportDashboard";
 import CompanyAndPackage from "../Pages/Client/Profile/CompanyAndPackage";
 import AdminProfile  from "../Pages/Client/Profile/AdminProfile";
 import ChangePassword from "../Pages/Client/Profile/ChangePassword";
-import SchedulingForm from "../Pages/Client/Scheduling/ScheduliForm";
 
 
 
@@ -124,7 +123,7 @@ export default function App() {
             <Route   path="companyandpackage"  element={<ProtectedRoute    element={<CompanyAndPackage />}  allowedRoles={['user']}    />} />
             <Route   path="adminprofile"       element={<ProtectedRoute    element={<AdminProfile />}       allowedRoles={['user']}    />} />
             <Route   path="changepassword"     element={<ProtectedRoute    element={<ChangePassword />}     allowedRoles={['user']}    />} />
-            <Route   path="schedulingform"     element={<ProtectedRoute    element={<SchedulingForm />}     allowedRoles={['user']}    />} />
+          
 
             
           </Route>

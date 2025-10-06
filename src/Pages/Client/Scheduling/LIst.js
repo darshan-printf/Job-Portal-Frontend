@@ -83,9 +83,8 @@ export default function SchedulingList() {
         ) : (
           <div className="d-flex align-items-center gap-2">
             <span
-              className={`d-flex align-items-center mr-1 fw-semibold ${
-                packageConfig[row.jobId?.package || ""]?.color || "text-dark"
-              }`}
+              className={`d-flex align-items-center mr-1 fw-semibold ${packageConfig[row.jobId?.package || ""]?.color || "text-dark"
+                }`}
             >
               {packageConfig[row.jobId?.package || ""]?.icon}
             </span>
@@ -154,11 +153,10 @@ export default function SchedulingList() {
 
 
 
-   
+
   const filteredRecords = records.filter((record) =>
-    `${record.name || ""} ${record.email || ""} ${record.phone || ""} ${
-      record.jobId?.title || ""
-    }`
+    `${record.name || ""} ${record.email || ""} ${record.phone || ""} ${record.jobId?.title || ""
+      }`
       .toLowerCase()
       .includes(searchQuery.toLowerCase())
   );
@@ -180,12 +178,17 @@ export default function SchedulingList() {
           { label: "Interview Schedule" },
         ]}
       />
+
+
       <section className="content">
         <div className="container-fluid">
           <div className="row">
+
             <div className="col-12">
+
               <div className="card card-primary card-outline">
                 <div className="card-header">
+
                   <div className="d-flex justify-content-between">
                     <div className="bd-highlight">
                       <input
@@ -199,6 +202,7 @@ export default function SchedulingList() {
                     </div>
                   </div>
                 </div>
+                
                 <div className="card-body text-center p-2">
                   {loading ? (
                     <DataTable
