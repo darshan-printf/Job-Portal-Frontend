@@ -117,25 +117,75 @@ export default function SchedulingList() {
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.candidatePhone),
     },
     {
-      name: "Details",
-      width: "150px",
-      center: "true",
-      cell: (row) =>
-        row.isSkeleton ? (
-          <Skeleton width={60} height={30} />
-        ) : (
-          <div className="d-flex">
-            <button
-              type="button"
-              className="btn btn-block btn-secondary btn-xs "
-              onClick={() => openModal(row)}
-              title="View Candidate Details"
-            >
-              Schedule Interview
-            </button>
-          </div>
-        ),
-    },
+  name: "Details",
+  width: "200px",
+  center: true,
+  cell: (row) =>
+    row.isSkeleton ? (
+      <Skeleton width={60} height={30} />
+    ) : (
+     <div className="d-flex flex-column gap-2">
+  {row.status === "scheduled" ? (
+    <div className="d-flex">
+      <button
+        type="button"
+        className="btn btn-success btn-xs mr-2"
+        title="Mark as Completed"
+      >
+        Completed
+      </button>
+      <button
+        type="button"
+        className="btn btn-danger btn-xs"
+        title="Cancel Interview"
+      >
+        Cancelled
+      </button>
+    </div>
+  ) : row.status === "completed" ? (
+    <div className="d-flex">
+      <button
+        type="button"
+        className="btn btn-success btn-xs mr-2"
+        title="Accept Candidate"
+      >
+        Accepted
+      </button>
+      <button
+        type="button"
+        className="btn btn-warning btn-xs"
+        title="Reject Candidate"
+      >
+        Rejected
+      </button>
+    </div>
+  ) : row.status === "cancelled" ? (
+    <button type="button" className="btn btn-danger btn-xs" disabled>
+      Cancelled
+    </button>
+  ) : row.status === "accepted" ? (
+    <button type="button" className="btn btn-success btn-xs" disabled>
+      Accepted
+    </button>
+  ) : row.status === "rejected" ? (
+    <button type="button" className="btn btn-warning btn-xs" disabled>
+      Rejected
+    </button>
+  ) : (
+    // Default for pending or no status
+    <button
+      type="button"
+      className="btn btn-secondary btn-xs"
+      onClick={() => openModal(row)}
+      title="Schedule Interview"
+    >
+      Schedule Interview
+    </button>
+  )}
+</div>
+    ),
+}
+,
 
   ];
 
