@@ -131,7 +131,7 @@ export default function SchedulingList() {
               onClick={() => openModal(row)}
               title="View Candidate Details"
             >
-              Schedule
+              Schedule Interview
             </button>
           </div>
         ),

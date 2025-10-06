@@ -17,16 +17,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
   const [interviewTime, setInterviewTime] = useState("");
   const Env = process.env;
   const token = localStorage.getItem("token");
-
-  // Status options for the select dropdown
-  const statusOptions = [
-    { value: "scheduled", label: "Scheduled" },
-    { value: "completed", label: "Completed" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "rejected", label: "Rejected" },
-    { value: "accepted", label: "Accepted" },
-  ];
-
+  
   // Generate time slots
   const generateTimeSlots = () => {
     const times = [];
@@ -110,80 +101,47 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
     }
   };
 
-  const handleSave = async () => {
-    if (!selectedStatus) {
-      toast.warning("Please select a status");
+ const handleSave = async () => {
+    if (!interviewDate || !interviewTime) { 
+      toast.warning("Please select interview date and time");
       return;
     }
-
-    if (!interviewDate) {
-      toast.warning("Please select interview date");
-      return;
-    }
-
-    if (!interviewTime) {
-      toast.warning("Please select interview time");
-      return;
-    }
-
+    
     setIsLoading(true);
     try {
-      // Combine date and time into ISO string
-      const combinedDateTime = moment(`${interviewDate} ${interviewTime}`, 'YYYY-MM-DD HH:mm').toISOString();
-
-      // Prepare data for API call
       const requestData = {
-        jobId: schedule?.jobId || "",
-        candidateId: schedule?.candidateId || "",
-        interviewDate: combinedDateTime,
-        status: selectedStatus.value,
+        interviewDate: moment(`${interviewDate} ${interviewTime}`, 'YYYY-MM-DD HH:mm').toISOString(),
+        status: "scheduled" || "",
         remark: remark || ""
       };
 
-      // Make API call
-      const response = await updateScheduleStatus(requestData);
-      
-      // Call the parent's onSave function if provided
-      if (onSave) {
-        await onSave(selectedStatus);
-      }
+      await axios.put(
+        `${Env.REACT_APP_API_URL}schedule/update/${schedule._id}`,
+        requestData,
+        {
+          headers: { 
+            'Content-Type': 'application/json',
+            'authorization': token
+          }
+        }
+      );
+
+      if (onSave) await onSave(selectedStatus);
       
       toast.success("Schedule updated successfully");
       onClose();
     } catch (error) {
-      console.error("Error saving schedule:", error);
-      toast.error("Failed to update schedule");
+      toast.error(error.response?.data?.message || "Failed to update schedule");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // API function to update schedule status
-  const updateScheduleStatus = async (data) => {
-    try {
-      const config = {
-        method: 'put',
-        url: `${Env.REACT_APP_API_URL}schedule/status`,
-        headers: { 
-          'Content-Type': 'application/json',
-          'authorization': token
-        },
-        data: JSON.stringify(data)
-      };
-
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      console.error("API Error:", error);
-      throw error;
-    }
-  };
 
   // Get minimum date (today)
   const getMinDate = () => {
     return moment().format('YYYY-MM-DD');
   };
-
   // Get maximum date (1 year from now)
   const getMaxDate = () => {
     return moment().add(1, 'year').format('YYYY-MM-DD');
@@ -268,18 +226,18 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                         <strong className="text-dark">Current Status:</strong>
                         <span
                           className={`badge ${
-                            candidateDetails.status === "scheduled"
+                            schedule.status === "scheduled"
                               ? "badge-success"
-                              : candidateDetails.status === "completed"
+                              : schedule.status === "completed"
                               ? "badge-primary"
-                              : candidateDetails.status === "accepted"
+                              : schedule.status === "accepted"
                               ? "badge-success"
-                              : candidateDetails.status === "rejected"
+                              : schedule.status === "rejected"
                               ? "badge-danger"
                               : "badge-warning"
                           } ml-2`}
                         >
-                          {candidateDetails.status}
+                          {schedule.status}
                         </span>
                       </p>
                     </div>
@@ -485,25 +443,8 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     </small>
                   </div>
                 </div>
-                <div className="form-group">
-                  <label
-                    htmlFor="status-select"
-                    className="font-weight-bold text-dark"
-                  >
-                    Select New Status *
-                  </label>
-                  <Select
-                    id="status-select"
-                    value={selectedStatus}
-                    onChange={setSelectedStatus}
-                    options={statusOptions}
-                    placeholder="Choose status..."
-                    isDisabled={isLoading}
-                    className="mt-2"
-                  />
-                </div>
-
-                <div className="form-group mt-3">
+                
+                <div className="form-group ">
                   <label
                     htmlFor="remark"
                     className="font-weight-bold text-dark"
@@ -540,7 +481,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
               className="btn btn-primary"
               onClick={handleSave}
               disabled={
-                isLoading || !selectedStatus || !interviewDate || !interviewTime || jobLoading || candidateLoading
+                isLoading 
               }
             >
               {isLoading ? (
