@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import UserLayout from "../../../components/UserLayout";
 import ContentHeader from "../../../components/ContentHeader";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { Shield, Star, Crown, Gem } from "lucide-react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
@@ -12,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import ScheduleModal from "../../../components/ScheduleModal"; // Import the modal component
 
 export default function SchedulingList() {
-  const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
   const [searchQuery, setSearchQuery] = useState("");
@@ -151,9 +149,6 @@ export default function SchedulingList() {
     fetchRecords();
   };
 
-
-
-
   const filteredRecords = records.filter((record) =>
     `${record.name || ""} ${record.email || ""} ${record.phone || ""} ${record.jobId?.title || ""
       }`
@@ -179,16 +174,12 @@ export default function SchedulingList() {
         ]}
       />
 
-
       <section className="content">
         <div className="container-fluid">
           <div className="row">
-
             <div className="col-12">
-
               <div className="card card-primary card-outline">
                 <div className="card-header">
-
                   <div className="d-flex justify-content-between">
                     <div className="bd-highlight">
                       <input
@@ -202,7 +193,6 @@ export default function SchedulingList() {
                     </div>
                   </div>
                 </div>
-                
                 <div className="card-body text-center p-2">
                   {loading ? (
                     <DataTable
@@ -247,6 +237,7 @@ export default function SchedulingList() {
           </div>
         </div>
       </section>
+      
       <ScheduleModal
         isOpen={selectedRecord !== null}
         onClose={closeModal}

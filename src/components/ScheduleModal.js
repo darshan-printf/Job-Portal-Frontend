@@ -12,6 +12,9 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
   const [candidateDetails, setCandidateDetails] = useState(null);
   const [jobLoading, setJobLoading] = useState(false);
   const [candidateLoading, setCandidateLoading] = useState(false);
+  const [remark, setRemark] = useState("");
+  const [interviewDate, setInterviewDate] = useState("");
+  const [interviewTime, setInterviewTime] = useState("");
   const Env = process.env;
   const token = localStorage.getItem("token");
 
@@ -24,8 +27,41 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
     { value: "accepted", label: "Accepted" },
   ];
 
+  // Generate time slots
+  const generateTimeSlots = () => {
+    const times = [];
+    for (let hour = 9; hour <= 18; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        times.push({ value: timeString, label: moment(timeString, 'HH:mm').format('hh:mm A') });
+      }
+    }
+    return times;
+  };
+
+  const timeSlots = generateTimeSlots();
+
   useEffect(() => {
     if (isOpen && schedule) {
+      // Reset form when modal opens
+      setSelectedStatus(null);
+      setRemark("");
+      
+      // Set initial date and time from schedule
+      if (schedule.interviewDate) {
+        const date = moment(schedule.interviewDate).format('YYYY-MM-DD');
+        const time = moment(schedule.interviewDate).format('HH:mm');
+        setInterviewDate(date);
+        setInterviewTime(time);
+      } else {
+        // Set default to current date and next available time
+        const now = moment();
+        setInterviewDate(now.format('YYYY-MM-DD'));
+        // Set default time to next 30 minute interval
+        const nextHour = now.add(1, 'hour').startOf('hour');
+        setInterviewTime(nextHour.format('HH:mm'));
+      }
+      
       fetchJobDetails();
       fetchCandidateDetails();
     }
@@ -80,9 +116,38 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
       return;
     }
 
+    if (!interviewDate) {
+      toast.warning("Please select interview date");
+      return;
+    }
+
+    if (!interviewTime) {
+      toast.warning("Please select interview time");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      await onSave(selectedStatus);
+      // Combine date and time into ISO string
+      const combinedDateTime = moment(`${interviewDate} ${interviewTime}`, 'YYYY-MM-DD HH:mm').toISOString();
+
+      // Prepare data for API call
+      const requestData = {
+        jobId: schedule?.jobId || "",
+        candidateId: schedule?.candidateId || "",
+        interviewDate: combinedDateTime,
+        status: selectedStatus.value,
+        remark: remark || ""
+      };
+
+      // Make API call
+      const response = await updateScheduleStatus(requestData);
+      
+      // Call the parent's onSave function if provided
+      if (onSave) {
+        await onSave(selectedStatus);
+      }
+      
       toast.success("Schedule updated successfully");
       onClose();
     } catch (error) {
@@ -91,6 +156,37 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // API function to update schedule status
+  const updateScheduleStatus = async (data) => {
+    try {
+      const config = {
+        method: 'put',
+        url: `${Env.REACT_APP_API_URL}schedule/status`,
+        headers: { 
+          'Content-Type': 'application/json',
+          'authorization': token
+        },
+        data: JSON.stringify(data)
+      };
+
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get minimum date (today)
+  const getMinDate = () => {
+    return moment().format('YYYY-MM-DD');
+  };
+
+  // Get maximum date (1 year from now)
+  const getMaxDate = () => {
+    return moment().add(1, 'year').format('YYYY-MM-DD');
   };
 
   if (!isOpen) return null;
@@ -108,8 +204,7 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
           <div className="modal-header bg-primary text-white">
             <h4 className="modal-title">
               <i className="fas fa-calendar-alt mr-2"></i>
-              Schedule Details (
-              {moment(jobDetails?.createdAt).format("DD-MM-YYYY")})
+              Schedule Details
             </h4>
             <button
               type="button"
@@ -175,6 +270,12 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                           className={`badge ${
                             candidateDetails.status === "scheduled"
                               ? "badge-success"
+                              : candidateDetails.status === "completed"
+                              ? "badge-primary"
+                              : candidateDetails.status === "accepted"
+                              ? "badge-success"
+                              : candidateDetails.status === "rejected"
+                              ? "badge-danger"
                               : "badge-warning"
                           } ml-2`}
                         >
@@ -262,7 +363,9 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                           className={`badge ${
                             jobDetails.package === "Silver"
                               ? "badge-secondary"
-                              : "badge-warning"
+                              : jobDetails.package === "Gold"
+                              ? "badge-warning"
+                              : "badge-danger"
                           } ml-2`}
                         >
                           {jobDetails.package}
@@ -346,12 +449,48 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                 </h5>
               </div>
               <div className="card-body">
-                <div className="form-group mb-0">
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="interview-date" className="font-weight-bold text-dark">
+                      Interview Date *
+                    </label>
+                    <input
+                      type="date"
+                      id="interview-date"
+                      className="form-control"
+                      value={interviewDate}
+                      onChange={(e) => setInterviewDate(e.target.value)}
+                      min={getMinDate()}
+                      max={getMaxDate()}
+                      disabled={isLoading}
+                    />
+                    <small className="form-text text-muted">
+                      Select interview date
+                    </small>
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="interview-time" className="font-weight-bold text-dark">
+                      Interview Time *
+                    </label>
+                    <Select
+                      id="interview-time"
+                      value={timeSlots.find(time => time.value === interviewTime)}
+                      onChange={(selectedOption) => setInterviewTime(selectedOption.value)}
+                      options={timeSlots}
+                      placeholder="Select time..."
+                      isDisabled={isLoading}
+                    />
+                    <small className="form-text text-muted">
+                      Select interview time (9:00 AM - 6:00 PM)
+                    </small>
+                  </div>
+                </div>
+                <div className="form-group">
                   <label
                     htmlFor="status-select"
                     className="font-weight-bold text-dark"
                   >
-                    Select New Status
+                    Select New Status *
                   </label>
                   <Select
                     id="status-select"
@@ -362,12 +501,24 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
                     isDisabled={isLoading}
                     className="mt-2"
                   />
-                  <small className="form-text text-muted mt-2">
-                    Current status:{" "}
-                    <strong className="text-dark">
-                      {candidateDetails?.status || "N/A"}
-                    </strong>
-                  </small>
+                </div>
+
+                <div className="form-group mt-3">
+                  <label
+                    htmlFor="remark"
+                    className="font-weight-bold text-dark"
+                  >
+                    Remark (Optional)
+                  </label>
+                  <textarea
+                    id="remark"
+                    className="form-control"
+                    rows="3"
+                    placeholder="Enter any remarks or notes..."
+                    value={remark}
+                    onChange={(e) => setRemark(e.target.value)}
+                    disabled={isLoading}
+                  />
                 </div>
               </div>
             </div>
@@ -389,16 +540,16 @@ const ScheduleModal = ({ isOpen, onClose, onSave, schedule }) => {
               className="btn btn-primary"
               onClick={handleSave}
               disabled={
-                isLoading || !selectedStatus || jobLoading || candidateLoading
+                isLoading || !selectedStatus || !interviewDate || !interviewTime || jobLoading || candidateLoading
               }
             >
               {isLoading ? (
                 <>
                   <span
-                    className="spinner-border spinner-border-sm mr-2"
+                    className="spinner-border spinner-border-sm "
                     role="status"
                   ></span>
-                  Saving...
+                
                 </>
               ) : (
                 <>
