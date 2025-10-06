@@ -73,7 +73,7 @@ export default function SchedulingList() {
 
     {
       name: "Job Title",
-      selector: (row) => row?.jobTitle|| "",
+      selector: (row) => row?.jobTitle || "",
       sortable: true,
       cell: (row) =>
         row.isSkeleton ? (
@@ -81,14 +81,13 @@ export default function SchedulingList() {
         ) : (
           <div className="d-flex align-items-center gap-2">
             <span
-              className={`d-flex align-items-center mr-1 fw-semibold ${packageConfig[row.jobTitle || ""]?.color || "text-dark"
-                }`}
+              className={`d-flex align-items-center mr-1 fw-semibold ${
+                packageConfig[row.jobTitle || ""]?.color || "text-dark"
+              }`}
             >
               {packageConfig[row.package || ""]?.icon}
             </span>
-            <span className="fw-semibold text-dark">
-              {row?.jobTitle || ""}
-            </span>
+            <span className="fw-semibold text-dark">{row?.jobTitle || ""}</span>
           </div>
         ),
     },
@@ -107,86 +106,66 @@ export default function SchedulingList() {
       name: "Email",
       selector: (row) => row.candidateEmail,
       sortable: true,
-      cell: (row) => (row.isSkeleton ? <Skeleton width={200} /> : row.candidateEmail),
+      cell: (row) =>
+        row.isSkeleton ? <Skeleton width={200} /> : row.candidateEmail,
     },
     {
       name: "Phone",
       selector: (row) => row.candidatePhone,
       sortable: true,
       width: "120px",
-      cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.candidatePhone),
+      cell: (row) =>
+        row.isSkeleton ? <Skeleton width={100} /> : row.candidatePhone,
     },
     {
-  name: "Details",
-  width: "200px",
-  center: true,
-  cell: (row) =>
-    row.isSkeleton ? (
-      <Skeleton width={60} height={30} />
-    ) : (
-     <div className="d-flex flex-column gap-2">
-  {row.status === "scheduled" ? (
-    <div className="d-flex">
-      <button
-        type="button"
-        className="btn btn-success btn-xs mr-2"
-        title="Mark as Completed"
-      >
-        Completed
-      </button>
-      <button
-        type="button"
-        className="btn btn-danger btn-xs"
-        title="Cancel Interview"
-      >
-        Cancelled
-      </button>
-    </div>
-  ) : row.status === "completed" ? (
-    <div className="d-flex">
-      <button
-        type="button"
-        className="btn btn-success btn-xs mr-2"
-        title="Accept Candidate"
-      >
-        Accepted
-      </button>
-      <button
-        type="button"
-        className="btn btn-warning btn-xs"
-        title="Reject Candidate"
-      >
-        Rejected
-      </button>
-    </div>
-  ) : row.status === "cancelled" ? (
-    <button type="button" className="btn btn-danger btn-xs" disabled>
-      Cancelled
-    </button>
-  ) : row.status === "accepted" ? (
-    <button type="button" className="btn btn-success btn-xs" disabled>
-      Accepted
-    </button>
-  ) : row.status === "rejected" ? (
-    <button type="button" className="btn btn-warning btn-xs" disabled>
-      Rejected
-    </button>
-  ) : (
-    // Default for pending or no status
-    <button
-      type="button"
-      className="btn btn-secondary btn-xs"
-      onClick={() => openModal(row)}
-      title="Schedule Interview"
-    >
-      Schedule Interview
-    </button>
-  )}
-</div>
-    ),
-}
-,
+      name: "Details",
+      width: "200px",
+      center: true,
+      cell: (row) =>
+        row.isSkeleton ? (
+          <Skeleton width={60} height={30} />
+        ) : (
+          <div className="d-flex flex-column gap-2">
+            {row.status === "scheduled" ? (
+              <div className="d-flex">
 
+                <button type="button" className="btn btn-success btn-xs mr-2" title="Mark as Completed"> Completed </button>
+                <button type="button" className="btn btn-danger btn-xs" title="Cancel Interview" > Cancelled </button>
+                
+              </div>
+            ) : row.status === "completed" ? (
+              <div className="d-flex">
+
+                <button type="button" className="btn btn-success btn-xs mr-2" title="Accept Candidate">Accepted</button>
+                <button type="button" className="btn btn-warning btn-xs" title="Reject Candidate">Rejected</button>
+
+              </div>
+            ) : row.status === "cancelled" ? (
+
+              <button type="button" className="btn btn-danger btn-xs" disabled> Cancelled</button>
+
+            ) : row.status === "accepted" ? (
+
+              <button type="button" className="btn btn-success btn-xs" disabled> Accepted</button>
+
+            ) : row.status === "rejected" ? (
+
+              <button type="button" className="btn btn-warning btn-xs" disabled> Rejected</button>
+
+            ) : (
+              // Default for pending or no status
+              <button
+                type="button"
+                className="btn btn-secondary btn-xs"
+                onClick={() => openModal(row)}
+                title="Schedule Interview"
+              >
+                Schedule Interview
+              </button>
+            )}
+          </div>
+        ),
+    },
   ];
 
   const openModal = (row) => {
@@ -200,8 +179,9 @@ export default function SchedulingList() {
   };
 
   const filteredRecords = records.filter((record) =>
-    `${record.name || ""} ${record.email || ""} ${record.phone || ""} ${record.jobId?.title || ""
-      }`
+    `${record.name || ""} ${record.email || ""} ${record.phone || ""} ${
+      record.jobId?.title || ""
+    }`
       .toLowerCase()
       .includes(searchQuery.toLowerCase())
   );
@@ -287,7 +267,7 @@ export default function SchedulingList() {
           </div>
         </div>
       </section>
-      
+
       <ScheduleModal
         isOpen={selectedRecord !== null}
         onClose={closeModal}
