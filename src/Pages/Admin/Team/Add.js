@@ -36,6 +36,13 @@ export default function Add() {
                 },
             });
             toast.success("Team member added successfully");
+            setForm({
+                name: '',
+                description: '',
+                designation: '',
+                image: null,
+            });
+            setPreviewImage(null);
         } catch (error) {
             toast.error(error.response?.data?.message);
         } finally {

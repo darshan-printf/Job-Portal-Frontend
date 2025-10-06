@@ -271,6 +271,7 @@ export default function AddCompanys() {
                         <option value="">Select Type</option>
                         <option value="PVT">PVT</option>
                         <option value="LTD">LTD</option>
+                        <option value="PVT LTD">PVT LTD</option>
                         <option value="ORG">ORG</option>
                         <option value="ETC">ETC</option>
                       </select>

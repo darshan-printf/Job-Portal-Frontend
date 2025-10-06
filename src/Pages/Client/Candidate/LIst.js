@@ -43,9 +43,6 @@ export default function CandidateList() {
       setRecords(data);
     } catch (error) {
       setLoading(false);
-      toast.error(
-        error.response?.data?.message || "Failed to fetch candidates"
-      );
     }
   };
 
