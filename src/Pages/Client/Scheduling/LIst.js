@@ -224,7 +224,7 @@ export default function SchedulingList() {
           >
             <FaUserClock size={20} />
           </button>
-        ) : row.status === "accepted" ? (
+        ) : row.status === "accepted " || row.status === "offered" ? (
           <span className="text-success fs-3">
             <FaUserTie size={20} /> Accepted candidate
           </span>
