@@ -12,8 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 import { GrDocumentPerformance } from "react-icons/gr";
 
-
-
 export default function AddCompanys() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
@@ -23,6 +21,7 @@ export default function AddCompanys() {
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sendingOffer, setSendingOffer] = useState(null); // Track which offer is being sent
 
   useEffect(() => {
     fetchRecords();
@@ -44,6 +43,29 @@ export default function AddCompanys() {
       setRecords(data);
     } catch (error) {
       setLoading(false);
+      toast.error("Failed to fetch schedules");
+    }
+  };
+
+  const handleSendOfferLetter = async (scheduleId) => {
+    setSendingOffer(scheduleId);
+    try {
+      const response = await axios.put(
+        `${apiUrl}schedule/sendofferletter/${scheduleId._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Cache-Control": "no-cache",
+          },
+        }
+      );
+        toast.success(response.data.message);
+        fetchRecords();
+    } catch (error) {
+      toast.error(error.response?.data?.message );
+    } finally {
+      setSendingOffer(null);
     }
   };
 
@@ -79,7 +101,7 @@ export default function AddCompanys() {
       width: "120px",
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : row.candidatePhone),
     },
-     {
+    {
       name: "Interview Date",
       selector: (row) => row.interviewDate,
       sortable: true,
@@ -87,24 +109,33 @@ export default function AddCompanys() {
       center: "true",
       cell: (row) => (row.isSkeleton ? <Skeleton width={100} /> : moment(row.interviewDate).format("DD-MM-YYYY")),
     },
+    
     {
-      name: "Details",
-      width: "100px",
+      name: "Actions",
+      width: "80px",
       center: "true",
       cell: (row) =>
         row.isSkeleton ? (
           <Skeleton width={60} height={30} />
         ) : (
-          <div className="d-flex">
+          <div className="d-flex gap-1">
             <button
               type="button"
               disabled={row.status !== "accepted"}
-              className="btn btn-secondary btn-xs d-flex align-items-center justify-content-center rounded-circle "
+              className="btn btn-success btn-xs d-flex align-items-center justify-content-center"
               style={{ width: "32px", height: "32px" }}
-              title="View Candidate Details"
+              title="Send Offer Letter"
+              onClick={() => handleSendOfferLetter(row)}
             >
-              <GrDocumentPerformance  size={16} />
+              {sendingOffer === row._id ? (
+                <div className="spinner-border spinner-border-sm" role="status">
+                  <span className="visually-hidden"></span>
+                </div>
+              ) : (
+                <GrDocumentPerformance size={16} />
+              )}
             </button>
+            
           </div>
         ),
     },
@@ -123,6 +154,7 @@ export default function AddCompanys() {
       _id: index,
       isSkeleton: true,
     }));
+
   return (
     <UserLayout ac5="active">
       <ContentHeader
@@ -177,7 +209,6 @@ export default function AddCompanys() {
                       className="custom-table"
                       noDataComponent="No candidates found"
                       highlightOnHover
-                      selectableRows
                       striped
                       customStyles={{
                         headCells: {
