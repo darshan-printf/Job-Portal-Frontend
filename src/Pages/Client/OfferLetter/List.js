@@ -7,8 +7,8 @@ export default function OfferLetterList() {
       <ContentHeader title="Offer Letter List" breadcrumbs={[{ label: 'Dashboard', to: '/admin/userdashboard' }, { label: 'Offer Letter List' }]} />
 
 
-      <section className="content"> 
-      <div class="folder "><p className='folder-text'>2</p></div>
+      <section className="content "> 
+      <div class="folder"><p className='folder-text'>2</p></div>
       <div class="folder"><p className='folder-text'>2</p></div>
       <div class="folder"><p className='folder-text'>2</p></div>
       <div class="folder"><p className='folder-text'>2</p></div>
