@@ -8,7 +8,13 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
-import ScheduleModal from "../../../components/ScheduleModal"; // Import the modal component
+import ScheduleModal from "../../../components/ScheduleModal";
+import { FaTimes, FaUserTie } from "react-icons/fa";
+import { FaUserTimes } from "react-icons/fa";
+import { FaUserClock } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa";
+import { FaUserCheck } from "react-icons/fa";
+
 
 export default function SchedulingList() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -16,7 +22,8 @@ export default function SchedulingList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null); // State to store the selected record
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [updatingId, setUpdatingId] = useState(null); // Track which record is being updated
 
   useEffect(() => {
     fetchRecords();
@@ -39,6 +46,37 @@ export default function SchedulingList() {
     } catch (error) {
       setLoading(false);
       toast.error(error.response?.data?.message);
+    }
+  };
+
+  // Update status function
+  const updateStatus = async (schedule, status, remark = "") => {
+    setUpdatingId(schedule._id);
+    try {
+      const data = JSON.stringify({
+        interviewDate: schedule.interviewDate, 
+        status: status,
+        remark: remark
+      });
+
+      const config = {
+        method: 'put',
+        url: `${apiUrl}schedule/update/${schedule._id}`,
+        headers: { 
+          'Authorization': `${token}`,
+          'Content-Type': 'application/json'
+        },
+        data: data
+      };
+
+      await axios.request(config);
+      toast.success(`Status updated to ${status}`);
+      fetchRecords(); 
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message);
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -70,7 +108,6 @@ export default function SchedulingList() {
       width: "60px",
       center: "true",
     },
-
     {
       name: "Job Title",
       selector: (row) => row?.jobTitle || "",
@@ -118,62 +155,107 @@ export default function SchedulingList() {
         row.isSkeleton ? <Skeleton width={100} /> : row.candidatePhone,
     },
     {
-      name: "Details",
-      width: "200px",
-      center: true,
-      cell: (row) =>
-        row.isSkeleton ? (
-          <Skeleton width={60} height={30} />
-        ) : (
-          <div className="d-flex flex-column gap-2">
-            {row.status === "scheduled" ? (
-              <div className="d-flex">
+  name: "Details",
+  width: "200px",
+  center: "true",
+  cell: (row) =>
+    row.isSkeleton ? (
+      <Skeleton width={60} height={30} />
+    ) : (
+      <div className="d-flex flex-column gap-2">
+        {row.status === "scheduled" ? (
+          <div className="d-flex gap-1">
+            <button
+              type="button"
+              className="btn btn-success btn-xs mr-2"
+              title="Mark as Completed"
+              onClick={() =>
+                updateStatus(row, "completed", "Interview completed successfully")
+              }
+              disabled={updatingId === row._id}
+            >
+              <FaUserCheck size={20}  />
+            </button>
 
-                <button type="button" className="btn btn-success btn-xs mr-2" title="Mark as Completed"> Completed </button>
-                <button type="button" className="btn btn-danger btn-xs" title="Cancel Interview" > Cancelled </button>
-                
-              </div>
-            ) : row.status === "completed" ? (
-              <div className="d-flex">
-
-                <button type="button" className="btn btn-success btn-xs mr-2" title="Accept Candidate">Accepted</button>
-                <button type="button" className="btn btn-warning btn-xs" title="Reject Candidate">Rejected</button>
-
-              </div>
-            ) : row.status === "cancelled" ? (
-
-              <button type="button" className="btn btn-danger btn-xs" disabled> Cancelled</button>
-
-            ) : row.status === "accepted" ? (
-
-              <button type="button" className="btn btn-success btn-xs" disabled> Accepted</button>
-
-            ) : row.status === "rejected" ? (
-
-              <button type="button" className="btn btn-warning btn-xs" disabled> Rejected</button>
-
-            ) : (
-              // Default for pending or no status
-              <button
-                type="button"
-                className="btn btn-secondary btn-xs"
-                onClick={() => openModal(row)}
-                title="Schedule Interview"
-              >
-                Schedule Interview
-              </button>
-            )}
+            <button
+              type="button"
+              className="btn btn-danger btn-xs"
+              title="Cancel Interview"
+              onClick={() =>
+                updateStatus(
+                  row,
+                  "cancelled",
+                  "Interview cancelled some reason I will reschedule your interview next time"
+                )
+              }
+              disabled={updatingId === row._id}
+            >
+              <FaUserTimes size={20} />
+            </button>
           </div>
-        ),
-    },
+        ) : row.status === "completed" ? (
+          <div className="d-flex gap-1">
+            <button
+              type="button"
+              className="btn btn-success btn-xs mr-2"
+              title="Accept Candidate"
+              onClick={() => updateStatus(row, "accepted", "Candidate accepted")}
+              disabled={updatingId === row._id}
+            >
+              <FaCheck size={20} />
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-danger btn-xs"
+              title="Reject Candidate"
+              onClick={() => updateStatus(row, "rejected", "Candidate rejected")}
+              disabled={updatingId === row._id}
+            >
+              <FaTimes size={20} />
+            </button>
+          </div>
+        ) : row.status === "cancelled" ? (
+          <button
+            type="button"
+            className="btn btn-secondary btn-xs"
+            onClick={() => openModal(row)}
+            title="Schedule Interview"
+          >
+            <FaUserClock size={20} />
+          </button>
+        ) : row.status === "accepted" ? (
+          <span className="text-success fs-3">
+            <FaUserTie size={20} /> Accepted candidate
+          </span>
+        ) : row.status === "rejected" ? (
+          <span className="text-danger">
+          <FaUserTimes size={20} />  Rejected candidate
+          </span>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-secondary btn-xs "
+            onClick={() => openModal(row)}
+            title="Schedule Interview"
+          >
+            <FaUserClock size={20}  />
+          </button>
+        )}
+      </div>
+    ),
+}
+,
   ];
 
   const openModal = (row) => {
     setSelectedRecord(row);
   };
+
   const closeModal = () => {
     setSelectedRecord(null);
   };
+
   const saveChange = () => {
     fetchRecords();
   };
