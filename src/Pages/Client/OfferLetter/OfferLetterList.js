@@ -23,7 +23,7 @@ export default function AddCompanys() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sendingOffer, setSendingOffer] = useState(null); // Track which offer is being sent
-console.log(state,"state");
+
   useEffect(() => {
     fetchRecords();
     // eslint-disable-next-line
