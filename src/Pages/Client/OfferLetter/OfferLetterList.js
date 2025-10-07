@@ -18,11 +18,12 @@ export default function AddCompanys() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const jobId = queryParams.get("jobId");
+  const state = location.state || {};
   const [searchQuery, setSearchQuery] = useState("");
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sendingOffer, setSendingOffer] = useState(null); // Track which offer is being sent
-
+console.log(state,"state");
   useEffect(() => {
     fetchRecords();
     // eslint-disable-next-line
@@ -158,10 +159,11 @@ export default function AddCompanys() {
   return (
     <UserLayout ac5="active">
       <ContentHeader
-        title="Offer Letter List"
+        title={`Offer Letter List for (${state.job.title})`}
         breadcrumbs={[
           { label: "Dashboard", to: "/admin/userdashboard" },
-          { label: "Offer Letter List" },
+          { label: "Job Post", to: "/admin/offerletterlist" },
+          { label: `Offer Letter List` },
         ]}
       />
       <section className="content">
