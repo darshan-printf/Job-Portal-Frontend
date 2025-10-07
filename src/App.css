@@ -768,9 +768,21 @@
   left: 5px;
   top: 60px;
   margin: 0%;
+  font-weight: 700;
   font-family: "Courier New", Courier, monospace;
-  font-size: 20px;
-  color: white;
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+}
+.folder-icon{
+  position: absolute;
+  left: 42px;
+  top: 30px;
+  margin: 0%;
+  font-weight: 700;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+
 }
 
 /* general responsive container */
