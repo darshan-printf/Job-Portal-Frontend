@@ -11,7 +11,6 @@ export default function ForgetPassWord() {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [updating, setUpdating] = useState(false);
-
   const Env = process.env;
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");

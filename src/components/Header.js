@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Header() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const navigate = useNavigate();
- 
+  const role = localStorage.getItem("role");
+
   // Agar user ESC daba de toh bhi state update ho jaye
   useEffect(() => {
     const handleChange = () => {
@@ -33,18 +34,14 @@ export default function Header() {
         </li>
       </ul>
       <ul className="navbar-nav ml-auto">
-        
+        {role === "admin" && <>
         <li className="nav-item dropdown">
-          <Link
-            className="nav-link"
-            to="/admin/forgetpassword"
-          >
+          <Link className="nav-link" to="/admin/forgetpassword">
             <i className="fas fa-lock"></i>
           </Link>
         </li>
         <li className="nav-item dropdown">
-          <Link to="/admin/profile" className="nav-link"
-          >
+          <Link to="/admin/profile" className="nav-link">
             <i className="fas fa-user"></i>
           </Link>
         </li>
@@ -59,6 +56,37 @@ export default function Header() {
             <i className="fas fa-power-off"></i>
           </Link>
         </li>
+        </>}
+        {role === "user" && <>
+       <li className="nav-item dropdown">
+          <Link className="nav-link" to="/admin/forgetpassword">
+            <i className="fas fa-lock"></i>
+          </Link>
+        </li>
+        <li className="nav-item dropdown">
+          <Link to="/admin/adminprofile" className="nav-link">
+            <i className="fas fa-user"></i>
+          </Link>
+        </li>
+        <li className="nav-item dropdown">
+          <Link to="/admin/companyandpackage" className="nav-link">
+            <i className="fas fa-building"></i>
+          </Link>
+        </li>
+        <li className="nav-item dropdown">
+          <Link
+            className="nav-link"
+            onClick={(e) => {
+              e.preventDefault();
+              logout();
+            }}
+          >
+            <i className="fas fa-power-off"></i>
+          </Link>
+        </li>
+        </>}
+
+        
       </ul>
     </nav>
   );
