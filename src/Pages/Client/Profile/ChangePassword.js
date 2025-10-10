@@ -45,7 +45,7 @@ export default function ChangePassword() {
     }
   };
   return (
-    <UserLayout ac3="active">
+    <UserLayout ac1="active">
       <ContentHeader
         title="Job Posting"
         breadcrumbs={[

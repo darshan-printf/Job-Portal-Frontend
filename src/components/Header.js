@@ -59,7 +59,7 @@ export default function Header() {
         </>}
         {role === "user" && <>
        <li className="nav-item dropdown">
-          <Link className="nav-link" to="/admin/forgetpassword">
+          <Link className="nav-link" to="/admin/resetpassword">
             <i className="fas fa-lock"></i>
           </Link>
         </li>
