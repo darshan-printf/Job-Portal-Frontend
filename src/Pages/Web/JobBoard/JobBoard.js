@@ -14,7 +14,7 @@ export default function JobBoard() {
     
     {
       icon: "bi bi-code-slash",
-      title: "Info Technology",
+      title: "Information  Technology",
       desc: "Software development and IT positions",
       count: 18
     },
@@ -49,8 +49,8 @@ export default function JobBoard() {
       company: "TechCorp Inc.",
       location: "Remote",
       type: "Full-time",
-      salary: "$90,000 - $120,000",
-      category: "Technology",
+      salary: "$90,000 ",
+      category: "Information  Technology",
       posted: "2 days ago",
       urgent: true
     },
@@ -59,7 +59,7 @@ export default function JobBoard() {
       company: "Global Solutions",
       location: "New York, NY",
       type: "Full-time",
-      salary: "$75,000 - $95,000",
+      salary: "$75,000 ",
       category: "Human Resources",
       posted: "1 week ago",
       urgent: false
@@ -69,7 +69,7 @@ export default function JobBoard() {
       company: "Digital Boost",
       location: "Chicago, IL",
       type: "Contract",
-      salary: "$60,000 - $80,000",
+      salary: "$60,000 ",
       category: "Marketing",
       posted: "3 days ago",
       urgent: true
@@ -79,7 +79,7 @@ export default function JobBoard() {
       company: "Wealth Management",
       location: "Boston, MA",
       type: "Full-time",
-      salary: "$85,000 - $110,000",
+      salary: "$85,000 ",
       category: "Finance",
       posted: "5 days ago",
       urgent: false
@@ -153,9 +153,7 @@ export default function JobBoard() {
                     <div className="job-meta d-flex justify-content-between align-items-center">
                       <span className="badge bg-light text-dark">{job.category}</span>
                       <div>
-                        <button className="btn btn-outline-primary btn-sm me-2">
-                          <i className="bi bi-bookmark"></i>
-                        </button>
+                        
                         <button className="btn btn-primary btn-sm">
                           Apply Now
                         </button>
