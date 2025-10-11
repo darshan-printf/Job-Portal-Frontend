@@ -61,7 +61,7 @@ export default function Edit() {
   const packageOptions = [
     { value: "Silver", label: "Silver" },
     { value: "Gold", label: "Gold" },
-    { value: "Paletiniyam", label: "Paletiniyam" },
+    { value: "Platinum", label: "Platinum" },
   ];
 
   // Fetch job data from API

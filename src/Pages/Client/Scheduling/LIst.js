@@ -94,7 +94,7 @@ export default function SchedulingList() {
       color: "text-warning",
       icon: <Crown size={18} />,
     },
-    Paletiniyam: {
+    Platinum: {
       color: "text-purple",
       icon: <Gem size={18} />,
     },

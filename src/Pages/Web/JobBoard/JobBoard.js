@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WebLayout from "../../../components/WebLayout";
+import JobModal from "../../../components/JobDetailModal";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import axios from "axios";
 
 export default function JobBoard() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activePackage, setActivePackage] = useState("All");
   const [selectedJob, setSelectedJob] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [jobListings, setJobListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Package types with unique styling
   const packageTypes = {
@@ -69,140 +74,65 @@ export default function JobBoard() {
     },
   ];
 
-  const jobListings = [
-    {
-      id: 1,
-      title: "Senior Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "Remote",
-      type: "Full-time",
-      salary: "$90,000",
-      category: "Information Technology",
-      posted: "2 days ago",
-      urgent: true,
-      package: "platinum",
-      featured: true,
-      highlights: [
-        "Priority Listing",
-        "Featured Position",
-        "Company Logo Display",
-      ],
-      description: "We are looking for an experienced Frontend Developer to join our dynamic team. You will be responsible for developing and implementing user interface components using React.js concepts and workflows such as Redux, Flux, and Webpack.",
-      requirements: [
-        "5+ years of experience in frontend development",
-        "Proficient in React.js, JavaScript, HTML5, CSS3",
-        "Experience with state management libraries (Redux)",
-        "Knowledge of modern authorization mechanisms",
-        "Familiarity with modern frontend build pipelines and tools"
-      ],
-      benefits: [
-        "Health, dental, and vision insurance",
-        "401(k) with company matching",
-        "Flexible work hours",
-        "Remote work options",
-        "Professional development budget"
-      ],
-      applicationDeadline: "2024-02-15",
-      experienceLevel: "Senior",
-      education: "Bachelor's in Computer Science or related field"
-    },
-    {
-      id: 2,
-      title: "HR Manager",
-      company: "Global Solutions",
-      location: "New York, NY",
-      type: "Full-time",
-      salary: "$75,000",
-      category: "Human Resources",
-      posted: "1 week ago",
-      urgent: false,
-      package: "silver",
-      featured: false,
-      highlights: ["Standard Listing"],
-      description: "We are seeking an experienced HR Manager to oversee all aspects of human resources practices and processes. The ideal candidate will support business needs and ensure the proper implementation of company strategy and objectives.",
-      requirements: [
-        "Bachelor's degree in Human Resources or related field",
-        "5+ years of experience in HR management",
-        "Knowledge of HR systems and databases",
-        "Excellent active listening and negotiation skills",
-        "People-oriented and results-driven"
-      ],
-      benefits: [
-        "Competitive salary package",
-        "Health insurance",
-        "Paid time off",
-        "Career advancement opportunities",
-        "Employee assistance program"
-      ],
-      applicationDeadline: "2024-02-20",
-      experienceLevel: "Mid-Senior",
-      education: "Bachelor's in Human Resources or related field"
-    },
-    {
-      id: 3,
-      title: "Marketing Specialist",
-      company: "Digital Boost",
-      location: "Chicago, IL",
-      type: "Contract",
-      salary: "$60,000",
-      category: "Marketing",
-      posted: "3 days ago",
-      urgent: true,
-      package: "gold",
-      featured: true,
-      highlights: ["Featured Position", "Highlighted Listing"],
-      description: "Join our marketing team as a Marketing Specialist where you'll develop and implement marketing strategies to increase brand awareness and drive customer engagement.",
-      requirements: [
-        "3+ years of experience in marketing",
-        "Experience with digital marketing tools",
-        "Excellent written and verbal communication skills",
-        "Knowledge of SEO/SEM and Google Analytics",
-        "Creative thinking and problem-solving skills"
-      ],
-      benefits: [
-        "Flexible schedule",
-        "Performance bonuses",
-        "Professional development",
-        "Networking opportunities",
-        "Creative work environment"
-      ],
-      applicationDeadline: "2024-02-18",
-      experienceLevel: "Mid-Level",
-      education: "Bachelor's in Marketing or related field"
-    },
-    {
-      id: 4,
-      title: "Financial Analyst",
-      company: "Wealth Management",
-      location: "Boston, MA",
-      type: "Full-time",
-      salary: "$85,000",
-      category: "Finance",
-      posted: "5 days ago",
-      urgent: false,
-      package: "platinum",
-      featured: true,
-      highlights: ["Priority Listing", "Featured Position", "Urgent Hiring"],
-      description: "We are looking for a Financial Analyst to provide accurate and data-based information on company's profitability, solvency, stability, and liquidity.",
-      requirements: [
-        "Bachelor's degree in Finance, Economics, or related field",
-        "3+ years of experience as a Financial Analyst",
-        "Proficiency in MS Excel and financial software",
-        "Knowledge of financial forecasting and diagnosis",
-        "Strong analytical and presentation skills"
-      ],
-      benefits: [
-        "Comprehensive health benefits",
-        "Retirement plan with matching",
-        "Bonus potential",
-        "Tuition reimbursement",
-        "Work-life balance programs"
-      ],
-      applicationDeadline: "2024-02-25",
-      experienceLevel: "Mid-Level",
-      education: "Bachelor's in Finance or related field"
-    },
-  ];
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTBhNGRiYjk3NWFjOWYxOTllNTc2ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NzU4NDY2OCwiZXhwIjoxNzU3NjEzNDY4fQ.nDXqaOYxQRa8RHexXj3W4jOBjXHcZfv-fndaveTVNiA";
+        
+        const response = await axios.get('http://localhost:3000/api/job/getJobPosts', {
+          headers: {
+            'authorization': token
+          }
+        });
+
+        // Transform API data to match your component structure
+        const transformedJobs = response.data.map(job => ({
+          id: job._id,
+          title: job.title,
+          company: job.companyName,
+          location: job.location,
+          type: job.type,
+          salary: `$${job.salary}`,
+          category: job.category,
+          posted: new Date(job.posted).toLocaleDateString(),
+          urgent: job.urgent,
+          package: job.package.toLowerCase(),
+          featured: job.featured,
+          highlights: job.highlights || ["Standard Listing"],
+          description: job.description,
+          requirements: job.requirements ? [
+            `Working Hours: ${job.requirements[0]?.workingHours || 'Not specified'}`,
+            `Shift: ${job.requirements[0]?.shift || 'Not specified'}`,
+            `Flexible Hours: ${job.requirements[0]?.flexibleWorkingHours ? 'Yes' : 'No'}`,
+            `Notice Period: ${job.requirements[0]?.noticePeriod || 'Not specified'}`,
+            `Bond Time: ${job.requirements[0]?.bondTime || 'Not specified'}`
+          ] : ["No specific requirements listed"],
+          benefits: job.benefits ? job.benefits.split(', ').map(benefit => benefit.trim()) : ["Standard benefits package"],
+          applicationDeadline: job.applicationDeadline || job.posted,
+          experienceLevel: job.experienceLevel,
+          education: job.education,
+          companyName: job.companyName,
+          companyType: job.companyType,
+          companyWebsite: job.companyWebsite,
+          companyPhone: job.companyPhone,
+          companyEmail: job.companyEmail,
+          companyAddress: job.companyEddress,
+          companyLogo: job.companyLogo
+        }));
+
+        setJobListings(transformedJobs);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+        setError('Failed to load jobs. Please try again later.');
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   // Combined filter function
   const filteredJobs = jobListings.filter((job) => {
@@ -231,168 +161,53 @@ export default function JobBoard() {
     setShowModal(true);
   };
 
-  // Calculate salary breakdown
-  const calculateSalaryBreakdown = (salary) => {
-    const baseSalary = parseInt(salary.replace(/[$,]/g, ''));
-    return {
-      baseSalary: baseSalary,
-      tax: baseSalary * 0.25, // 25% tax
-      ctc: baseSalary * 1.15, // 15% additional benefits
-      cashInHand: baseSalary * 0.75, // After tax
-      benefits: baseSalary * 0.15 // Additional benefits
-    };
-  };
-
-  // Job Detail Modal Component
-  const JobDetailModal = ({ job, show, onClose }) => {
-    if (!job || !show) return null;
-
-    const pkg = getPackageStyle(job.package);
-    const salaryBreakdown = calculateSalaryBreakdown(job.salary);
-
+  if (loading) {
     return (
-      <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
-        <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div>
-                <h4 className="modal-title">{job.title}</h4>
-                <p className="mb-0 text-muted">{job.company} • {job.location}</p>
+      <WebLayout>
+        <section className="featured-jobs section bg-light">
+          <div className="container">
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
-              <button type="button" className="btn-close" onClick={onClose}></button>
+              <p className="mt-3">Loading jobs...</p>
             </div>
-            
-            <div className="modal-body">
-              {/* Header Info */}
-              <div className="row mb-4">
-                <div className="col-md-8">
-                  <div className="d-flex flex-wrap gap-2 mb-3">
-                    <span className={`badge ${pkg.badgeClass}`}>
-                      <i className={`${pkg.icon} me-1`}></i>
-                      {pkg.name} Package
-                    </span>
-                    {job.urgent && <span className="badge bg-danger">Urgent</span>}
-                    {job.featured && <span className="badge bg-success">Featured</span>}
-                    <span className="badge bg-info">{job.type}</span>
-                    <span className="badge bg-secondary">{job.experienceLevel}</span>
-                  </div>
-                  
-                  <div className="d-flex flex-wrap gap-3 text-muted">
-                    <div>
-                      <i className="bi bi-calendar me-1"></i>
-                      Posted: {job.posted}
-                    </div>
-                    <div>
-                      <i className="bi bi-clock me-1"></i>
-                      Post Date: {new Date(job.applicationDeadline).toLocaleDateString()}
-                    </div>
-                    <div>
-                      <i className="bi bi-book me-1"></i>
-                      {job.education}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 text-end">
-                  <div className="salary-display">
-                    <h3 className="text-success mb-1">{job.salary}</h3>
-                    <small className="text-muted">per year</small>
-                  </div>
-                </div>
-              </div>
+          </div>
+        </section>
+      </WebLayout>
+    );
+  }
 
-              {/* Salary Breakdown */}
-              <div className="card mb-4">
-                <div className="card-header bg-light">
-                  <h5 className="mb-0">
-                    <i className="bi bi-calculator me-2"></i>
-                    Salary Breakdown & Benefits
-                  </h5>
-                </div>
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <table className="table table-bordered">
-                        <thead className="table-light">
-                          <tr>
-                            <th>Component</th>
-                            <th className="text-end">Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Base Salary</td>
-                            <td className="text-end">${salaryBreakdown.baseSalary.toLocaleString()}</td>
-                          </tr>
-                          <tr>
-                            <td>Tax (25%)</td>
-                            <td className="text-end text-danger">-${salaryBreakdown.tax.toLocaleString()}</td>
-                          </tr>
-                          <tr>
-                            <td>Benefits & Bonuses</td>
-                            <td className="text-end text-success">+${salaryBreakdown.benefits.toLocaleString()}</td>
-                          </tr>
-                          <tr className="table-success fw-bold">
-                            <td>CTC (Cost to Company)</td>
-                            <td className="text-end">${salaryBreakdown.ctc.toLocaleString()}</td>
-                          </tr>
-                          <tr className="table-primary fw-bold">
-                            <td>Cash in Hand (Annual)</td>
-                            <td className="text-end">${salaryBreakdown.cashInHand.toLocaleString()}</td>
-                          </tr>
-                          <tr className="table-info">
-                            <td>Monthly Take Home</td>
-                            <td className="text-end">${(salaryBreakdown.cashInHand / 12).toLocaleString()}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="col-md-12">
-                      <h6 className="mb-3">Benefits Included:</h6>
-                      <div className="row">
-                        {job.benefits.map((benefit, index) => (
-                          <div key={index} className="col-6 mb-2">
-                            <i className="bi bi-check-circle text-success me-2 "></i>{benefit}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Job Description */}
-              <div className="mb-4">
-                <h5 className="mb-3">
-                  <i className="bi bi-file-text me-2"></i>
-                  Job Description
-                </h5>
-                <p className="text-muted">{job.description}</p>
-              </div>
-            </div>
-
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={onClose}>
-                Close
-              </button>
-              <button type="button" className={`btn btn-${pkg.color}`}>
-                <i className="bi bi-send me-2"></i>
-                Apply for this Position
+  if (error) {
+    return (
+      <WebLayout>
+        <section className="featured-jobs section bg-light">
+          <div className="container">
+            <div className="text-center py-5">
+              <i className="bi bi-exclamation-triangle display-1 text-danger"></i>
+              <h4 className="mt-3">Error Loading Jobs</h4>
+              <p className="text-muted">{error}</p>
+              <button 
+                className="btn btn-primary"
+                onClick={() => window.location.reload()}
+              >
+                Try Again
               </button>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </WebLayout>
     );
-  };
+  }
 
   return (
     <WebLayout>
       {/* Job Detail Modal */}
-      <JobDetailModal 
+      <JobModal 
         job={selectedJob} 
         show={showModal} 
-        onClose={() => setShowModal(false)} 
+        onClose={() => setShowModal(false)}
+        packageTypes={packageTypes}
       />
 
       {/* Featured Jobs */}

@@ -89,7 +89,7 @@ export default function AddCompanys() {
       color: "text-warning", // bootstrap yellow
       icon: <Crown size={18} />,
     },
-    Paletiniyam: {
+    Platinum: {
       color: "text-purple", // custom class (bootstrap में direct purple नहीं होता)
       icon: <Gem size={18} />,
     },

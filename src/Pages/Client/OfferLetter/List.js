@@ -48,7 +48,7 @@ export default function OfferLetterList() {
     Admin: {icon: <Shield size={18} />,},
     Silver: {icon: <Star size={18} />, },
     Gold: {icon: <Crown size={18} />,},
-    Paletiniyam: {icon: <Gem size={18} />,},
+    Platinum: {icon: <Gem size={18} />,},
   };
 
   return (

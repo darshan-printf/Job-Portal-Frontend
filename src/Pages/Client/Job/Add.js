@@ -53,7 +53,7 @@ export default function Add() {
   const packageOptions = [
     { value: "Silver", label: "Silver" },
     { value: "Gold", label: "Gold" },
-    { value: "Paletiniyam", label: "Paletiniyam" },
+    { value: "Platinum", label: "Platinum" },
   ];
 
   const fetchCountries = async () => {

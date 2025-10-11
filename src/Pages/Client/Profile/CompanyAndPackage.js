@@ -167,7 +167,7 @@ export default function CompanyAndPackage() {
               <div className="card-header">
                 <h3 className="card-title">
                   <Gem className="mr-1"/>
-                  Paletiniyam
+                  Platinum
                 </h3>
               </div>
               <div className="card-body">
