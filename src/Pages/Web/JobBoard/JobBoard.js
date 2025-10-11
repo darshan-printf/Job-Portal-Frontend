@@ -323,16 +323,6 @@ export default function JobBoard() {
               </div>
             </div>
           </div>
-
-          {/* Results Count */}
-          <div className="mb-4">
-            <p className="text-muted">
-              Showing {filteredJobs.length} of {jobListings.length} jobs
-              {activeCategory !== "All" && ` in ${activeCategory}`}
-              {activePackage !== "All" && ` with ${packageTypes[activePackage]?.name} Package`}
-            </p>
-          </div>
-
           {/* Job Listings */}
           <div className="row">
             {filteredJobs.length > 0 ? (
