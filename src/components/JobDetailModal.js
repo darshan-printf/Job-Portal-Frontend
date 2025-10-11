@@ -10,10 +10,10 @@ const JobModal = ({ job, show, onClose, packageTypes }) => {
 
   // Calculate salary breakdown
   const calculateSalaryBreakdown = (salary) => {
-    const baseSalary = parseInt(salary.replace(/[$,]/g, ''));
+    const baseSalary = parseInt(salary.replace(/[₹,]/g, ''));
     return {
       baseSalary: baseSalary,
-      tax: baseSalary * 0.25, // 25% tax
+      tax: baseSalary * 0.18, // 25% tax
       ctc: baseSalary * 1.15, // 15% additional benefits
       cashInHand: baseSalary * 0.75, // After tax
       benefits: baseSalary * 0.15 // Additional benefits
@@ -22,6 +22,7 @@ const JobModal = ({ job, show, onClose, packageTypes }) => {
 
   const pkg = getPackageStyle(job.package);
   const salaryBreakdown = calculateSalaryBreakdown(job.salary);
+  console.log(job.salary,"job.salary")
 
   return (
     <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
@@ -94,27 +95,27 @@ const JobModal = ({ job, show, onClose, packageTypes }) => {
                       <tbody>
                         <tr>
                           <td>Base Salary</td>
-                          <td className="text-end">${salaryBreakdown.baseSalary.toLocaleString()}</td>
+                          <td className="text-end">₹{salaryBreakdown.baseSalary.toLocaleString()}</td>
                         </tr>
                         <tr>
-                          <td>Tax (25%)</td>
-                          <td className="text-end text-danger">-${salaryBreakdown.tax.toLocaleString()}</td>
+                          <td>Tax (18%)</td>
+                          <td className="text-end text-danger">-₹{salaryBreakdown.tax.toLocaleString()}</td>
                         </tr>
                         <tr>
                           <td>Benefits & Bonuses</td>
-                          <td className="text-end text-success">+${salaryBreakdown.benefits.toLocaleString()}</td>
+                          <td className="text-end text-success">+₹{salaryBreakdown.benefits.toLocaleString()}</td>
                         </tr>
                         <tr className="table-success fw-bold">
                           <td>CTC (Cost to Company)</td>
-                          <td className="text-end">${salaryBreakdown.ctc.toLocaleString()}</td>
+                          <td className="text-end">₹{salaryBreakdown.ctc.toLocaleString()}</td>
                         </tr>
                         <tr className="table-primary fw-bold">
                           <td>Cash in Hand (Annual)</td>
-                          <td className="text-end">${salaryBreakdown.cashInHand.toLocaleString()}</td>
+                          <td className="text-end">₹{salaryBreakdown.cashInHand.toLocaleString()}</td>
                         </tr>
                         <tr className="table-info">
                           <td>Monthly Take Home</td>
-                          <td className="text-end">${(salaryBreakdown.cashInHand / 12).toLocaleString()}</td>
+                          <td className="text-end">₹{(salaryBreakdown.cashInHand / 12).toLocaleString()}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -162,22 +163,7 @@ const JobModal = ({ job, show, onClose, packageTypes }) => {
               </div>
             )}
 
-            {/* Package Highlights */}
-            {job.highlights && job.highlights.length > 0 && (
-              <div className="mb-4">
-                <h5 className="mb-3">
-                  <i className="bi bi-star me-2"></i>
-                  Package Highlights
-                </h5>
-                <div className="d-flex flex-wrap gap-2">
-                  {job.highlights.map((highlight, index) => (
-                    <span key={index} className={`badge bg-light text-${pkg.color} border border-${pkg.color}`}>
-                      {highlight}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            
           </div>
 
           <div className="modal-footer">

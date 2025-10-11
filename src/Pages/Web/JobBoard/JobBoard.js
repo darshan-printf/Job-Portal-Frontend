@@ -76,68 +76,84 @@ export default function JobBoard() {
 
   // Fetch jobs from API
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        setLoading(true);
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTBhNGRiYjk3NWFjOWYxOTllNTc2ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NzU4NDY2OCwiZXhwIjoxNzU3NjEzNDY4fQ.nDXqaOYxQRa8RHexXj3W4jOBjXHcZfv-fndaveTVNiA";
-        
-        const response = await axios.get('http://localhost:3000/api/job/getJobPosts', {
-          headers: {
-            'authorization': token
-          }
-        });
-
-        // Transform API data to match your component structure
-        const transformedJobs = response.data.map(job => ({
-          id: job._id,
-          title: job.title,
-          company: job.companyName,
-          location: job.location,
-          type: job.type,
-          salary: `$${job.salary}`,
-          category: job.category,
-          posted: new Date(job.posted).toLocaleDateString(),
-          urgent: job.urgent,
-          package: job.package.toLowerCase(),
-          featured: job.featured,
-          highlights: job.highlights || ["Standard Listing"],
-          description: job.description,
-          requirements: job.requirements ? [
-            `Working Hours: ${job.requirements[0]?.workingHours || 'Not specified'}`,
-            `Shift: ${job.requirements[0]?.shift || 'Not specified'}`,
-            `Flexible Hours: ${job.requirements[0]?.flexibleWorkingHours ? 'Yes' : 'No'}`,
-            `Notice Period: ${job.requirements[0]?.noticePeriod || 'Not specified'}`,
-            `Bond Time: ${job.requirements[0]?.bondTime || 'Not specified'}`
-          ] : ["No specific requirements listed"],
-          benefits: job.benefits ? job.benefits.split(', ').map(benefit => benefit.trim()) : ["Standard benefits package"],
-          applicationDeadline: job.applicationDeadline || job.posted,
-          experienceLevel: job.experienceLevel,
-          education: job.education,
-          companyName: job.companyName,
-          companyType: job.companyType,
-          companyWebsite: job.companyWebsite,
-          companyPhone: job.companyPhone,
-          companyEmail: job.companyEmail,
-          companyAddress: job.companyEddress,
-          companyLogo: job.companyLogo
-        }));
-
-        setJobListings(transformedJobs);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching jobs:', err);
-        setError('Failed to load jobs. Please try again later.');
-        setLoading(false);
-      }
-    };
-
     fetchJobs();
+    // eslint-disable-next-line
   }, []);
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTBhNGRiYjk3NWFjOWYxOTllNTc2ZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NzU4NDY2OCwiZXhwIjoxNzU3NjEzNDY4fQ.nDXqaOYxQRa8RHexXj3W4jOBjXHcZfv-fndaveTVNiA";
+
+      const response = await axios.get(
+        "http://localhost:3000/api/job/getJobPosts",
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      // Transform API data to match your component structure
+      const transformedJobs = response.data.map((job) => ({
+        id: job._id,
+        title: job.title,
+        company: job.companyName,
+        location: job.location,
+        type: job.type,
+        salary: `₹${job.salary}`,
+        category: job.category,
+        posted: new Date(job.posted).toLocaleDateString(),
+        urgent: job.urgent,
+        package: job.package.toLowerCase(),
+        featured: job.featured,
+        highlights: job.highlights || ["Standard Listing"],
+        description: job.description,
+        requirements: job.requirements
+          ? [
+              `Working Hours: ${
+                job.requirements[0]?.workingHours || "Not specified"
+              }`,
+              `Shift: ${job.requirements[0]?.shift || "Not specified"}`,
+              `Flexible Hours: ${
+                job.requirements[0]?.flexibleWorkingHours ? "Yes" : "No"
+              }`,
+              `Notice Period: ${
+                job.requirements[0]?.noticePeriod || "Not specified"
+              }`,
+              `Bond Time: ${job.requirements[0]?.bondTime || "Not specified"}`,
+            ]
+          : ["No specific requirements listed"],
+        benefits: job.benefits
+          ? job.benefits.split(", ").map((benefit) => benefit.trim())
+          : ["Standard benefits package"],
+        applicationDeadline: job.applicationDeadline || job.posted,
+        experienceLevel: job.experienceLevel,
+        education: job.education,
+        companyName: job.companyName,
+        companyType: job.companyType,
+        companyWebsite: job.companyWebsite,
+        companyPhone: job.companyPhone,
+        companyEmail: job.companyEmail,
+        companyAddress: job.companyEddress,
+        companyLogo: job.companyLogo,
+      }));
+
+      setJobListings(transformedJobs);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+      setError("Failed to load jobs. Please try again later.");
+      setLoading(false);
+    }
+  };
 
   // Combined filter function
   const filteredJobs = jobListings.filter((job) => {
-    const categoryMatch = activeCategory === "All" || job.category === activeCategory;
-    const packageMatch = activePackage === "All" || job.package === activePackage;
+    const categoryMatch =
+      activeCategory === "All" || job.category === activeCategory;
+    const packageMatch =
+      activePackage === "All" || job.package === activePackage;
     return categoryMatch && packageMatch;
   });
 
@@ -187,7 +203,7 @@ export default function JobBoard() {
               <i className="bi bi-exclamation-triangle display-1 text-danger"></i>
               <h4 className="mt-3">Error Loading Jobs</h4>
               <p className="text-muted">{error}</p>
-              <button 
+              <button
                 className="btn btn-primary"
                 onClick={() => window.location.reload()}
               >
@@ -203,9 +219,9 @@ export default function JobBoard() {
   return (
     <WebLayout>
       {/* Job Detail Modal */}
-      <JobModal 
-        job={selectedJob} 
-        show={showModal} 
+      <JobModal
+        job={selectedJob}
+        show={showModal}
         onClose={() => setShowModal(false)}
         packageTypes={packageTypes}
       />
@@ -219,15 +235,19 @@ export default function JobBoard() {
                 <h2>Job Board</h2>
                 <p>Latest opportunities from top employers</p>
               </div>
-              
+
               {/* Package Cards - Toggle Functionality */}
               <div className="container">
                 <div className="row text-center">
                   <div className="col-md-4 mb-3">
-                    <div 
-                      className={`package-card card h-100 ${activePackage === "silver" ? "border-secondary border-3 shadow" : "border-secondary"}`}
+                    <div
+                      className={`package-card card h-100 ${
+                        activePackage === "silver"
+                          ? "border-secondary border-3 shadow"
+                          : "border-secondary"
+                      }`}
                       onClick={() => togglePackageFilter("silver")}
-                      style={{ cursor: 'pointer', transition: 'all 0.3s' }}
+                      style={{ cursor: "pointer", transition: "all 0.3s" }}
                     >
                       <div className="card-body">
                         <i className="bi bi-star fs-1 text-secondary"></i>
@@ -245,10 +265,14 @@ export default function JobBoard() {
                     </div>
                   </div>
                   <div className="col-md-4 mb-3">
-                    <div 
-                      className={`package-card card h-100 ${activePackage === "gold" ? "border-warning border-3 shadow" : "border-warning"}`}
+                    <div
+                      className={`package-card card h-100 ${
+                        activePackage === "gold"
+                          ? "border-warning border-3 shadow"
+                          : "border-warning"
+                      }`}
                       onClick={() => togglePackageFilter("gold")}
-                      style={{ cursor: 'pointer', transition: 'all 0.3s' }}
+                      style={{ cursor: "pointer", transition: "all 0.3s" }}
                     >
                       <div className="card-body">
                         <i className="bi bi-star-fill fs-1 text-warning"></i>
@@ -266,10 +290,14 @@ export default function JobBoard() {
                     </div>
                   </div>
                   <div className="col-md-4 mb-3">
-                    <div 
-                      className={`package-card card h-100 ${activePackage === "platinum" ? "border-primary border-3 shadow" : "border-primary"}`}
+                    <div
+                      className={`package-card card h-100 ${
+                        activePackage === "platinum"
+                          ? "border-primary border-3 shadow"
+                          : "border-primary"
+                      }`}
                       onClick={() => togglePackageFilter("platinum")}
-                      style={{ cursor: 'pointer', transition: 'all 0.3s' }}
+                      style={{ cursor: "pointer", transition: "all 0.3s" }}
                     >
                       <div className="card-body">
                         <i className="bi bi-gem fs-1 text-primary"></i>
@@ -399,7 +427,7 @@ export default function JobBoard() {
                             {job.category}
                           </span>
                           <div>
-                            <button 
+                            <button
                               className={`btn btn-${pkg.color} btn-sm`}
                               onClick={() => handleApplyNow(job)}
                             >
@@ -417,13 +445,15 @@ export default function JobBoard() {
                 <i className="bi bi-search display-1 text-muted"></i>
                 <h4 className="mt-3">No jobs found</h4>
                 <p className="text-muted">
-                  No jobs match your current filters. Try adjusting your criteria.
+                  No jobs match your current filters. Try adjusting your
+                  criteria.
                 </p>
-                <button 
+                <button
                   className="btn btn-primary"
                   onClick={() => {
                     setActiveCategory("All");
                     setActivePackage("All");
+                    fetchJobs()
                   }}
                 >
                   Reset Filters
